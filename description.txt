@@ -6,7 +6,10 @@
 
 [Credits]
 * jopojelly for code that draws a slot to the left of the dyes
-* boffin for his UI toolkit
+* Boffin for his UI toolkit
 
 [Changelog]
+v1.0.1  2016-08-07
+* Added Boffin to authors
+
 v1.0.0  2016-08-07

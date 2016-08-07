@@ -1,5 +1,5 @@
 ﻿displayName=Wing Slot
-author=abluescarab
+author=abluescarab, Boffin
 version=1.0.0
 dllReferences=
 modReferences=
