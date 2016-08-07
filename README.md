@@ -6,4 +6,4 @@
 
 ## Credits
 * jopojelly for code that draws a slot to the left of the dyes
-* boffin for his UI toolkit
+* Boffin for his UI toolkit
