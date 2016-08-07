@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WingSlot {
     internal class MPlayer : ModPlayer {
-        public const ushort Installed = 0;
+        private const ushort Installed = 0;
         public Item Wings;
         public bool OwnsWings = false;
         public bool HideWings = false;
@@ -110,12 +110,14 @@ namespace WingSlot {
 
         public void SetWings(Item item) {
             UIWingSlot.item = Wings = item.Clone();
+            OwnsWings = true;
         }
 
         public void ClearWings() {
             UIWingSlot.item = Wings = new Item();
             UIWingSlot.item.SetDefaults();
             Wings.SetDefaults();
+            OwnsWings = false;
         }
 
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
@@ -127,12 +129,17 @@ namespace WingSlot {
         }
 
         public override void SaveCustomData(BinaryWriter writer) {
+            int hide = (HideWings ? 1 : 0);
+
             writer.Write(Installed);
             writer.Write(OwnsWings);
+            writer.Write(hide);
             WriteWings(Wings, writer);
         }
 
         public override void LoadCustomData(BinaryReader reader) {
+            int hide = 0;
+
             Wings = new Item();
             Wings.SetDefaults();
 
@@ -148,6 +155,15 @@ namespace WingSlot {
                     OwnsWings = false;
                 }
 
+                try {
+                    hide = reader.ReadInt32();
+                }
+                catch(EndOfStreamException) {
+                    hide = 0;
+                }
+
+                HideWings = (hide == 1 ? true : false);
+                
                 if(OwnsWings) {
                     ReadWings(ref wings, reader);
                     SetWings(wings);
@@ -184,7 +200,6 @@ namespace WingSlot {
                 Main.PlaySound(7, -1, -1, 1);
                 Recipe.FindRecipes();
                 SetWings(item);
-                OwnsWings = true;
             }
             // from slot to inv
             else if(item == UIWingSlot.item) {
@@ -195,7 +210,6 @@ namespace WingSlot {
                     Main.PlaySound(7, -1, -1, 1);
                     Recipe.FindRecipes();
                     player.inventory[toSlot] = item.Clone();
-                    OwnsWings = false;
                 }
             }
 
