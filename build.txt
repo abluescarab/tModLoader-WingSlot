@@ -1,0 +1,12 @@
+﻿displayName=Wing Slot
+author=abluescarab
+version=1.0.0
+dllReferences=
+modReferences=
+noCompile=false
+homepage=https://github.com/abluescarab/tModLoader-WingSlot
+hideCode=false
+hideResources=false
+includeSource=true
+buildIgnore=*.csproj, *.user, obj\*, bin\*, .vs\*, .git*, *.md
+includePDB=true
