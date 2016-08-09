@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using WingSlot.UI;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace WingSlot {
     internal class MPlayer : ModPlayer {
@@ -103,6 +102,14 @@ namespace WingSlot {
                 leftClick: delegate (UIItemSlot slot) {
                     if(slot.item.stack > 0) {
                         HideWings = !HideWings;
+                        return true;
+                    }
+                    return false;
+                },
+                rightClick: delegate (UIItemSlot slot) {
+                    if(slot.item.stack > 0) {
+                        SwapWings(slot.item);
+                        return true;
                     }
                     return false;
                 });
@@ -163,7 +170,7 @@ namespace WingSlot {
                 }
 
                 HideWings = (hide == 1 ? true : false);
-                
+
                 if(OwnsWings) {
                     ReadWings(ref wings, reader);
                     SetWings(wings);
@@ -203,9 +210,9 @@ namespace WingSlot {
             }
             // from slot to inv
             else if(item == UIWingSlot.item) {
-                int toSlot = Array.FindIndex(player.inventory, i => i.stack == 0);
+                int toSlot = Array.FindIndex(player.inventory, 10, i => i.stack == 0);
 
-                if(toSlot > -1) {
+                if(toSlot > -1 && toSlot < 50) {
                     ClearWings();
                     Main.PlaySound(7, -1, -1, 1);
                     Recipe.FindRecipes();

@@ -64,8 +64,13 @@ namespace WingSlot.UI {
                     Recipe.FindRecipes();
                 }
                 else {
-                    leftClick(this);
-                    Main.mouseLeftRelease = false; // prevent repeat
+                    if(leftClick(this)) {
+                        Main.mouseLeftRelease = false; // prevent repeat
+                    }
+                    else {
+                        ItemSlot.LeftClick(ref this.item, 0);
+                        Recipe.FindRecipes();
+                    }
                 }
             }
             else if(Main.mouseRight && Main.mouseRightRelease) {
@@ -73,8 +78,12 @@ namespace WingSlot.UI {
                     ItemSlot.RightClick(ref this.item, 0);
                 }
                 else {
-                    rightClick(this);
-                    Main.mouseRightRelease = false; // prevent repeat
+                    if(rightClick(this)) {
+                        Main.mouseRightRelease = false; // prevent repeat
+                    }
+                    else {
+                        ItemSlot.RightClick(ref this.item, 0);
+                    }
                 }
             }
         }
