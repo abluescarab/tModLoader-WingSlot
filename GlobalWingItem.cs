@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using TerraUI;
+using Microsoft.Xna.Framework.Input;
 
 namespace WingSlot {
     class GlobalWingItem : GlobalItem {
@@ -10,7 +12,7 @@ namespace WingSlot {
         }
 
         public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-            DrawWingSlot(spriteBatch);
+            DrawWingSlots(spriteBatch);
             base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
 
@@ -28,10 +30,17 @@ namespace WingSlot {
 
             return base.CanRightClick(item);
         }
-
+        
         public override void RightClick(Item item, Player player) {
             if(item.wingSlot > 0) {
-                player.GetModPlayer<MPlayer>(mod).SwapWings(item);
+                MPlayer mp = player.GetModPlayer<MPlayer>(mod);
+
+                if(KeyboardUtils.HeldDown(Keys.LeftShift)) {
+                    mp.SwapWings(true, item);
+                }
+                else {
+                    mp.SwapWings(false, item);
+                }
             }
             else {
                 base.RightClick(item, player);
@@ -39,22 +48,25 @@ namespace WingSlot {
         }
 
         /// <summary>
-        /// Draws the wing equipment slot.
+        /// Draws the wing equipment slots.
         /// Based on code provided by jopojelly.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        private void DrawWingSlot(SpriteBatch spriteBatch) {
+        private void DrawWingSlots(SpriteBatch spriteBatch) {
             if(Main.playerInventory && Main.EquipPage == 2) {
-                Point mouse = new Point(Main.mouseX, Main.mouseY);
-                Rectangle r = new Rectangle(0, 0, (int)(Main.inventoryBack3Texture.Width * Main.inventoryScale),
-                    (int)(Main.inventoryBack3Texture.Height * Main.inventoryScale));
+                Texture2D backTex = Main.inventoryBackTexture;
+                Texture2D tick = Main.inventoryTickOnTexture;
+
+                Rectangle slotRect = new Rectangle(0, 0, (int)(backTex.Width * Main.inventoryScale), (int)(backTex.Height * Main.inventoryScale));
+                
                 MPlayer mp = Main.player[Main.myPlayer].GetModPlayer<MPlayer>(mod);
+
                 int mapH = 0;
                 int rX = 0;
                 int rY = 0;
                 float origScale = Main.inventoryScale;
 
-                Main.inventoryScale = .85f;
+                Main.inventoryScale = 0.85f;
 
                 if(Main.mapEnabled) {
                     if(!Main.mapFullscreen && Main.mapStyle == 1) {
@@ -68,22 +80,20 @@ namespace WingSlot {
 
                 rX = Main.screenWidth - 92 - (47 * 2);
                 rY = mapH + 174;
-
+                
                 //if(Main.netMode == 1) {
                 //    rX -= 47;
                 //}
 
-                r.X = rX;
-                r.Y = rY;
+                slotRect.X = rX;
+                slotRect.Y = rY;
 
-                mp.UIWingSlot.position = new Vector2(r.X, r.Y);
+                mp.UIWingSlot.Position = new Vector2(slotRect.X, slotRect.Y);
+                mp.VanityWingSlot.Position = new Vector2(slotRect.X - 47, slotRect.Y);
 
-                if(r.Contains(mouse)) {
-                    Main.armorHide = true;
-                    mp.UIWingSlot.Handle();
-                }
-                
+                mp.VanityWingSlot.Draw(spriteBatch);
                 mp.UIWingSlot.Draw(spriteBatch);
+                
                 Main.inventoryScale = origScale;
             }
         }

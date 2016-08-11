@@ -6,14 +6,23 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 This mod adds a dedicated wing slot to the equipment page of the inventory, on the left of the dyes.
 
 * Right-click a set of wings to equip them.
+* Shift-right-click a set of wings to equip them in the vanity slot.
 * Right-click a set of equipped wings to unequip them.
-* Left-click a set of equipped wings to toggle their visibility.
+* Left-click the eye icon on the wing slot to toggle the set's visibility.
 
 [Credits]
 * jopojelly for code that draws a slot to the left of the dyes
-* Boffin for his UI toolkit
+* Boffin for TerraUI
 
 [Changelog]
+v1.1.0  2016-08-10
+* Added vanity slot
+* Visiblity button added to wing slot
+* Visiblity can be changed if the wing slot is empty
+* Sound is played when visiblity is changed
+* Visibility button must be clicked instead of the whole slot
+* Updated to TerraUI
+
 v1.0.3  2016-08-09
 * Fix: Wings can no longer be moved to the coin or ammo slots
 
