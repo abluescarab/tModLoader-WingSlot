@@ -36,11 +36,13 @@ namespace WingSlot {
         }
 
         private bool UIWingSlot_RightClick(UIObject sender, ClickEventArgs e) {
-            UIItemSlot slot = (UIItemSlot)sender;
+            if(Main.EquipPage == 2) {
+                UIItemSlot slot = (UIItemSlot)sender;
 
-            if(slot.Item.stack > 0) {
-                SwapWings(false, slot.Item);
-                return true;
+                if(slot.Item.stack > 0) {
+                    SwapWings(false, slot.Item);
+                    return true;
+                }
             }
 
             return false;
@@ -150,9 +152,11 @@ namespace WingSlot {
         }
 
         public override void PreUpdate() {
-            VanityWingSlot.Update();
-            UIWingSlot.Update();
-            UIUtils.UpdateInput();
+            if(Main.EquipPage == 2) {
+                VanityWingSlot.Update();
+                UIWingSlot.Update();
+                UIUtils.UpdateInput();
+            }
             base.PreUpdate();
         }
 

@@ -15,6 +15,9 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, on t
 * Boffin for TerraUI
 
 [Changelog]
+v1.1.1  2016-08-13
+* Fix: can no longer interact with slots when they are not visible
+
 v1.1.0  2016-08-10
 * Added vanity slot
 * Visiblity button added to wing slot
