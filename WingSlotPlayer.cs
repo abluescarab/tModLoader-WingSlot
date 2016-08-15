@@ -13,7 +13,7 @@ namespace WingSlot {
 
         public Item Wings;
         public Item VanityWings;
-        public UIItemSlot UIWingSlot;
+        public UIItemSlot EquipWingSlot;
         public UIItemSlot VanityWingSlot;
 
         public override bool Autoload(ref string name) {
@@ -23,10 +23,10 @@ namespace WingSlot {
         public override void Initialize() {
             InitializeWings();
 
-            UIWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory);
+            EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory);
             VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity);
 
-            UIWingSlot.Conditions = VanityWingSlot.Conditions =
+            EquipWingSlot.Conditions = VanityWingSlot.Conditions =
                 delegate (Item item) {
                     if(item.wingSlot > 0) {
                         return true;
@@ -34,7 +34,7 @@ namespace WingSlot {
                     return false;
                 };
 
-            UIWingSlot.DrawItem = VanityWingSlot.DrawItem =
+            EquipWingSlot.DrawItem = VanityWingSlot.DrawItem =
                 delegate (SpriteBatch spriteBatch, UIItemSlot slot) {
                     if(slot.Item.stack > 0 && Main.EquipPage == 2) {
                         spriteBatch.End();
@@ -63,7 +63,7 @@ namespace WingSlot {
                     }
                 };
 
-            UIWingSlot.DrawBackground = VanityWingSlot.DrawBackground =
+            EquipWingSlot.DrawBackground = VanityWingSlot.DrawBackground =
                 delegate (SpriteBatch spriteBatch, UIItemSlot slot) {
                     if(Main.EquipPage == 2) {
                         Texture2D backTexture = UIUtils.GetContextTexture(slot.Context);
@@ -108,7 +108,7 @@ namespace WingSlot {
                     }
                 };
 
-            UIWingSlot.RightClick += UIWingSlot_RightClick;
+            EquipWingSlot.RightClick += UIWingSlot_RightClick;
             VanityWingSlot.RightClick += VanityWingSlot_RightClick;
         }
 
@@ -146,7 +146,7 @@ namespace WingSlot {
         public override void PreUpdate() {
             if(Main.EquipPage == 2) {
                 VanityWingSlot.Update();
-                UIWingSlot.Update();
+                EquipWingSlot.Update();
                 UIUtils.UpdateInput();
             }
             base.PreUpdate();
@@ -154,7 +154,7 @@ namespace WingSlot {
 
         public void SetWings(bool isVanity, Item item) {
             if(!isVanity) {
-                UIWingSlot.Item = Wings = item.Clone();
+                EquipWingSlot.Item = Wings = item.Clone();
             }
             else {
                 VanityWingSlot.Item = VanityWings = item.Clone();
@@ -166,8 +166,8 @@ namespace WingSlot {
                 Wings = new Item();
                 Wings.SetDefaults();
 
-                UIWingSlot.Item = new Item();
-                UIWingSlot.Item.SetDefaults();
+                EquipWingSlot.Item = new Item();
+                EquipWingSlot.Item.SetDefaults();
             }
             else {
                 VanityWings = new Item();
@@ -181,7 +181,7 @@ namespace WingSlot {
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
             if(Wings.stack > 0) {
                 player.VanillaUpdateEquip(Wings);
-                player.VanillaUpdateAccessory(Wings, !UIWingSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
+                player.VanillaUpdateAccessory(Wings, !EquipWingSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
                     ref tileRangeBuff);
             }
 
@@ -191,7 +191,7 @@ namespace WingSlot {
         }
 
         public override void SaveCustomData(BinaryWriter writer) {
-            int hide = (UIWingSlot.ItemVisible ? 0 : 1);
+            int hide = (EquipWingSlot.ItemVisible ? 0 : 1);
 
             writer.Write(installed);
             writer.Write(hide);
@@ -213,7 +213,7 @@ namespace WingSlot {
                 try { hide = reader.ReadInt32(); }
                 catch(EndOfStreamException) { hide = 0; }
 
-                UIWingSlot.ItemVisible = (hide == 1 ? false : true);
+                EquipWingSlot.ItemVisible = (hide == 1 ? false : true);
 
                 ReadWings(ref wings, reader);
                 SetWings(false, wings);
@@ -236,7 +236,7 @@ namespace WingSlot {
         }
 
         public bool SwapWings(bool isVanity, Item item) {
-            UIItemSlot slot = UIWingSlot;
+            UIItemSlot slot = EquipWingSlot;
 
             if(isVanity) {
                 slot = VanityWingSlot;

@@ -88,11 +88,11 @@ namespace WingSlot {
                 slotRect.X = rX;
                 slotRect.Y = rY;
 
-                mp.UIWingSlot.Position = new Vector2(slotRect.X, slotRect.Y);
+                mp.EquipWingSlot.Position = new Vector2(slotRect.X, slotRect.Y);
                 mp.VanityWingSlot.Position = new Vector2(slotRect.X - 47, slotRect.Y);
 
                 mp.VanityWingSlot.Draw(spriteBatch);
-                mp.UIWingSlot.Draw(spriteBatch);
+                mp.EquipWingSlot.Draw(spriteBatch);
                 
                 Main.inventoryScale = origScale;
             }
