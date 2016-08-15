@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.UI;
 using TerraUI;
 
 namespace WingSlot {
@@ -108,18 +110,42 @@ namespace WingSlot {
                     }
                 };
 
-            EquipWingSlot.RightClick += UIWingSlot_RightClick;
+            EquipWingSlot.RightClick += EquipWingSlot_RightClick;
+            EquipWingSlot.LeftClick += EquipWingSlot_LeftClick;
             VanityWingSlot.RightClick += VanityWingSlot_RightClick;
+            VanityWingSlot.LeftClick += VanityWingSlot_LeftClick;
         }
 
-        private bool UIWingSlot_RightClick(UIObject sender, ClickEventArgs e) {
-            if(Main.EquipPage == 2) {
-                UIItemSlot slot = (UIItemSlot)sender;
+        private bool EquipWingSlot_LeftClick(UIObject sender, ClickEventArgs e) {
+            UIItemSlot slot = (UIItemSlot)sender;
 
-                if(slot.Item.stack > 0) {
-                    SwapWings(false, slot.Item);
-                    return true;
-                }
+            if(slot.Item.stack > 0) {
+                slot.DefaultLeftClick();
+                ClearWings(false);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool EquipWingSlot_RightClick(UIObject sender, ClickEventArgs e) {
+            UIItemSlot slot = (UIItemSlot)sender;
+
+            if(slot.Item.stack > 0) {
+                SwapWings(false, slot.Item);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool VanityWingSlot_LeftClick(UIObject sender, ClickEventArgs e) {
+            UIItemSlot slot = (UIItemSlot)sender;
+            
+            if(slot.Item.stack > 0) {
+                slot.DefaultLeftClick();
+                ClearWings(true);
+                return true;
             }
 
             return false;
@@ -136,13 +162,6 @@ namespace WingSlot {
             return false;
         }
 
-        private void InitializeWings() {
-            Wings = new Item();
-            VanityWings = new Item();
-            Wings.SetDefaults();
-            VanityWings.SetDefaults();
-        }
-
         public override void PreUpdate() {
             if(Main.EquipPage == 2) {
                 VanityWingSlot.Update();
@@ -150,6 +169,13 @@ namespace WingSlot {
                 UIUtils.UpdateInput();
             }
             base.PreUpdate();
+        }
+
+        private void InitializeWings() {
+            Wings = new Item();
+            VanityWings = new Item();
+            Wings.SetDefaults();
+            VanityWings.SetDefaults();
         }
 
         public void SetWings(bool isVanity, Item item) {
@@ -195,8 +221,8 @@ namespace WingSlot {
 
             writer.Write(installed);
             writer.Write(hide);
-            WriteWings(Wings, writer);
-            WriteWings(VanityWings, writer);
+            WriteWings(Wings, EquipWingSlot.Context, writer);
+            WriteWings(VanityWings, VanityWingSlot.Context, writer);
         }
 
         public override void LoadCustomData(BinaryReader reader) {
@@ -207,40 +233,57 @@ namespace WingSlot {
             ushort installedFlag = reader.ReadUInt16();
 
             if(installedFlag == 0) {
-                Item wings = Wings;
-                Item vanityWings = VanityWings;
+                //Item wings = Wings;
+                //Item vanityWings = VanityWings;
 
                 try { hide = reader.ReadInt32(); }
                 catch(EndOfStreamException) { hide = 0; }
 
                 EquipWingSlot.ItemVisible = (hide == 1 ? false : true);
 
-                ReadWings(ref wings, reader);
-                SetWings(false, wings);
-                ReadWings(ref vanityWings, reader);
-                SetWings(true, vanityWings);
+                Item wings1 = Wings;
+                Item wings2 = VanityWings;
+
+                int context = ReadWings(ref wings1, reader);
+                ReadWings(ref wings2, reader);
+
+                if(context == (int)Contexts.EquipAccessory) {
+                    SetWings(false, wings1);
+                    SetWings(true, wings2);
+                }
+                else if(context == (int)Contexts.EquipAccessoryVanity) {
+                    SetWings(true, wings1);
+                    SetWings(false, wings2);
+                }
+
+                //ReadWings(ref wings, reader);
+                //SetWings(false, wings);
+                //ReadWings(ref vanityWings, reader);
+                //SetWings(true, vanityWings);
             }
         }
 
-        internal static bool WriteWings(Item wings, BinaryWriter writer) {
+        internal static bool WriteWings(Item wings, Contexts context, BinaryWriter writer) {
             if(!string.IsNullOrWhiteSpace(wings.name)) {
                 ItemIO.WriteItem(wings, writer, false, false);
+                writer.Write((int)context);
                 return true;
             }
             return false;
         }
 
-        internal static void ReadWings(ref Item wings, BinaryReader reader) {
-            try { ItemIO.ReadItem(wings, reader, false, false); }
-            catch(EndOfStreamException) { }
+        internal static int ReadWings(ref Item wings, BinaryReader reader) {
+            try {
+                ItemIO.ReadItem(wings, reader, false, false);
+                return reader.ReadInt32();
+            }
+            catch(EndOfStreamException) {
+                return -1;
+            }
         }
 
         public bool SwapWings(bool isVanity, Item item) {
-            UIItemSlot slot = EquipWingSlot;
-
-            if(isVanity) {
-                slot = VanityWingSlot;
-            }
+            UIItemSlot slot = (isVanity ? VanityWingSlot : EquipWingSlot);
 
             int fromSlot = Array.FindIndex(player.inventory, i => i == item);
 

@@ -44,7 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MPlayer.cs" />
+    <Compile Include="WingSlotPlayer.cs" />
     <Compile Include="GlobalWingItem.cs" />
     <Compile Include="TerraUI\UI\BaseTextureDrawing.cs" />
     <Compile Include="TerraUI\UI\UIItemSlot.cs" />

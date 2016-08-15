@@ -48,6 +48,19 @@ namespace TerraUI {
         /// </summary>
         public Vector2 Position { get; set; }
         /// <summary>
+        /// The X and Y position of the object relative to its parent.
+        /// </summary>
+        public Vector2 RelativePosition {
+            get {
+                if(Parent != null) {
+                    return Position + Parent.Position;
+                }
+                else {
+                    return Position;
+                }
+            }
+        }
+        /// <summary>
         /// The width and height of the object on the screen.
         /// </summary>
         public Vector2 Size { get; set; }
@@ -107,12 +120,11 @@ namespace TerraUI {
                 obj.Update();
             }
         }
-        
 
         /// <summary>
         /// Handle the mouse click events.
         /// </summary>
-        public void Handle() {
+        public virtual void Handle() {
             if(MouseUtils.JustPressed(MouseButtons.Left)) {
                 if(LeftClick == null || !LeftClick(this, new ClickEventArgs(MouseUtils.Position))) {
                     Focus();
@@ -148,23 +160,23 @@ namespace TerraUI {
         /// <summary>
         /// The default left click event.
         /// </summary>
-        protected virtual void DefaultLeftClick() { }
+        public virtual void DefaultLeftClick() { }
         /// <summary>
         /// The default middle click event.
         /// </summary>
-        protected virtual void DefaultMiddleClick() { }
+        public virtual void DefaultMiddleClick() { }
         /// <summary>
         /// The default right click event.
         /// </summary>
-        protected virtual void DefaultRightClick() { }
+        public virtual void DefaultRightClick() { }
         /// <summary>
         /// The default XButton1 click event.
         /// </summary>
-        protected virtual void DefaultXButton1Click() { }
+        public virtual void DefaultXButton1Click() { }
         /// <summary>
         /// The default XButton2 click event.
         /// </summary>
-        protected virtual void DefaultXButton2Click() { }
+        public virtual void DefaultXButton2Click() { }
 
         /// <summary>
         /// Draw the object. Call during any Draw() function.
