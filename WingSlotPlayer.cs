@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 using TerraUI;
 
 namespace WingSlot {
-    internal class MPlayer : ModPlayer {
+    internal class WingSlotPlayer : ModPlayer {
         private const ushort installed = 0;
 
         public Item Wings;
@@ -26,10 +26,87 @@ namespace WingSlot {
             UIWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory);
             VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity);
 
-            UIWingSlot.Conditions = VanityWingSlot.Conditions = Conditions();
-            UIWingSlot.DrawItem = VanityWingSlot.DrawItem = DrawItem();
-            UIWingSlot.DrawBackground = DrawBackground(UIWingSlot.Context);
-            VanityWingSlot.DrawBackground = DrawBackground(VanityWingSlot.Context);
+            UIWingSlot.Conditions = VanityWingSlot.Conditions =
+                delegate (Item item) {
+                    if(item.wingSlot > 0) {
+                        return true;
+                    }
+                    return false;
+                };
+
+            UIWingSlot.DrawItem = VanityWingSlot.DrawItem =
+                delegate (SpriteBatch spriteBatch, UIItemSlot slot) {
+                    if(slot.Item.stack > 0 && Main.EquipPage == 2) {
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
+                        Texture2D tex = Main.itemTexture[slot.Item.type];
+                        Vector2 origin = new Vector2(
+                            tex.Width / 2 * Main.inventoryScale,
+                            tex.Height / 2 * Main.inventoryScale);
+
+                        spriteBatch.Draw(
+                            tex,
+                            new Vector2(
+                                slot.Rectangle.X + (slot.Rectangle.Width / 2) - (origin.X / 2),
+                                slot.Rectangle.Y + (slot.Rectangle.Height / 2) - (origin.Y / 2)),
+                            null,
+                            Color.White,
+                            0f,
+                            origin,
+                            Main.inventoryScale,
+                            SpriteEffects.None,
+                            0f);
+
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    }
+                };
+
+            UIWingSlot.DrawBackground = VanityWingSlot.DrawBackground =
+                delegate (SpriteBatch spriteBatch, UIItemSlot slot) {
+                    if(Main.EquipPage == 2) {
+                        Texture2D backTexture = UIUtils.GetContextTexture(slot.Context);
+
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
+                        spriteBatch.Draw(
+                            backTexture,
+                            new Vector2(slot.Rectangle.X, slot.Rectangle.Y),
+                            null,
+                            Color.White * 0.35f, // half required
+                            0f,
+                            Vector2.Zero,
+                            Main.inventoryScale,
+                            SpriteEffects.None,
+                            1f); // layer depth 1 = back
+
+                        if(slot.Item.stack == 0) {
+                            Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
+                            Vector2 origin = new Vector2(
+                                tex.Width / 2 * Main.inventoryScale,
+                                tex.Height / 2 * Main.inventoryScale);
+                            Vector2 position = new Vector2(
+                                slot.Rectangle.X + (slot.Rectangle.Width / 2) - (origin.X / 2),
+                                slot.Rectangle.Y + (slot.Rectangle.Height / 2) - (origin.Y / 2));
+
+                            spriteBatch.Draw(
+                                tex,
+                                position,
+                                null,
+                                Color.White * 0.15f,
+                                0f,
+                                origin,
+                                Main.inventoryScale,
+                                SpriteEffects.None,
+                                0f); // layer depth 0 = front
+                        }
+
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    }
+                };
 
             UIWingSlot.RightClick += UIWingSlot_RightClick;
             VanityWingSlot.RightClick += VanityWingSlot_RightClick;
@@ -64,91 +141,6 @@ namespace WingSlot {
             VanityWings = new Item();
             Wings.SetDefaults();
             VanityWings.SetDefaults();
-        }
-
-        private UIItemSlot.ConditionHandler Conditions() {
-            return delegate (Item item) {
-                if(item.wingSlot > 0) {
-                    return true;
-                }
-                return false;
-            };
-        }
-
-        private UIItemSlot.DrawItemSlotHandler DrawItem() {
-            return delegate (SpriteBatch spriteBatch, UIItemSlot slot) {
-                if(slot.Item.stack > 0 && Main.EquipPage == 2) {
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
-                    Texture2D tex = Main.itemTexture[slot.Item.type];
-                    Vector2 origin = new Vector2(
-                        tex.Width / 2 * Main.inventoryScale,
-                        tex.Height / 2 * Main.inventoryScale);
-
-                    spriteBatch.Draw(
-                        tex,
-                        new Vector2(
-                            slot.Rectangle.X + (slot.Rectangle.Width / 2) - (origin.X / 2),
-                            slot.Rectangle.Y + (slot.Rectangle.Height / 2) - (origin.Y / 2)),
-                        null,
-                        Color.White,
-                        0f,
-                        origin,
-                        Main.inventoryScale,
-                        SpriteEffects.None,
-                        0f);
-
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                }
-            };
-        }
-
-        private UIItemSlot.DrawItemSlotHandler DrawBackground(Contexts context) {
-            Texture2D backTexture = UIUtils.GetContextTexture(context);
-
-            return delegate (SpriteBatch spriteBatch, UIItemSlot slot) {
-                if(Main.EquipPage == 2) {
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
-                    spriteBatch.Draw(
-                        backTexture,
-                        new Vector2(slot.Rectangle.X, slot.Rectangle.Y),
-                        null,
-                        Color.White * 0.35f, // half required
-                        0f,
-                        Vector2.Zero,
-                        Main.inventoryScale,
-                        SpriteEffects.None,
-                        1f); // layer depth 1 = back
-
-                    if(slot.Item.stack == 0) {
-                        Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
-                        Vector2 origin = new Vector2(
-                            tex.Width / 2 * Main.inventoryScale,
-                            tex.Height / 2 * Main.inventoryScale);
-                        Vector2 position = new Vector2(
-                            slot.Rectangle.X + (slot.Rectangle.Width / 2) - (origin.X / 2),
-                            slot.Rectangle.Y + (slot.Rectangle.Height / 2) - (origin.Y / 2));
-
-                        spriteBatch.Draw(
-                            tex,
-                            position,
-                            null,
-                            Color.White * 0.15f,
-                            0f,
-                            origin,
-                            Main.inventoryScale,
-                            SpriteEffects.None,
-                            0f); // layer depth 0 = front
-                    }
-
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                }
-            };
         }
 
         public override void PreUpdate() {
@@ -217,7 +209,7 @@ namespace WingSlot {
             if(installedFlag == 0) {
                 Item wings = Wings;
                 Item vanityWings = VanityWings;
-                
+
                 try { hide = reader.ReadInt32(); }
                 catch(EndOfStreamException) { hide = 0; }
 

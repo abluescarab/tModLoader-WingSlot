@@ -33,7 +33,7 @@ namespace WingSlot {
         
         public override void RightClick(Item item, Player player) {
             if(item.wingSlot > 0) {
-                MPlayer mp = player.GetModPlayer<MPlayer>(mod);
+                WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>(mod);
 
                 if(KeyboardUtils.HeldDown(Keys.LeftShift)) {
                     mp.SwapWings(true, item);
@@ -59,7 +59,7 @@ namespace WingSlot {
 
                 Rectangle slotRect = new Rectangle(0, 0, (int)(backTex.Width * Main.inventoryScale), (int)(backTex.Height * Main.inventoryScale));
                 
-                MPlayer mp = Main.player[Main.myPlayer].GetModPlayer<MPlayer>(mod);
+                WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(mod);
 
                 int mapH = 0;
                 int rX = 0;
