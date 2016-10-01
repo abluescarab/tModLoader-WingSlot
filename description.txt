@@ -15,6 +15,10 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, on t
 * Boffin for TerraUI
 
 [Changelog]
+v1.1.3  2016-10-01
+* Compiled for Terraria 1.3.3.2
+* Fix: slots moved to left of PVP icon
+
 v1.1.2  2016-08-14
 * Fix: wings are no long duplicated when left-clicking slot
 * Fix: vanity wings are no longer moved to the accessory wing slot on load
