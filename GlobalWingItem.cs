@@ -80,10 +80,10 @@ namespace WingSlot {
 
                 rX = Main.screenWidth - 92 - (47 * 2);
                 rY = mapH + 174;
-                
-                //if(Main.netMode == 1) {
-                //    rX -= 47;
-                //}
+
+                if(Main.netMode == 1) {
+                    rX -= 47;
+                }
 
                 slotRect.X = rX;
                 slotRect.Y = rY;
