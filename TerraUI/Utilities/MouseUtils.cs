@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
-using System;
 
-namespace TerraUI {
+namespace TerraUI.Utilities {
     public static class MouseUtils {
         private static MouseState lastState;
         private static MouseState state;
-        
+        private static int[] framesHeld = { 0, 0, 0, 0, 0 };
+
         /// <summary>
         /// The current mouse state.
         /// </summary>
@@ -43,6 +43,17 @@ namespace TerraUI {
         internal static void UpdateState() {
             lastState = state;
             state = Mouse.GetState();
+
+            foreach(MouseButtons button in Enum.GetValues(typeof(MouseButtons))) {
+                if(button != MouseButtons.None) {
+                    if(JustPressed(button) || HeldDown(button)) {
+                        framesHeld[(int)button]++;
+                    }
+                    else {
+                        framesHeld[(int)button] = 0;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -81,7 +92,8 @@ namespace TerraUI {
         /// <returns>whether button is held down</returns>
         public static bool HeldDown(MouseButtons mouseButton) {
             if(UIUtils.GetButtonState(mouseButton, lastState) == ButtonState.Pressed &&
-               UIUtils.GetButtonState(mouseButton, state) == ButtonState.Pressed) {
+               UIUtils.GetButtonState(mouseButton, state) == ButtonState.Pressed &&
+               framesHeld[(int)mouseButton] > 1) {
                 return true;
             }
 
@@ -98,7 +110,7 @@ namespace TerraUI {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
@@ -107,15 +119,15 @@ namespace TerraUI {
         /// </summary>
         /// <param name="pressedButton">pressed button</param>
         /// <returns>whether any button has just been pressed</returns>
-        public static bool AnyButtonPressed(out MouseButtons pressButton) {
+        public static bool AnyButtonPressed(out MouseButtons pressedButton) {
             foreach(MouseButtons button in Enum.GetValues(typeof(MouseButtons))) {
                 if(JustPressed(button)) {
-                    pressButton = button;
+                    pressedButton = button;
                     return true;
                 }
             }
 
-            pressButton = MouseButtons.None;
+            pressedButton = MouseButtons.None;
             return false;
         }
 
@@ -124,13 +136,12 @@ namespace TerraUI {
         /// </summary>
         /// <returns>whether any button has just been released</returns>
         public static bool AnyButtonReleased() {
-            //if(JustReleased(MouseButtons.Left))
             foreach(MouseButtons button in Enum.GetValues(typeof(MouseButtons))) {
-                if(JustPressed(button)) {
+                if(JustReleased(button)) {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
@@ -140,15 +151,45 @@ namespace TerraUI {
         /// <param name="releasedButton">released button</param>
         /// <returns>whether any button has just been released</returns>
         public static bool AnyButtonReleased(out MouseButtons releasedButton) {
-            //if(JustReleased(MouseButtons.Left))
             foreach(MouseButtons button in Enum.GetValues(typeof(MouseButtons))) {
-                if(JustPressed(button)) {
+                if(JustReleased(button)) {
                     releasedButton = button;
                     return true;
                 }
             }
 
             releasedButton = MouseButtons.None;
+            return false;
+        }
+
+        /// <summary>
+        /// Check if any button has been held down.
+        /// </summary>
+        /// <returns>whether any button has been held down</returns>
+        public static bool AnyButtonHeldDown() {
+            foreach(int idx in framesHeld) {
+                if(framesHeld[idx] > 1) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if any button has been held down.
+        /// </summary>
+        /// <param name="heldButton">held button</param>
+        /// <returns>whether any button has been held down</returns>
+        public static bool AnyButtonHeldDown(out MouseButtons heldButton) {
+            foreach(int idx in framesHeld) {
+                if(framesHeld[idx] > 1) {
+                    heldButton = (MouseButtons)idx;
+                    return true;
+                }
+            }
+
+            heldButton = MouseButtons.None;
             return false;
         }
     }

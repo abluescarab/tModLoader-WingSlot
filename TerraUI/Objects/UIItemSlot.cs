@@ -3,15 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.UI;
+using TerraUI.Utilities;
 
-namespace TerraUI {
+namespace TerraUI.Objects {
     public class UIItemSlot : UIObject {
         protected Item item;
         protected const int defaultSize = 52;
         protected Rectangle tickRect;
-
-        public delegate void DrawItemSlotHandler(SpriteBatch spriteBatch, UIItemSlot slot);
-        public delegate bool ConditionHandler(Item item);
 
         /// <summary>
         /// Method that checks whether an item can go in the slot.
@@ -20,15 +18,15 @@ namespace TerraUI {
         /// <summary>
         /// Method that draws the background of the item slot.
         /// </summary>
-        public DrawItemSlotHandler DrawBackground { get; set; }
+        public DrawHandler DrawBackground { get; set; }
         /// <summary>
         /// Method that draws the item in the slot.
         /// </summary>
-        public DrawItemSlotHandler DrawItem { get; set; }
+        public DrawHandler DrawItem { get; set; }
         /// <summary>
         /// Method called after the item in the slot is drawn.
         /// </summary>
-        public DrawItemSlotHandler PostDrawItem { get; set; }
+        public DrawHandler PostDrawItem { get; set; }
         /// <summary>
         /// Whether the item in the slot is visible on the player character.
         /// </summary>
@@ -66,8 +64,8 @@ namespace TerraUI {
         /// <param name="postDrawItem">run after item in slot is drawn; use to draw elements over the item</param>
         /// <param name="drawAsNormalItemSlot">draw as a normal inventory ItemSlot</param>
         public UIItemSlot(Vector2 position, int size = 52, Contexts context = Contexts.InventoryItem, UIObject parent = null,
-                          ConditionHandler conditions = null, DrawItemSlotHandler drawBackground = null, DrawItemSlotHandler drawItem = null,
-                          DrawItemSlotHandler postDrawItem = null, bool drawAsNormalItemSlot = false, bool scaleToInventory = false)
+                          ConditionHandler conditions = null, DrawHandler drawBackground = null, DrawHandler drawItem = null,
+                          DrawHandler postDrawItem = null, bool drawAsNormalItemSlot = false, bool scaleToInventory = false)
             : base(position, new Vector2(size), parent, false) {
             Item = new Item();
             Context = context;
@@ -124,21 +122,15 @@ namespace TerraUI {
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public override void Draw(SpriteBatch spriteBatch) {
-            Vector2 position = Position;
             Point mouse = new Point(Main.mouseX, Main.mouseY);
-
-            if(Parent != null) {
-                position += Parent.Position;
-            }
-
-            Rectangle = new Rectangle((int)position.X, (int)position.Y, (int)Size.X, (int)Size.Y);
+            Rectangle = new Rectangle((int)RelativePosition.X, (int)RelativePosition.Y, (int)Size.X, (int)Size.Y);
 
             if(DrawAsNormalItemSlot) {
-                ItemSlot.Draw(spriteBatch, ref item, (int)Context, position);
+                ItemSlot.Draw(spriteBatch, ref item, (int)Context, RelativePosition);
             }
             else {
                 if(DrawBackground != null) {
-                    DrawBackground(spriteBatch, this);
+                    DrawBackground(this, spriteBatch);
                 }
                 else {
                     Texture2D backTex = UIUtils.GetContextTexture(Context);
@@ -148,7 +140,7 @@ namespace TerraUI {
 
             if(item.type > 0) {
                 if(DrawItem != null) {
-                    DrawItem(spriteBatch, this);
+                    DrawItem(this, spriteBatch);
                 }
                 else {
                     Texture2D texture2D = Main.itemTexture[item.type];
@@ -178,7 +170,7 @@ namespace TerraUI {
             }
 
             if(PostDrawItem != null) {
-                PostDrawItem(spriteBatch, this);
+                PostDrawItem(this, spriteBatch);
             }
             else {
                 if(HasTick()) {

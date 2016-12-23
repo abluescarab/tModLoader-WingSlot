@@ -15,6 +15,12 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, on t
 * Boffin for TerraUI
 
 [Changelog]
+v1.1.4  2016-12-23
+* Fixed for tModLoader v0.9.0.3
+* Fixed for new IO system
+* Fix: shift+click not working if equipment page is hidden
+* Updated to latest TerraUI
+
 v1.1.3  2016-10-01
 * Compiled for Terraria 1.3.3.2
 * Fix: slots moved to left of PVP icon

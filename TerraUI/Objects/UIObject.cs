@@ -1,50 +1,47 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Terraria;
-using System;
 using Terraria.GameInput;
+using TerraUI.Utilities;
 
-namespace TerraUI {
+namespace TerraUI.Objects {
     public class UIObject {
         protected bool acceptsKeyboardInput = false;
+        protected UIObject parent = null;
+        protected bool mouseEnter = false;
+        protected bool allowFocus = false;
 
         /// <summary>
-        /// Fires when the object is clicked with the left button. Return true if click handled;
-        /// return false to perform default left click.
+        /// Fires when the object is clicked.
         /// </summary>
-        public event ClickHandler LeftClick;
+        public event MouseClickEventHandler Click;
         /// <summary>
-        /// Fires when the object is clicked with the middle button. Return true if click handled;
-        /// return false to perform default middle click.
+        /// Fires when a mouse button is pressed while the cursor is over the UIObject.
         /// </summary>
-        public event ClickHandler MiddleClick;
+        public event MouseButtonEventHandler MouseDown;
         /// <summary>
-        /// Fires when the object is clicked with the right button. Return true if click handled;
-        /// return false to perform default right click.
+        /// Fires when a mouse button is released while the cursor is over the UIObject.
         /// </summary>
-        public event ClickHandler RightClick;
+        public event MouseButtonEventHandler MouseUp;
         /// <summary>
-        /// Fires when the object is clicked with the XButton1 button. Return true if click handled;
-        /// return false to perform default XButton1 click.
+        /// Fires when the mouse cursor enters the UIObject.
         /// </summary>
-        public event ClickHandler XButton1Click;
+        public event MouseEventHandler MouseEnter;
         /// <summary>
-        /// Fires when the object is clicked with the XButton2 button. Return true if click handled;
-        /// return false to perform default XButton2 click.
+        /// Fires when the mouse cursor leaves the UIObject.
         /// </summary>
-        public event ClickHandler XButton2Click;
+        public event MouseEventHandler MouseLeave;
         /// <summary>
         /// Fires when the object loses focus.
         /// </summary>
-        public event FocusHandler LostFocus;
+        public event UIEventHandler LostFocus;
         /// <summary>
         /// Fires when the object gains focus.
         /// </summary>
-        public event FocusHandler GotFocus;
+        public event UIEventHandler GotFocus;
         /// <summary>
-        /// The X and Y position of the object on the screen.
+        /// The X and Y position of the object.
         /// </summary>
         public Vector2 Position { get; set; }
         /// <summary>
@@ -53,11 +50,27 @@ namespace TerraUI {
         public Vector2 RelativePosition {
             get {
                 if(Parent != null) {
-                    return Position + Parent.Position;
+                    return Position + Parent.RelativePosition;
                 }
                 else {
                     return Position;
                 }
+            }
+        }
+        /// <summary>
+        /// The X and Y position of the object on the screen, accounting for all its parent objects.
+        /// </summary>
+        public Vector2 ScreenPosition {
+            get {
+                UIObject obj = Parent;
+                Vector2 position = Position;
+
+                while(obj != null) {
+                    position += obj.Position;
+                    obj = obj.Parent;
+                }
+
+                return position;
             }
         }
         /// <summary>
@@ -75,11 +88,26 @@ namespace TerraUI {
         /// <summary>
         /// The children of the object.
         /// </summary>
-        public List<UIObject> Children { get; set; }
+        public List<UIObject> Children { get; protected set; }
         /// <summary>
         /// The parent of the object.
         /// </summary>
-        public UIObject Parent { get; set; }
+        public UIObject Parent {
+            get {
+                return parent;
+            }
+            set {
+                if(parent != null) {
+                    parent.Children.Remove(this);
+                }
+
+                parent = value;
+
+                if(parent != null) {
+                    parent.Children.Add(this);
+                }
+            }
+        }
 
         /// <summary>
         /// Create a new UIObject.
@@ -88,16 +116,14 @@ namespace TerraUI {
         /// <param name="size">size of the object in pixels</param>
         /// <param name="parent">parent UIObject</param>
         /// <param name="acceptsKeyboardInput">whether the object should capture keyboard input</param>
-        public UIObject(Vector2 position, Vector2 size, UIObject parent = null, bool acceptsKeyboardInput = false) {
+        public UIObject(Vector2 position, Vector2 size, UIObject parent = null, bool allowFocus = false,
+            bool acceptsKeyboardInput = false) {
             Position = position;
             Size = size;
             Children = new List<UIObject>();
             Parent = parent;
+            this.allowFocus = allowFocus;
             this.acceptsKeyboardInput = acceptsKeyboardInput;
-
-            if(parent != null) {
-                parent.Children.Add(this);
-            }
         }
 
         /// <summary>
@@ -107,9 +133,20 @@ namespace TerraUI {
             if(!PlayerInput.IgnoreMouseInterface) {
                 if(MouseUtils.Rectangle.Intersects(Rectangle)) {
                     Main.player[Main.myPlayer].mouseInterface = true;
+
+                    if(MouseEnter != null && !mouseEnter) {
+                        mouseEnter = true;
+                        MouseEnter(this, new MouseEventArgs(MouseUtils.Position));
+                    }
+
                     Handle();
                 }
                 else {
+                    if(mouseEnter && MouseLeave != null) {
+                        mouseEnter = false;
+                        MouseLeave(this, new MouseEventArgs(MouseUtils.Position));
+                    }
+
                     if(MouseUtils.AnyButtonPressed()) {
                         Unfocus();
                     }
@@ -125,34 +162,39 @@ namespace TerraUI {
         /// Handle the mouse click events.
         /// </summary>
         public virtual void Handle() {
-            if(MouseUtils.JustPressed(MouseButtons.Left)) {
-                if(LeftClick == null || !LeftClick(this, new ClickEventArgs(MouseUtils.Position))) {
+            MouseButtons button = MouseButtons.None;
+
+            if(MouseUtils.AnyButtonPressed(out button)) {
+                if(MouseDown != null) {
+                    MouseDown(this, new MouseButtonEventArgs(button, MouseUtils.Position));
+                }
+
+                if(Click == null || !Click(this, new MouseButtonEventArgs(button, MouseUtils.Position))) {
                     Focus();
-                    DefaultLeftClick();
+
+                    switch(button) {
+                        case MouseButtons.Left:
+                            DefaultLeftClick();
+                            break;
+                        case MouseButtons.Middle:
+                            DefaultMiddleClick();
+                            break;
+                        case MouseButtons.Right:
+                            DefaultRightClick();
+                            break;
+                        case MouseButtons.XButton1:
+                            DefaultXButton1Click();
+                            break;
+                        case MouseButtons.XButton2:
+                            DefaultXButton2Click();
+                            break;
+                    }
                 }
             }
-            else if(MouseUtils.JustPressed(MouseButtons.Middle)) {
-                if(MiddleClick == null || !MiddleClick(this, new ClickEventArgs(MouseUtils.Position))) {
-                    Focus();
-                    DefaultMiddleClick();
-                }
-            }
-            else if(MouseUtils.JustPressed(MouseButtons.Right)) {
-                if(RightClick == null || !RightClick(this, new ClickEventArgs(MouseUtils.Position))) {
-                    Focus();
-                    DefaultRightClick();
-                }
-            }
-            else if(MouseUtils.JustPressed(MouseButtons.XButton1)) {
-                if(XButton1Click == null || !XButton1Click(this, new ClickEventArgs(MouseUtils.Position))) {
-                    Focus();
-                    DefaultXButton1Click();
-                }
-            }
-            else if(MouseUtils.JustPressed(MouseButtons.XButton2)) {
-                if(XButton2Click == null || !XButton2Click(this, new ClickEventArgs(MouseUtils.Position))) {
-                    Focus();
-                    DefaultXButton2Click();
+
+            if(MouseUtils.AnyButtonReleased(out button)) {
+                if(MouseUp != null) {
+                    MouseUp(this, new MouseButtonEventArgs(button, MouseUtils.Position));
                 }
             }
         }
@@ -192,7 +234,7 @@ namespace TerraUI {
         /// Give the object focus.
         /// </summary>
         public virtual void Focus() {
-            if(!Focused) {
+            if(!Focused && allowFocus) {
                 Focused = true;
                 if(acceptsKeyboardInput) {
                     Main.blockInput = true;
@@ -208,7 +250,7 @@ namespace TerraUI {
         /// Take focus from the object.
         /// </summary>
         protected virtual void Unfocus() {
-            if(Focused) {
+            if(Focused && allowFocus) {
                 Focused = false;
                 if(acceptsKeyboardInput) {
                     Main.blockInput = false;

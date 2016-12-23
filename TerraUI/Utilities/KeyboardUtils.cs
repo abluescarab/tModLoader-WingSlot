@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
-namespace TerraUI {
+namespace TerraUI.Utilities {
     public static class KeyboardUtils {
         private static KeyboardState lastState;
         private static KeyboardState state;
-        private static uint[] heldDownFrames = { 0, 0, 0, 0, 0 };
 
         /// <summary>
         /// The current keyboard state.

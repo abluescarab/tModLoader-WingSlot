@@ -44,18 +44,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalDyeItem.cs" />
+    <Compile Include="TerraUI\Enums\Alignments.cs" />
+    <Compile Include="TerraUI\Enums\Contexts.cs" />
+    <Compile Include="TerraUI\Enums\MouseButtons.cs" />
+    <Compile Include="TerraUI\Enums\Orientations.cs" />
+    <Compile Include="TerraUI\Enums\Sounds.cs" />
+    <Compile Include="TerraUI\Objects\UIButton.cs" />
+    <Compile Include="TerraUI\Objects\UICheckBox.cs" />
+    <Compile Include="TerraUI\Objects\UIItemSlot.cs" />
+    <Compile Include="TerraUI\Objects\UILabel.cs" />
+    <Compile Include="TerraUI\Objects\UIObject.cs" />
+    <Compile Include="TerraUI\Objects\UIProgressBar.cs" />
+    <Compile Include="TerraUI\Objects\UITextBox.cs" />
+    <Compile Include="TerraUI\Panels\UIPanel.cs" />
+    <Compile Include="TerraUI\Utilities\BaseTextureDrawing.cs" />
+    <Compile Include="TerraUI\Utilities\Events.cs" />
+    <Compile Include="TerraUI\Utilities\KeyboardUtils.cs" />
+    <Compile Include="TerraUI\Utilities\MouseUtils.cs" />
+    <Compile Include="TerraUI\Utilities\UIColors.cs" />
+    <Compile Include="TerraUI\Utilities\UIUtils.cs" />
     <Compile Include="WingSlotPlayer.cs" />
     <Compile Include="GlobalWingItem.cs" />
-    <Compile Include="TerraUI\UI\BaseTextureDrawing.cs" />
-    <Compile Include="TerraUI\UI\UIItemSlot.cs" />
-    <Compile Include="TerraUI\UI\UIObject.cs" />
-    <Compile Include="TerraUI\Utils\Contexts.cs" />
-    <Compile Include="TerraUI\Utils\Events.cs" />
-    <Compile Include="TerraUI\Utils\KeyboardUtils.cs" />
-    <Compile Include="TerraUI\Utils\MouseButtons.cs" />
-    <Compile Include="TerraUI\Utils\MouseUtils.cs" />
-    <Compile Include="TerraUI\Utils\Sounds.cs" />
-    <Compile Include="TerraUI\Utils\UIUtils.cs" />
     <Compile Include="WingSlot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,10 +73,14 @@
     <Content Include="TerraUI\Textures\1x1.png" />
     <Content Include="TerraUI\Textures\Background.png" />
     <Content Include="TerraUI\Textures\BackgroundSolid.png" />
+    <Content Include="TerraUI\Textures\Buttons\Cross.png" />
+    <Content Include="TerraUI\Textures\Buttons\Enter.png" />
+    <Content Include="TerraUI\Textures\Buttons\Integrate.png" />
     <Content Include="TerraUI\Textures\Corner.png" />
     <Content Include="TerraUI\Textures\CornerSolid.png" />
     <Content Include="TerraUI\Textures\Side.png" />
     <Content Include="TerraUI\Textures\SideSolid.png" />
+    <Content Include="TerraUI\Textures\Tick.png" />
     <Content Include="WingSlotBackground.png" />
     <Content Include="build.txt" />
     <Content Include="description.txt" />

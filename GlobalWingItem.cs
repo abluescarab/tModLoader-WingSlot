@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using TerraUI;
+using TerraUI.Utilities;
 using Microsoft.Xna.Framework.Input;
 
 namespace WingSlot {
@@ -12,7 +12,7 @@ namespace WingSlot {
         }
 
         public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
-            DrawWingSlots(spriteBatch);
+            DrawSlots(spriteBatch);
             base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
 
@@ -51,13 +51,16 @@ namespace WingSlot {
         /// Draws the wing equipment slots.
         /// Based on code provided by jopojelly.
         /// </summary>
-        /// <param name="spriteBatch"></param>
-        private void DrawWingSlots(SpriteBatch spriteBatch) {
+        private void DrawSlots(SpriteBatch spriteBatch) {
             if(Main.playerInventory && Main.EquipPage == 2) {
                 Texture2D backTex = Main.inventoryBackTexture;
+                //Texture2D dyeTex = UIUtils.GetContextTexture(TerraUI.Contexts.EquipDye); //Main.inventoryBack12Texture;
                 Texture2D tick = Main.inventoryTickOnTexture;
 
-                Rectangle slotRect = new Rectangle(0, 0, (int)(backTex.Width * Main.inventoryScale), (int)(backTex.Height * Main.inventoryScale));
+                Rectangle slotRect = new Rectangle(0, 0, (int)(backTex.Width * Main.inventoryScale), 
+                    (int)(backTex.Height * Main.inventoryScale));
+                //Rectangle dyeRect = new Rectangle(0, 0, (int)(dyeTex.Width * Main.inventoryScale),
+                //    (int)(dyeTex.Height * Main.inventoryScale));
                 
                 WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(mod);
 
@@ -90,10 +93,12 @@ namespace WingSlot {
 
                 mp.EquipWingSlot.Position = new Vector2(slotRect.X, slotRect.Y);
                 mp.VanityWingSlot.Position = new Vector2(slotRect.X - 47, slotRect.Y);
-
+                //mp.WingDyeSlot.Position = new Vector2(slotRect.X - (47 * 2), slotRect.Y);
+                
                 mp.VanityWingSlot.Draw(spriteBatch);
                 mp.EquipWingSlot.Draw(spriteBatch);
-                
+                //mp.WingDyeSlot.Draw(spriteBatch);
+
                 Main.inventoryScale = origScale;
             }
         }
