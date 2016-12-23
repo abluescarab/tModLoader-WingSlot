@@ -53,15 +53,12 @@ namespace WingSlot {
                     spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
                     Texture2D tex = Main.itemTexture[slot.Item.type];
-                    Vector2 origin = new Vector2(
-                        tex.Width / 2 * Main.inventoryScale,
-                        tex.Height / 2 * Main.inventoryScale);
+                    Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
+                    Vector2 position = slot.Rectangle.TopLeft();
 
                     spriteBatch.Draw(
                         tex,
-                        new Vector2(
-                            slot.Rectangle.X + (slot.Rectangle.Width / 2) - (origin.X / 2),
-                            slot.Rectangle.Y + (slot.Rectangle.Height / 2) - (origin.Y / 2)),
+                        position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
                         null,
                         Color.White,
                         0f,
@@ -87,7 +84,7 @@ namespace WingSlot {
 
                         spriteBatch.Draw(
                             backTexture,
-                            new Vector2(slot.Rectangle.X, slot.Rectangle.Y),
+                            slot.Rectangle.TopLeft(),
                             null,
                             Color.White * 0.35f, // half required
                             0f,
@@ -98,16 +95,12 @@ namespace WingSlot {
 
                         if(slot.Item.stack == 0) {
                             Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
-                            Vector2 origin = new Vector2(
-                                tex.Width / 2 * Main.inventoryScale,
-                                tex.Height / 2 * Main.inventoryScale);
-                            Vector2 position = new Vector2(
-                                slot.Rectangle.X + (slot.Rectangle.Width / 2) - (origin.X / 2),
-                                slot.Rectangle.Y + (slot.Rectangle.Height / 2) - (origin.Y / 2));
-
+                            Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
+                            Vector2 position = slot.Rectangle.TopLeft();
+                            
                             spriteBatch.Draw(
                                 tex,
-                                position,
+                                position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
                                 null,
                                 Color.White * 0.15f,
                                 0f,
