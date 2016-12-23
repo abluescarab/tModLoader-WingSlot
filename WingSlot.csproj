@@ -45,24 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalDyeItem.cs" />
-    <Compile Include="TerraUI\Enums\Alignments.cs" />
     <Compile Include="TerraUI\Enums\Contexts.cs" />
     <Compile Include="TerraUI\Enums\MouseButtons.cs" />
-    <Compile Include="TerraUI\Enums\Orientations.cs" />
     <Compile Include="TerraUI\Enums\Sounds.cs" />
-    <Compile Include="TerraUI\Objects\UIButton.cs" />
-    <Compile Include="TerraUI\Objects\UICheckBox.cs" />
     <Compile Include="TerraUI\Objects\UIItemSlot.cs" />
-    <Compile Include="TerraUI\Objects\UILabel.cs" />
     <Compile Include="TerraUI\Objects\UIObject.cs" />
-    <Compile Include="TerraUI\Objects\UIProgressBar.cs" />
-    <Compile Include="TerraUI\Objects\UITextBox.cs" />
-    <Compile Include="TerraUI\Panels\UIPanel.cs" />
     <Compile Include="TerraUI\Utilities\BaseTextureDrawing.cs" />
     <Compile Include="TerraUI\Utilities\Events.cs" />
     <Compile Include="TerraUI\Utilities\KeyboardUtils.cs" />
     <Compile Include="TerraUI\Utilities\MouseUtils.cs" />
-    <Compile Include="TerraUI\Utilities\UIColors.cs" />
     <Compile Include="TerraUI\Utilities\UIUtils.cs" />
     <Compile Include="WingSlotPlayer.cs" />
     <Compile Include="GlobalWingItem.cs" />
