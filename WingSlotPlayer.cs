@@ -97,7 +97,7 @@ namespace WingSlot {
                             Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
                             Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
                             Vector2 position = slot.Rectangle.TopLeft();
-                            
+
                             spriteBatch.Draw(
                                 tex,
                                 position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
@@ -129,15 +129,13 @@ namespace WingSlot {
         private bool VanityWingSlot_Click(UIObject sender, MouseButtonEventArgs e) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(e.Button == MouseButtons.Left) {
-                if(slot.Item.stack > 0) {
+            if(slot.Item.stack > 0) {
+                if(e.Button == MouseButtons.Left) {
                     slot.DefaultLeftClick();
                     ClearWings(true);
                     return true;
                 }
-            }
-            else if(e.Button == MouseButtons.Right) {
-                if(slot.Item.stack > 0) {
+                else if(e.Button == MouseButtons.Right) {
                     SwapWings(true, slot.Item);
                     return true;
                 }
@@ -149,15 +147,13 @@ namespace WingSlot {
         private bool EquipWingSlot_Click(UIObject sender, MouseButtonEventArgs e) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(e.Button == MouseButtons.Left) {
-                if(slot.Item.stack > 0) {
+            if(slot.Item.stack > 0) {
+                if(e.Button == MouseButtons.Left) {
                     slot.DefaultLeftClick();
                     ClearWings(false);
                     return true;
                 }
-            }
-            else if(e.Button == MouseButtons.Right) {
-                if(slot.Item.stack > 0) {
+                else if(e.Button == MouseButtons.Right) {
                     SwapWings(false, slot.Item);
                     return true;
                 }
