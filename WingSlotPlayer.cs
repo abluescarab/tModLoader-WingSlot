@@ -86,7 +86,7 @@ namespace WingSlot {
                             backTexture,
                             slot.Rectangle.TopLeft(),
                             null,
-                            Color.White * 0.35f, // half required
+                            Color.White * 0.35f,
                             0f,
                             Vector2.Zero,
                             Main.inventoryScale,
