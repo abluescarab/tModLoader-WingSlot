@@ -136,36 +136,36 @@ namespace TerraUI.Objects {
                     Texture2D backTex = UIUtils.GetContextTexture(Context);
                     spriteBatch.Draw(backTex, Rectangle, Color.White);
                 }
-            }
 
-            if(item.type > 0) {
-                if(DrawItem != null) {
-                    DrawItem(this, spriteBatch);
-                }
-                else {
-                    Texture2D texture2D = Main.itemTexture[item.type];
-                    Rectangle rectangle2;
-
-                    if(Main.itemAnimations[item.type] != null) {
-                        rectangle2 = Main.itemAnimations[item.type].GetFrame(texture2D);
+                if(item.type > 0) {
+                    if(DrawItem != null) {
+                        DrawItem(this, spriteBatch);
                     }
                     else {
-                        rectangle2 = texture2D.Frame(1, 1, 0, 0);
+                        Texture2D texture2D = Main.itemTexture[item.type];
+                        Rectangle rectangle2;
+
+                        if(Main.itemAnimations[item.type] != null) {
+                            rectangle2 = Main.itemAnimations[item.type].GetFrame(texture2D);
+                        }
+                        else {
+                            rectangle2 = texture2D.Frame(1, 1, 0, 0);
+                        }
+
+                        Vector2 origin = new Vector2(rectangle2.Width / 2, rectangle2.Height / 2);
+
+                        spriteBatch.Draw(
+                            Main.itemTexture[item.type],
+                            new Vector2(Rectangle.X + Rectangle.Width / 2,
+                                        Rectangle.Y + Rectangle.Height / 2),
+                            new Rectangle?(rectangle2),
+                            Color.White,
+                            0f,
+                            origin,
+                            (ScaleToInventory ? Main.inventoryScale : 1f),
+                            SpriteEffects.None,
+                            0f);
                     }
-
-                    Vector2 origin = new Vector2(rectangle2.Width / 2, rectangle2.Height / 2);
-
-                    spriteBatch.Draw(
-                        Main.itemTexture[item.type],
-                        new Vector2(Rectangle.X + Rectangle.Width / 2,
-                                    Rectangle.Y + Rectangle.Height / 2),
-                        new Rectangle?(rectangle2),
-                        Color.White,
-                        0f,
-                        origin,
-                        (ScaleToInventory ? Main.inventoryScale : 1f),
-                        SpriteEffects.None,
-                        0f);
                 }
             }
 

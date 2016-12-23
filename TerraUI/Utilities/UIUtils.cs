@@ -40,19 +40,19 @@ namespace TerraUI.Utilities {
             return Mod.GetTexture(tex);
         }
 
-        public static bool NoChildrenIntersect(UIObject obj, Rectangle rect) {
-            bool flag = true;
+        //public static bool NoChildrenIntersect(UIObject obj, Rectangle rect) {
+        //    bool flag = true;
 
-            foreach(UIObject ob in obj.Children) {
-                if(ob.GetType() != typeof(UILabel)) {
-                    if(ob.Rectangle.Intersects(rect)) {
-                        flag = false;
-                    }
-                }
-            }
+        //    foreach(UIObject ob in obj.Children) {
+        //        if(ob.GetType() != typeof(UILabel)) {
+        //            if(ob.Rectangle.Intersects(rect)) {
+        //                flag = false;
+        //            }
+        //        }
+        //    }
 
-            return flag;
-        }
+        //    return flag;
+        //}
 
         public static void PlaySound(Sounds type, int x = -1, int y = -1, int style = 1) {
             Main.PlaySound((int)type, x, y, style);
