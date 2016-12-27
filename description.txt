@@ -5,24 +5,30 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 
 This mod adds a dedicated wing slot to the equipment page of the inventory, on the left of the dyes.
 
-* Right-click a set of wings to equip them.
-* Shift-right-click a set of wings to equip them in the vanity slot.
-* Right-click a set of equipped wings to unequip them.
-* Left-click the eye icon on the wing slot to toggle the set's visibility.
+* Right-click to equip.
+* Shift-right-click to equip in the vanity slot.
+* Right-click vanity wings to switch with equipped wings.
+* Left-click equipped wings to unequip.
+* Left-click the eye icon on the equip slot to toggle visibility.
 
 [Credits]
 * jopojelly for code that draws a slot to the left of the dyes
 * Boffin for TerraUI
 
 [Changelog]
+v1.1.5  2016-12-26
+* Right-clicking vanity wings will switch positions with equipped wings
+* Fix: animated wings draw correctly
+* Updated to latest TerraUI
+
 v1.1.4  2016-12-23
-* Fixed for tModLoader v0.9.0.3
-* Fixed for new IO system
+* Fix: compiled for tModLoader v0.9.0.3
+* Fix: rewritten for new IO system
 * Fix: shift+click not working if equipment page is hidden
 * Updated to latest TerraUI
 
 v1.1.3  2016-10-01
-* Compiled for Terraria 1.3.3.2
+* Fix: compiled for Terraria 1.3.3.2
 * Fix: slots moved to left of PVP icon
 
 v1.1.2  2016-08-14

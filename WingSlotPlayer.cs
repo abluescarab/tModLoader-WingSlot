@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.UI;
 using TerraUI;
 using TerraUI.Objects;
 using TerraUI.Utilities;
@@ -16,10 +17,7 @@ namespace WingSlot {
         private const string WINGS = "wings";
         private const string VANITY_WINGS = "vanitywings";
         //private const string WING_DYE = "wingdye";
-
-        public Item Wings;
-        public Item VanityWings;
-        //public Item WingDye;
+        
         public UIItemSlot EquipWingSlot;
         public UIItemSlot VanityWingSlot;
         //public UIItemSlot WingDyeSlot;
@@ -29,30 +27,34 @@ namespace WingSlot {
         }
 
         public override void Initialize() {
-            InitializeWings();
-
             EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory);
             VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity);
             //WingDyeSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipDye);
+            VanityWingSlot.Partner = EquipWingSlot;
+            EquipWingSlot.ScaleToInventory = true;
+            VanityWingSlot.ScaleToInventory = true;
+            //WingDyeSlot.ScaleToInventory = true;
+            
+            InitializeWings();
+            
+            EquipWingSlot.DrawBackground += Slot_DrawBackground;
+            EquipWingSlot.Conditions += Slot_Conditions;
+            
+            VanityWingSlot.DrawBackground += Slot_DrawBackground;
+            VanityWingSlot.Conditions += Slot_Conditions;
 
-            //WingDyeSlot.DrawAsNormalItemSlot = true;
+            //WingDyeSlot.DrawBackground += WingDyeSlot_DrawBackground;
+            //WingDyeSlot.Conditions += WingDyeSlot_Conditions;
+        }
 
-            EquipWingSlot.Conditions = VanityWingSlot.Conditions =
-                delegate (Item item) {
-                    if(item.wingSlot > 0) {
-                        return true;
-                    }
-                    return false;
-                };
+        private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
+            UIItemSlot slot = (UIItemSlot)sender;
 
-            EquipWingSlot.DrawItem = VanityWingSlot.DrawItem += new DrawHandler(delegate (UIObject sender, SpriteBatch spriteBatch) {
-                UIItemSlot slot = (UIItemSlot)sender;
+            if(ShouldDrawSlots()) {
+                slot.OnDrawBackground(spriteBatch);
 
-                if(slot.Item.stack > 0 && Main.EquipPage == 2) {
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
-                    Texture2D tex = Main.itemTexture[slot.Item.type];
+                if(slot.Item.stack == 0) {
+                    Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
                     Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
                     Vector2 position = slot.Rectangle.TopLeft();
 
@@ -60,110 +62,60 @@ namespace WingSlot {
                         tex,
                         position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
                         null,
-                        Color.White,
+                        Color.White * 0.15f,
                         0f,
                         origin,
                         Main.inventoryScale,
                         SpriteEffects.None,
-                        0f);
-
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                }
-            });
-
-            EquipWingSlot.DrawBackground = VanityWingSlot.DrawBackground += new DrawHandler(
-                delegate (UIObject sender, SpriteBatch spriteBatch) {
-                    UIItemSlot slot = (UIItemSlot)sender;
-
-                    if(Main.EquipPage == 2) {
-                        Texture2D backTexture = UIUtils.GetContextTexture(slot.Context);
-
-                        spriteBatch.End();
-                        spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
-                        spriteBatch.Draw(
-                            backTexture,
-                            slot.Rectangle.TopLeft(),
-                            null,
-                            Color.White * 0.35f,
-                            0f,
-                            Vector2.Zero,
-                            Main.inventoryScale,
-                            SpriteEffects.None,
-                            1f); // layer depth 1 = back
-
-                        if(slot.Item.stack == 0) {
-                            Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
-                            Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
-                            Vector2 position = slot.Rectangle.TopLeft();
-
-                            spriteBatch.Draw(
-                                tex,
-                                position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
-                                null,
-                                Color.White * 0.15f,
-                                0f,
-                                origin,
-                                Main.inventoryScale,
-                                SpriteEffects.None,
-                                0f); // layer depth 0 = front
-                        }
-
-                        spriteBatch.End();
-                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                    }
-                });
-
-            //WingDyeSlot.Conditions = delegate (Item item) {
-            //    if(item.dye > 0) {
-            //        return true;
-            //    }
-            //    return false;
-            //};
-
-            EquipWingSlot.Click += EquipWingSlot_Click;
-            VanityWingSlot.Click += VanityWingSlot_Click;
-        }
-
-        private bool VanityWingSlot_Click(UIObject sender, MouseButtonEventArgs e) {
-            UIItemSlot slot = (UIItemSlot)sender;
-
-            if(slot.Item.stack > 0) {
-                if(e.Button == MouseButtons.Left) {
-                    slot.DefaultLeftClick();
-                    ClearWings(true);
-                    return true;
-                }
-                else if(e.Button == MouseButtons.Right) {
-                    SwapWings(true, slot.Item);
-                    return true;
+                        0f); // layer depth 0 = front
                 }
             }
+        }
 
+        private bool Slot_Conditions(Item item) {
+            if(item.wingSlot > 0) {
+                return true;
+            }
             return false;
         }
 
-        private bool EquipWingSlot_Click(UIObject sender, MouseButtonEventArgs e) {
-            UIItemSlot slot = (UIItemSlot)sender;
+        //private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
+        //    UIItemSlot slot = (UIItemSlot)sender;
 
-            if(slot.Item.stack > 0) {
-                if(e.Button == MouseButtons.Left) {
-                    slot.DefaultLeftClick();
-                    ClearWings(false);
-                    return true;
-                }
-                else if(e.Button == MouseButtons.Right) {
-                    SwapWings(false, slot.Item);
-                    return true;
-                }
-            }
+        //    if(ShouldDraw()) {
+        //        slot.OnDrawBackground(spriteBatch);
 
-            return false;
-        }
+        //        if(slot.Item.stack == 0) {
+        //            Texture2D tex = Main.extraTexture[54];
+        //            Rectangle rectangle = tex.Frame(3, 6, 1 % 3, 1 / 3);
+        //            rectangle.Width -= 2;
+        //            rectangle.Height -= 2;
+        //            Vector2 origin = rectangle.Size() / 2f * Main.inventoryScale;
+        //            Vector2 position = slot.Rectangle.TopLeft();
+
+        //            spriteBatch.Draw(
+        //                tex,
+        //                position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
+        //                new Rectangle?(rectangle),
+        //                Color.White * 0.35f,
+        //                0f,
+        //                origin,
+        //                Main.inventoryScale,
+        //                SpriteEffects.None,
+        //                0f); // layer depth 0 = front
+        //        }
+        //    }
+        //}
+
+        //private bool WingDyeSlot_Conditions(Item item) {
+        //    if(item.dye > 0 && item.hairDye < 0) {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         public override void PreUpdate() {
-            if(Main.EquipPage == 2) {
+            if(ShouldDrawSlots()) {
                 EquipWingSlot.Update();
                 VanityWingSlot.Update();
                 //WingDyeSlot.Update();
@@ -175,65 +127,71 @@ namespace WingSlot {
         }
 
         private void InitializeWings() {
-            Wings = new Item();
-            VanityWings = new Item();
-            //WingDye = new Item();
-            Wings.SetDefaults();
-            VanityWings.SetDefaults();
-            //WingDye.SetDefaults();
+            EquipWingSlot.Item = new Item();
+            VanityWingSlot.Item = new Item();
+            //WingDyeSlot.Item = new Item();
+            EquipWingSlot.Item.SetDefaults();
+            VanityWingSlot.Item.SetDefaults();
+            //WingDyeSlot.Item.SetDefaults();
         }
 
         public void SetWings(bool isVanity, Item item) {
             if(!isVanity) {
-                EquipWingSlot.Item = Wings = item.Clone();
+                EquipWingSlot.Item = item.Clone();
             }
             else {
-                VanityWingSlot.Item = VanityWings = item.Clone();
+                VanityWingSlot.Item = item.Clone();
             }
         }
 
         public void ClearWings(bool isVanity) {
             if(!isVanity) {
-                Wings = new Item();
-                Wings.SetDefaults();
-
                 EquipWingSlot.Item = new Item();
                 EquipWingSlot.Item.SetDefaults();
             }
             else {
-                VanityWings = new Item();
-                VanityWings.SetDefaults();
-
                 VanityWingSlot.Item = new Item();
                 VanityWingSlot.Item.SetDefaults();
             }
         }
 
+        //public void SetDye(Item item) {
+        //    WingDyeSlot.Item = item.Clone();
+        //}
+
+        //public void ClearDye() {
+        //    WingDyeSlot.Item = new Item();
+        //    WingDyeSlot.Item.SetDefaults();
+        //}
+
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
-            if(Wings.stack > 0) {
-                player.VanillaUpdateEquip(Wings);
-                player.VanillaUpdateAccessory(player.whoAmI, Wings, !EquipWingSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
+            Item wings = EquipWingSlot.Item;
+            Item vanityWings = VanityWingSlot.Item;
+
+            if(wings.stack > 0) {
+                player.VanillaUpdateEquip(wings);
+                player.VanillaUpdateAccessory(player.whoAmI, wings, !EquipWingSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
                     ref tileRangeBuff);
             }
 
-            if(VanityWings.stack > 0) {
-                player.VanillaUpdateVanityAccessory(VanityWings);
+            if(vanityWings.stack > 0) {
+                player.VanillaUpdateVanityAccessory(vanityWings);
             }
         }
 
         public override TagCompound Save() {
             return new TagCompound {
                 { HIDDEN, EquipWingSlot.ItemVisible },
-                { WINGS, ItemIO.Save(Wings) },
-                { VANITY_WINGS, ItemIO.Save(VanityWings) } //,
-                //{ WING_DYE, ItemIO.Save(WingDye) }
+                { WINGS, ItemIO.Save(EquipWingSlot.Item) },
+                { VANITY_WINGS, ItemIO.Save(VanityWingSlot.Item) } //,
+                //{ WING_DYE, ItemIO.Save(WingDyeSlot.Item) }
             };
         }
 
         public override void Load(TagCompound tag) {
             SetWings(false, ItemIO.Load(tag.GetCompound(WINGS)));
             SetWings(true, ItemIO.Load(tag.GetCompound(VANITY_WINGS)));
-            //WingDye = ItemIO.Load(tag.GetCompound(WING_DYE));
+            //SetDye(ItemIO.Load(tag.GetCompound(WING_DYE)));
             EquipWingSlot.ItemVisible = tag.GetBool(HIDDEN);
         }
 
@@ -250,8 +208,8 @@ namespace WingSlot {
 
                 EquipWingSlot.ItemVisible = (hide == 1 ? false : true);
 
-                Item wings1 = Wings;
-                Item wings2 = VanityWings;
+                Item wings1 = EquipWingSlot.Item;
+                Item wings2 = VanityWingSlot.Item;
 
                 int context = ReadWingsLegacy(ref wings1, reader);
                 ReadWingsLegacy(ref wings2, reader);
@@ -277,9 +235,8 @@ namespace WingSlot {
             }
         }
 
-        public bool SwapWings(bool isVanity, Item item) {
+        public void EquipWings(bool isVanity, Item item) {
             UIItemSlot slot = (isVanity ? VanityWingSlot : EquipWingSlot);
-
             int fromSlot = Array.FindIndex(player.inventory, i => i == item);
 
             // from inv to slot
@@ -290,30 +247,27 @@ namespace WingSlot {
                 Recipe.FindRecipes();
                 SetWings(isVanity, item);
             }
-            // from slot to inv
-            else if(item == slot.Item) {
-                int toSlot = Array.FindIndex(player.inventory, 10, i => i.stack == 0);
+        }
 
-                if(toSlot > -1 && toSlot < 50) {
-                    ClearWings(isVanity);
-                    UIUtils.PlaySound(Sounds.Grab);
-                    Recipe.FindRecipes();
-                    player.inventory[toSlot] = item.Clone();
-                }
+        public bool ShouldDrawSlots() {
+            if(Main.playerInventory && Main.EquipPage == 2) {
+                return true;
             }
 
             return false;
         }
 
         //public void EquipDye(Item item) {
-            //WingDyeSlot.Item = WingDye = item.Clone();
+        //    int fromSlot = Array.FindIndex(player.inventory, i => i == item);
 
-            //Item invi = player.inventory.FirstOrDefault(i => i.Equals(item));
-
-            //if(invi != null) {
-            //    invi = new Item();
-            //    invi.SetDefaults();
-            //}
+        //    // from inv to slot
+        //    if(fromSlot > -1) {
+        //        item.favorited = false;
+        //        player.inventory[fromSlot] = WingDyeSlot.Item.Clone();
+        //        UIUtils.PlaySound(Sounds.Grab);
+        //        Recipe.FindRecipes();
+        //        SetDye(item);
+        //    }
         //}
     }
 }

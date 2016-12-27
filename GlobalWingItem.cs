@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.ModLoader;
 using TerraUI.Utilities;
-using Microsoft.Xna.Framework.Input;
 
 namespace WingSlot {
     class GlobalWingItem : GlobalItem {
@@ -30,16 +30,16 @@ namespace WingSlot {
 
             return base.CanRightClick(item);
         }
-        
+
         public override void RightClick(Item item, Player player) {
             if(item.wingSlot > 0) {
                 WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>(mod);
 
                 if(KeyboardUtils.HeldDown(Keys.LeftShift)) {
-                    mp.SwapWings(true, item);
+                    mp.EquipWings(true, item);
                 }
                 else {
-                    mp.SwapWings(false, item);
+                    mp.EquipWings(false, item);
                 }
             }
             else {
@@ -52,17 +52,9 @@ namespace WingSlot {
         /// Based on code provided by jopojelly.
         /// </summary>
         private void DrawSlots(SpriteBatch spriteBatch) {
-            if(Main.playerInventory && Main.EquipPage == 2) {
-                Texture2D backTex = Main.inventoryBackTexture;
-                //Texture2D dyeTex = UIUtils.GetContextTexture(TerraUI.Contexts.EquipDye); //Main.inventoryBack12Texture;
-                Texture2D tick = Main.inventoryTickOnTexture;
+            WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(mod);
 
-                Rectangle slotRect = new Rectangle(0, 0, (int)(backTex.Width * Main.inventoryScale), 
-                    (int)(backTex.Height * Main.inventoryScale));
-                //Rectangle dyeRect = new Rectangle(0, 0, (int)(dyeTex.Width * Main.inventoryScale),
-                //    (int)(dyeTex.Height * Main.inventoryScale));
-                
-                WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(mod);
+            if(mp.ShouldDrawSlots()) {
 
                 int mapH = 0;
                 int rX = 0;
@@ -88,13 +80,10 @@ namespace WingSlot {
                     rX -= 47;
                 }
 
-                slotRect.X = rX;
-                slotRect.Y = rY;
+                mp.EquipWingSlot.Position = new Vector2(rX, rY);
+                mp.VanityWingSlot.Position = new Vector2(rX -= 47, rY);
+                //mp.WingDyeSlot.Position = new Vector2(rX -= 47, rY);
 
-                mp.EquipWingSlot.Position = new Vector2(slotRect.X, slotRect.Y);
-                mp.VanityWingSlot.Position = new Vector2(slotRect.X - 47, slotRect.Y);
-                //mp.WingDyeSlot.Position = new Vector2(slotRect.X - (47 * 2), slotRect.Y);
-                
                 mp.VanityWingSlot.Draw(spriteBatch);
                 mp.EquipWingSlot.Draw(spriteBatch);
                 //mp.WingDyeSlot.Draw(spriteBatch);
