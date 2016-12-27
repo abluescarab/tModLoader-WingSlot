@@ -34,7 +34,7 @@ namespace TerraUI.Objects {
         /// <summary>
         /// Whether to draw the slot as a normal item slot.
         /// </summary>
-        public bool DrawAsNormalItemSlot { get; set; }
+        public bool DrawAsNormalSlot { get; set; }
         /// <summary>
         /// The context for the slot.
         /// </summary>
@@ -50,6 +50,10 @@ namespace TerraUI.Objects {
             get { return item; }
             set { item = value; }
         }
+        /// <summary>
+        /// The slot to swap items with if this slot is right-clicked.
+        /// </summary>
+        public UIItemSlot Partner { get; set; }
 
         /// <summary>
         /// Create a new UIItemSlot.
@@ -62,10 +66,10 @@ namespace TerraUI.Objects {
         /// <param name="drawBackground">run when slot background is drawn; if null, slot is drawn with background texture</param>
         /// <param name="drawItem">run when item in slot is drawn; if null, item is drawn in center of slot</param>
         /// <param name="postDrawItem">run after item in slot is drawn; use to draw elements over the item</param>
-        /// <param name="drawAsNormalItemSlot">draw as a normal inventory ItemSlot</param>
+        /// <param name="drawAsNormalSlot">draw as a normal inventory ItemSlot</param>
         public UIItemSlot(Vector2 position, int size = 52, Contexts context = Contexts.InventoryItem, UIObject parent = null,
                           ConditionHandler conditions = null, DrawHandler drawBackground = null, DrawHandler drawItem = null,
-                          DrawHandler postDrawItem = null, bool drawAsNormalItemSlot = false, bool scaleToInventory = false)
+                          DrawHandler postDrawItem = null, bool drawAsNormalSlot = false, bool scaleToInventory = false)
             : base(position, new Vector2(size), parent, false) {
             Item = new Item();
             Context = context;
@@ -73,21 +77,45 @@ namespace TerraUI.Objects {
             DrawBackground = drawBackground;
             DrawItem = drawItem;
             PostDrawItem = postDrawItem;
-            DrawAsNormalItemSlot = drawAsNormalItemSlot;
+            DrawAsNormalSlot = drawAsNormalSlot;
         }
 
         /// <summary>
         /// The default left click event.
         /// </summary>
-        public override void DefaultLeftClick() {
-            ItemSlot.LeftClick(ref item, (int)Context);
+        public override void OnLeftClick() {
+            if(Item.stack > 0 || Conditions(Main.mouseItem)) {
+                Swap(ref item, ref Main.mouseItem);
+            }
+        }
+
+        /// <summary>
+        /// The default right click event.
+        /// </summary>
+        public override void OnRightClick() {
+            if(Conditions(Main.mouseItem)) {
+                Swap(ref item, ref Main.mouseItem);
+            }
+            else if(Partner != null && (Item.stack > 0 || Partner.Item.stack > 0)) {
+                Swap(ref item, ref Partner.item);
+            }
+        }
+
+        /// <summary>
+        /// Swap two items between slots or the slot and the mouse cursor.
+        /// </summary>
+        /// <param name="item1">first item</param>
+        /// <param name="item2">second item</param>
+        public void Swap(ref Item item1, ref Item item2) {
+            UIUtils.SwitchItems(ref item1, ref item2);
+            UIUtils.PlaySound(Sounds.Grab);
             Recipe.FindRecipes();
         }
 
         /// <summary>
         /// Toggle the visibility of the item in the slot.
         /// </summary>
-        protected void ToggleVisibility() {
+        public void ToggleVisibility() {
             ItemVisible = !ItemVisible;
             UIUtils.PlaySound(Sounds.MenuTick);
         }
@@ -111,21 +139,13 @@ namespace TerraUI.Objects {
         }
 
         /// <summary>
-        /// The default right click event.
-        /// </summary>
-        public override void DefaultRightClick() {
-            ItemSlot.RightClick(ref item, 0);
-        }
-
-        /// <summary>
         /// Draw the object. Call during any Draw() function.
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public override void Draw(SpriteBatch spriteBatch) {
-            Point mouse = new Point(Main.mouseX, Main.mouseY);
             Rectangle = new Rectangle((int)RelativePosition.X, (int)RelativePosition.Y, (int)Size.X, (int)Size.Y);
 
-            if(DrawAsNormalItemSlot) {
+            if(DrawAsNormalSlot) {
                 ItemSlot.Draw(spriteBatch, ref item, (int)Context, RelativePosition);
             }
             else {
@@ -133,8 +153,7 @@ namespace TerraUI.Objects {
                     DrawBackground(this, spriteBatch);
                 }
                 else {
-                    Texture2D backTex = UIUtils.GetContextTexture(Context);
-                    spriteBatch.Draw(backTex, Rectangle, Color.White);
+                    OnDrawBackground(spriteBatch);
                 }
 
                 if(item.type > 0) {
@@ -142,29 +161,7 @@ namespace TerraUI.Objects {
                         DrawItem(this, spriteBatch);
                     }
                     else {
-                        Texture2D texture2D = Main.itemTexture[item.type];
-                        Rectangle rectangle2;
-
-                        if(Main.itemAnimations[item.type] != null) {
-                            rectangle2 = Main.itemAnimations[item.type].GetFrame(texture2D);
-                        }
-                        else {
-                            rectangle2 = texture2D.Frame(1, 1, 0, 0);
-                        }
-
-                        Vector2 origin = new Vector2(rectangle2.Width / 2, rectangle2.Height / 2);
-
-                        spriteBatch.Draw(
-                            Main.itemTexture[item.type],
-                            new Vector2(Rectangle.X + Rectangle.Width / 2,
-                                        Rectangle.Y + Rectangle.Height / 2),
-                            new Rectangle?(rectangle2),
-                            Color.White,
-                            0f,
-                            origin,
-                            (ScaleToInventory ? Main.inventoryScale : 1f),
-                            SpriteEffects.None,
-                            0f);
+                        OnDrawItem(spriteBatch);
                     }
                 }
             }
@@ -173,21 +170,82 @@ namespace TerraUI.Objects {
                 PostDrawItem(this, spriteBatch);
             }
             else {
-                if(HasTick()) {
-                    Texture2D tickTexture = Main.inventoryTickOnTexture;
-
-                    if(!ItemVisible) {
-                        tickTexture = Main.inventoryTickOffTexture;
-                    }
-
-                    tickRect = new Rectangle(Rectangle.Left + 34, Rectangle.Top - 2, tickTexture.Width, tickTexture.Height);
-                    spriteBatch.Draw(tickTexture, tickRect, Color.White * 0.7f);
+                if(HasTick() && !DrawAsNormalSlot) {
+                    DrawTick(spriteBatch);
                 }
             }
 
             base.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// The default DrawBackground function.
+        /// </summary>
+        /// <param name="spriteBatch">drawing SpriteBatch</param>
+        public void OnDrawBackground(SpriteBatch spriteBatch) {
+            Texture2D backTex = UIUtils.GetContextTexture(Context);
+            spriteBatch.Draw(
+                backTex,
+                Rectangle.TopLeft(),
+                null,
+                Color.White,
+                0f,
+                Vector2.Zero,
+                (ScaleToInventory ? Main.inventoryScale : 1f),
+                SpriteEffects.None,
+                1f);
+        }
+
+        /// <summary>
+        /// The default DrawItem function.
+        /// </summary>
+        /// <param name="spriteBatch">drawing SpriteBatch</param>
+        public void OnDrawItem(SpriteBatch spriteBatch) {
+            Texture2D texture2D = Main.itemTexture[item.type];
+            Rectangle rectangle;
+            float scale = (ScaleToInventory ? Main.inventoryScale : 1f);
+
+            if(Main.itemAnimations[item.type] != null) {
+                rectangle = Main.itemAnimations[item.type].GetFrame(texture2D);
+            }
+            else {
+                rectangle = texture2D.Frame(1, 1, 0, 0);
+            }
+
+            Vector2 origin = rectangle.Size() / 2f * scale;
+            Vector2 position = Rectangle.TopLeft();
+
+            spriteBatch.Draw(
+                texture2D,
+                position + (Rectangle.Size() / 2f) - (origin / 2f),
+                new Rectangle?(rectangle),
+                Color.White,
+                0f,
+                origin,
+                scale,
+                SpriteEffects.None,
+                0f);
+        }
+
+        /// <summary>
+        /// Draws the visibility tick in the slot.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawTick(SpriteBatch spriteBatch) {
+            Texture2D tickTexture = Main.inventoryTickOnTexture;
+
+            if(!ItemVisible) {
+                tickTexture = Main.inventoryTickOffTexture;
+            }
+
+            tickRect = new Rectangle(Rectangle.Left + 34, Rectangle.Top - 2, tickTexture.Width, tickTexture.Height);
+            spriteBatch.Draw(tickTexture, tickRect, Color.White * 0.7f);
+        }
+
+        /// <summary>
+        /// Checks if the slot has a context that needs a tick.
+        /// </summary>
+        /// <returns>whether the slot has a tick</returns>
         protected bool HasTick() {
             if(Context == Contexts.EquipAccessory ||
                Context == Contexts.EquipLight ||
