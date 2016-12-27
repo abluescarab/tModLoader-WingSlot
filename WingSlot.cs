@@ -12,7 +12,6 @@ namespace WingSlot {
             };
 
             AddGlobalItem("GlobalWingItem", new GlobalWingItem());
-            //AddGlobalItem("GlobalDyeItem", new GlobalDyeItem());
         }
     }
 }

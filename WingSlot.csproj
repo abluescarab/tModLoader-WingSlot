@@ -44,7 +44,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GlobalDyeItem.cs" />
     <Compile Include="TerraUI\Enums\Contexts.cs" />
     <Compile Include="TerraUI\Enums\MouseButtons.cs" />
     <Compile Include="TerraUI\Enums\Sounds.cs" />
