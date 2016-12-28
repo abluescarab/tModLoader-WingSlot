@@ -10,8 +10,7 @@ namespace WingSlot {
                 AutoloadBackgrounds = true,
                 AutoloadSounds = true
             };
-
-            AddGlobalItem("GlobalWingItem", new GlobalWingItem());
+            
             TerraUI.Utilities.UIUtils.Mod = this;
         }
     }
