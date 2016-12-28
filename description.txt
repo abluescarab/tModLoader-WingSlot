@@ -10,12 +10,17 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, on t
 * Right-click vanity wings to switch with equipped wings.
 * Left-click equipped wings to unequip.
 * Left-click the eye icon on the equip slot to toggle visibility.
+* Left-click a dye to pick it up, then place it in the dye slot.
 
 [Credits]
 * jopojelly for code that draws a slot to the left of the dyes
 * Boffin for TerraUI
 
 [Changelog]
+v1.2.0  2016-12-27
+* Added dye slot.
+* Updated to latest TerraUI
+
 v1.1.5  2016-12-26
 * Right-clicking vanity wings will switch positions with equipped wings
 * Fix: animated wings draw correctly
