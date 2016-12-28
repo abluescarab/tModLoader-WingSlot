@@ -48,7 +48,8 @@ namespace WingSlot {
                 Item dye = wsp.WingDyeSlot.Item;
                 int index = Main.playerDrawData.Count - 1;
                 
-                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active)
+                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active || 
+                  (wsp.VanityWingSlot.Item.stack <= 0 && !wsp.EquipWingSlot.ItemVisible && player.wingFrame == 0))
                     return;
 
                 if(wings.flame)
