@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.UI;
+using Terraria.UI.Chat;
 using TerraUI.Utilities;
 
 namespace TerraUI.Objects {
@@ -78,6 +79,7 @@ namespace TerraUI.Objects {
             DrawItem = drawItem;
             PostDrawItem = postDrawItem;
             DrawAsNormalSlot = drawAsNormalSlot;
+            ScaleToInventory = scaleToInventory;
         }
 
         /// <summary>
@@ -156,7 +158,7 @@ namespace TerraUI.Objects {
                     OnDrawBackground(spriteBatch);
                 }
 
-                if(item.type > 0) {
+                if(Item.type > 0) {
                     if(DrawItem != null) {
                         DrawItem(this, spriteBatch);
                     }
@@ -191,7 +193,7 @@ namespace TerraUI.Objects {
                 Color.White,
                 0f,
                 Vector2.Zero,
-                (ScaleToInventory ? Main.inventoryScale : 1f),
+                Scale(true),
                 SpriteEffects.None,
                 1f);
         }
@@ -201,30 +203,44 @@ namespace TerraUI.Objects {
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public void OnDrawItem(SpriteBatch spriteBatch) {
-            Texture2D texture2D = Main.itemTexture[item.type];
+            Texture2D texture2D = Main.itemTexture[Item.type];
             Rectangle rectangle;
-            float scale = (ScaleToInventory ? Main.inventoryScale : 1f);
 
-            if(Main.itemAnimations[item.type] != null) {
-                rectangle = Main.itemAnimations[item.type].GetFrame(texture2D);
+            if(Main.itemAnimations[Item.type] != null) {
+                rectangle = Main.itemAnimations[Item.type].GetFrame(texture2D);
             }
             else {
                 rectangle = texture2D.Frame(1, 1, 0, 0);
             }
 
-            Vector2 origin = rectangle.Size() / 2f * scale;
-            Vector2 position = Rectangle.TopLeft();
+            Vector2 origin = rectangle.Size() / 2f;
+            Vector2 position = new Rectangle(Rectangle.X, Rectangle.Y, (int)(Rectangle.Width * Scale(false)),
+                (int)(Rectangle.Height * Scale(false))).Center.ToVector2();
 
             spriteBatch.Draw(
                 texture2D,
-                position + (Rectangle.Size() / 2f) - (origin / 2f),
+                position,
                 new Rectangle?(rectangle),
                 Color.White,
                 0f,
                 origin,
-                scale,
+                Scale(true),
                 SpriteEffects.None,
                 0f);
+
+            if(Item.stack > 1) {
+                ChatManager.DrawColorCodedStringWithShadow(
+                    spriteBatch,
+                    Main.fontItemStack,
+                    Item.stack.ToString(),
+                    RelativePosition + new Vector2(9f, 22f) * Scale(false),
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    new Vector2(Scale(true)),
+                    -1f,
+                    Scale(false));
+            }
         }
 
         /// <summary>
@@ -238,7 +254,7 @@ namespace TerraUI.Objects {
                 tickTexture = Main.inventoryTickOffTexture;
             }
 
-            tickRect = new Rectangle(Rectangle.Left + 34, Rectangle.Top - 2, tickTexture.Width, tickTexture.Height);
+            tickRect = new Rectangle(Rectangle.Right - 18, Rectangle.Top - 2, tickTexture.Width, tickTexture.Height);
             spriteBatch.Draw(tickTexture, tickRect, Color.White * 0.7f);
         }
 
@@ -246,7 +262,7 @@ namespace TerraUI.Objects {
         /// Checks if the slot has a context that needs a tick.
         /// </summary>
         /// <returns>whether the slot has a tick</returns>
-        protected bool HasTick() {
+        public bool HasTick() {
             if(Context == Contexts.EquipAccessory ||
                Context == Contexts.EquipLight ||
                Context == Contexts.EquipPet) {
@@ -254,6 +270,21 @@ namespace TerraUI.Objects {
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets the scale of the UIItemSlot.
+        /// </summary>
+        /// <param name="scaleForSlot">whether to also scale for the slot size</param>
+        /// <returns>scale</returns>
+        public float Scale(bool scaleForSlot) {
+            float scale = (ScaleToInventory ? Main.inventoryScale : 1f);
+
+            if(scaleForSlot) {
+                scale *= (Size.X / defaultSize);
+            }
+
+            return scale;
         }
     }
 }
