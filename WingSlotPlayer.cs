@@ -53,6 +53,9 @@ namespace WingSlot {
                 if(wings.flame)
                     index -= 1;
 
+                if(index < 0 || index > Main.playerDrawData.Count)
+                    return;
+
                 DrawData data = Main.playerDrawData[index];
                 data.shader = dye.dye;
                 Main.playerDrawData[index] = data;
