@@ -12,6 +12,7 @@ namespace WingSlot {
             };
 
             AddGlobalItem("GlobalWingItem", new GlobalWingItem());
+            TerraUI.Utilities.UIUtils.Mod = this;
         }
     }
 }
