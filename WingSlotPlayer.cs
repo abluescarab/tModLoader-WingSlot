@@ -42,12 +42,13 @@ namespace WingSlot {
 
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
-                WingSlotPlayer player = drawInfo.drawPlayer.GetModPlayer<WingSlotPlayer>(UIUtils.Mod);
-                Item wings = player.GetDyedWings();
-                Item dye = player.WingDyeSlot.Item;
+                Player player = drawInfo.drawPlayer;
+                WingSlotPlayer wsp = player.GetModPlayer<WingSlotPlayer>(UIUtils.Mod);
+                Item wings = wsp.GetDyedWings();
+                Item dye = wsp.WingDyeSlot.Item;
                 int index = Main.playerDrawData.Count - 1;
-
-                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic)
+                
+                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active)
                     return;
 
                 if(wings.flame)
