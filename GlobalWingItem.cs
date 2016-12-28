@@ -11,7 +11,8 @@ namespace WingSlot {
             return true;
         }
 
-        public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+        public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
+            Color drawColor, Color itemColor, Vector2 origin, float scale) {
             DrawSlots(spriteBatch);
             base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
@@ -82,11 +83,11 @@ namespace WingSlot {
 
                 mp.EquipWingSlot.Position = new Vector2(rX, rY);
                 mp.VanityWingSlot.Position = new Vector2(rX -= 47, rY);
-                //mp.WingDyeSlot.Position = new Vector2(rX -= 47, rY);
+                mp.WingDyeSlot.Position = new Vector2(rX -= 47, rY);
 
                 mp.VanityWingSlot.Draw(spriteBatch);
                 mp.EquipWingSlot.Draw(spriteBatch);
-                //mp.WingDyeSlot.Draw(spriteBatch);
+                mp.WingDyeSlot.Draw(spriteBatch);
 
                 Main.inventoryScale = origScale;
             }
