@@ -3,20 +3,19 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 
 ---
 
-This mod adds a dedicated wing slot to the equipment page of the inventory, on the left of the dyes.
+This mod adds a dedicated wing slot to the equipment page of the inventory, below the accessory slots.
 
-* Right-click to equip.
-* Shift-right-click to equip in the vanity slot.
-* Right-click vanity wings to switch with equipped wings.
-* Left-click equipped wings to unequip.
-* Left-click the eye icon on the equip slot to toggle visibility.
-* Left-click a dye to pick it up, then place it in the dye slot.
+You can equip wings and dyes the normal way (drag-and-drop), or you can right-click wings to equip them normally and shift-right-click wings to equip them in the vanity slot.
 
 [Credits]
 * jopojelly for code that draws a slot to the left of the dyes
 * Boffin for TerraUI
 
 [Changelog]
+v1.2.3  2017-01-01
+* Moved wing slots to equip page one under accessories
+* Fix: wing slots have correct opacity
+
 v1.2.2  2016-12-28
 * Fix: mouse draws above item slots
 * Fix: dyes no longer affect other equips
