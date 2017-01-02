@@ -265,6 +265,50 @@ namespace WingSlot {
         }
 
         /// <summary>
+        /// Draw the wing slots.
+        /// </summary>
+        /// <param name="spriteBatch">drawing SpriteBatch</param>
+        public void Draw(SpriteBatch spriteBatch) {
+            WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(this);
+
+            if(((WingSlot)mod).ShouldDrawSlots()) {
+                int mapH = 0;
+                int rX = 0;
+                int rY = 0;
+                float origScale = Main.inventoryScale;
+
+                Main.inventoryScale = 0.85f;
+
+                if(Main.mapEnabled) {
+                    if(!Main.mapFullscreen && Main.mapStyle == 1) {
+                        mapH = 256;
+                    }
+
+                    if((mapH + 600) > Main.screenHeight) {
+                        mapH = Main.screenHeight - 600;
+                    }
+                }
+
+                rX = Main.screenWidth - 92 - (47 * 2);
+                rY = mapH + 174;
+
+                if(Main.netMode == 1) {
+                    rX -= 47;
+                }
+
+                mp.EquipWingSlot.Position = new Vector2(rX, rY);
+                mp.VanityWingSlot.Position = new Vector2(rX -= 47, rY);
+                mp.WingDyeSlot.Position = new Vector2(rX -= 47, rY);
+
+                mp.VanityWingSlot.Draw(spriteBatch);
+                mp.EquipWingSlot.Draw(spriteBatch);
+                mp.WingDyeSlot.Draw(spriteBatch);
+
+                Main.inventoryScale = origScale;
+            }
+        }
+
+        /// <summary>
         /// Initialize the items in the UIItemSlots.
         /// </summary>
         private void InitializeWings() {
