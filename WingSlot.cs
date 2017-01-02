@@ -21,17 +21,5 @@ namespace WingSlot {
             WingSlotPlayer wsp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(this);
             wsp.Draw(spriteBatch);
         }
-
-        /// <summary>
-        /// Whether to draw the UIItemSlots.
-        /// </summary>
-        /// <returns>whether to draw the slots</returns>
-        public bool ShouldDrawSlots() {
-            if(Main.playerInventory && Main.EquipPage == 2) {
-                return true;
-            }
-
-            return false;
-        }
     }
 }

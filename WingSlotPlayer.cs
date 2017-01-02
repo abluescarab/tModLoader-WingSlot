@@ -78,7 +78,7 @@ namespace WingSlot {
         /// Update the slots and settings window.
         /// </summary>
         public override void PreUpdate() {
-            if(((WingSlot)mod).ShouldDrawSlots()) {
+            if(ShouldDrawSlots()) {
                 EquipWingSlot.Update();
                 VanityWingSlot.Update();
                 WingDyeSlot.Update();
@@ -191,7 +191,7 @@ namespace WingSlot {
         private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(((WingSlot)mod).ShouldDrawSlots()) {
+            if(ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
                 if(slot.Item.stack == 0) {
@@ -229,7 +229,7 @@ namespace WingSlot {
         private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(((WingSlot)mod).ShouldDrawSlots()) {
+            if(ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
                 if(slot.Item.stack == 0) {
@@ -271,7 +271,7 @@ namespace WingSlot {
         public void Draw(SpriteBatch spriteBatch) {
             WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(this);
 
-            if(((WingSlot)mod).ShouldDrawSlots()) {
+            if(ShouldDrawSlots()) {
                 int mapH = 0;
                 int rX = 0;
                 int rY = 0;
@@ -306,6 +306,18 @@ namespace WingSlot {
 
                 Main.inventoryScale = origScale;
             }
+        }
+
+        /// <summary>
+        /// Whether to draw the UIItemSlots.
+        /// </summary>
+        /// <returns>whether to draw the slots</returns>
+        public bool ShouldDrawSlots() {
+            if(Main.playerInventory && Main.EquipPage == 2) {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
