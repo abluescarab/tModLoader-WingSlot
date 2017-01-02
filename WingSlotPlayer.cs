@@ -40,7 +40,7 @@ namespace WingSlot {
                 scaleToInventory: true);
             VanityWingSlot.Partner = EquipWingSlot;
             EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = 
-                WingDyeSlot.BackOpacity = 0.75f;
+                WingDyeSlot.BackOpacity = .8f;
 
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
