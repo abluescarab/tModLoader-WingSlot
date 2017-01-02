@@ -269,8 +269,6 @@ namespace WingSlot {
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public void Draw(SpriteBatch spriteBatch) {
-            WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(this);
-
             if(ShouldDrawSlots()) {
                 int mapH = 0;
                 int rX = 0;
@@ -296,13 +294,13 @@ namespace WingSlot {
                     rX -= 47;
                 }
 
-                mp.EquipWingSlot.Position = new Vector2(rX, rY);
-                mp.VanityWingSlot.Position = new Vector2(rX -= 47, rY);
-                mp.WingDyeSlot.Position = new Vector2(rX -= 47, rY);
+                EquipWingSlot.Position = new Vector2(rX, rY);
+                VanityWingSlot.Position = new Vector2(rX -= 47, rY);
+                WingDyeSlot.Position = new Vector2(rX -= 47, rY);
 
-                mp.VanityWingSlot.Draw(spriteBatch);
-                mp.EquipWingSlot.Draw(spriteBatch);
-                mp.WingDyeSlot.Draw(spriteBatch);
+                VanityWingSlot.Draw(spriteBatch);
+                EquipWingSlot.Draw(spriteBatch);
+                WingDyeSlot.Draw(spriteBatch);
 
                 Main.inventoryScale = origScale;
             }
