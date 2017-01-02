@@ -23,11 +23,17 @@ namespace WingSlot {
         public UIItemSlot EquipWingSlot;
         public UIItemSlot VanityWingSlot;
         public UIItemSlot WingDyeSlot;
-
+        
+        /// <summary>
+        /// Whether to autoload the ModPlayer.
+        /// </summary>
         public override bool Autoload(ref string name) {
             return true;
         }
 
+        /// <summary>
+        /// Initialize the ModPlayer.
+        /// </summary>
         public override void Initialize() {
             EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory,
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground,
@@ -41,7 +47,7 @@ namespace WingSlot {
             VanityWingSlot.Partner = EquipWingSlot;
             EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = 
                 WingDyeSlot.BackOpacity = .8f;
-
+            
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
                 Player player = drawInfo.drawPlayer;
@@ -68,73 +74,9 @@ namespace WingSlot {
             InitializeWings();
         }
 
-        private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
-            UIItemSlot slot = (UIItemSlot)sender;
-
-            if(((WingSlot)mod).ShouldDrawSlots()) {
-                slot.OnDrawBackground(spriteBatch);
-
-                if(slot.Item.stack == 0) {
-                    Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
-                    Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
-                    Vector2 position = slot.Rectangle.TopLeft();
-
-                    spriteBatch.Draw(
-                        tex,
-                        position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
-                        null,
-                        Color.White * 0.35f,
-                        0f,
-                        origin,
-                        Main.inventoryScale,
-                        SpriteEffects.None,
-                        0f); // layer depth 0 = front
-                }
-            }
-        }
-
-        private bool Slot_Conditions(Item item) {
-            if(item.wingSlot > 0) {
-                return true;
-            }
-            return false;
-        }
-
-        private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
-            UIItemSlot slot = (UIItemSlot)sender;
-
-            if(((WingSlot)mod).ShouldDrawSlots()) {
-                slot.OnDrawBackground(spriteBatch);
-
-                if(slot.Item.stack == 0) {
-                    Texture2D tex = Main.extraTexture[54];
-                    Rectangle rectangle = tex.Frame(3, 6, 1 % 3, 1 / 3);
-                    rectangle.Width -= 2;
-                    rectangle.Height -= 2;
-                    Vector2 origin = rectangle.Size() / 2f * Main.inventoryScale;
-                    Vector2 position = slot.Rectangle.TopLeft();
-
-                    spriteBatch.Draw(
-                        tex,
-                        position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
-                        new Rectangle?(rectangle),
-                        Color.White * 0.35f,
-                        0f,
-                        origin,
-                        Main.inventoryScale,
-                        SpriteEffects.None,
-                        0f); // layer depth 0 = front
-                }
-            }
-        }
-
-        private bool WingDyeSlot_Conditions(Item item) {
-            if(item.dye > 0 && item.hairDye < 0) {
-                return true;
-            }
-            return false;
-        }
-
+        /// <summary>
+        /// Update the slots and settings window.
+        /// </summary>
         public override void PreUpdate() {
             if(((WingSlot)mod).ShouldDrawSlots()) {
                 EquipWingSlot.Update();
@@ -147,12 +89,19 @@ namespace WingSlot {
             base.PreUpdate();
         }
 
+        /// <summary>
+        /// Modify draw layers to draw the wing dye.
+        /// </summary>
+        /// <param name="layers"></param>
         public override void ModifyDrawLayers(List<PlayerLayer> layers) {
             if(!Main.gameMenu) {
                 layers.Insert(layers.IndexOf(PlayerLayer.Wings) + 1, wingsDye);
             }
         }
 
+        /// <summary>
+        /// Update player with the equipped wings.
+        /// </summary>
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
             Item wings = EquipWingSlot.Item;
             Item vanityWings = VanityWingSlot.Item;
@@ -168,6 +117,9 @@ namespace WingSlot {
             }
         }
 
+        /// <summary>
+        /// Save the mod settings.
+        /// </summary>
         public override TagCompound Save() {
             return new TagCompound {
                 { HIDDEN_TAG, EquipWingSlot.ItemVisible },
@@ -177,6 +129,9 @@ namespace WingSlot {
             };
         }
 
+        /// <summary>
+        /// Load the mod settings.
+        /// </summary>
         public override void Load(TagCompound tag) {
             SetWings(false, ItemIO.Load(tag.GetCompound(WINGS_TAG)));
             SetWings(true, ItemIO.Load(tag.GetCompound(VANITY_WINGS_TAG)));
@@ -184,6 +139,9 @@ namespace WingSlot {
             EquipWingSlot.ItemVisible = tag.GetBool(HIDDEN_TAG);
         }
 
+        /// <summary>
+        /// Load legacy mod settings.
+        /// </summary>
         public override void LoadLegacy(BinaryReader reader) {
             int hide = 0;
 
@@ -214,6 +172,9 @@ namespace WingSlot {
             }
         }
 
+        /// <summary>
+        /// Read the wings in legacy mod settings.
+        /// </summary>
         internal static int ReadWingsLegacy(ref Item wings, BinaryReader reader) {
             try {
                 ItemIO.LoadLegacy(wings, reader, false, false);
@@ -222,6 +183,85 @@ namespace WingSlot {
             catch(EndOfStreamException) {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Draw the wing slot backgrounds.
+        /// </summary>
+        private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
+            UIItemSlot slot = (UIItemSlot)sender;
+
+            if(((WingSlot)mod).ShouldDrawSlots()) {
+                slot.OnDrawBackground(spriteBatch);
+
+                if(slot.Item.stack == 0) {
+                    Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
+                    Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
+                    Vector2 position = slot.Rectangle.TopLeft();
+
+                    spriteBatch.Draw(
+                        tex,
+                        position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
+                        null,
+                        Color.White * 0.35f,
+                        0f,
+                        origin,
+                        Main.inventoryScale,
+                        SpriteEffects.None,
+                        0f); // layer depth 0 = front
+                }
+            }
+        }
+
+        /// <summary>
+        /// Control what can be placed in the wing slots.
+        /// </summary>
+        private bool Slot_Conditions(Item item) {
+            if(item.wingSlot > 0) {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Draw the wing dye slot background.
+        /// </summary>
+        private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
+            UIItemSlot slot = (UIItemSlot)sender;
+
+            if(((WingSlot)mod).ShouldDrawSlots()) {
+                slot.OnDrawBackground(spriteBatch);
+
+                if(slot.Item.stack == 0) {
+                    Texture2D tex = Main.extraTexture[54];
+                    Rectangle rectangle = tex.Frame(3, 6, 1 % 3, 1 / 3);
+                    rectangle.Width -= 2;
+                    rectangle.Height -= 2;
+                    Vector2 origin = rectangle.Size() / 2f * Main.inventoryScale;
+                    Vector2 position = slot.Rectangle.TopLeft();
+
+                    spriteBatch.Draw(
+                        tex,
+                        position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
+                        new Rectangle?(rectangle),
+                        Color.White * 0.35f,
+                        0f,
+                        origin,
+                        Main.inventoryScale,
+                        SpriteEffects.None,
+                        0f); // layer depth 0 = front
+                }
+            }
+        }
+
+        /// <summary>
+        /// Control what can be placed in the wing dye slot.
+        /// </summary>
+        private bool WingDyeSlot_Conditions(Item item) {
+            if(item.dye > 0 && item.hairDye < 0) {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
