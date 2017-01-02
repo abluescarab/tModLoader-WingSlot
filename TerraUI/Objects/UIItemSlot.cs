@@ -9,6 +9,8 @@ using TerraUI.Utilities;
 namespace TerraUI.Objects {
     public class UIItemSlot : UIObject {
         protected Item item;
+        protected float backOpacity = 1f;
+        protected float itemOpacity = 1f;
         protected const int defaultSize = 52;
         protected Rectangle tickRect;
 
@@ -55,6 +57,20 @@ namespace TerraUI.Objects {
         /// The slot to swap items with if this slot is right-clicked.
         /// </summary>
         public UIItemSlot Partner { get; set; }
+        /// <summary>
+        /// The opacity of the item slot background (between 0 and 1).
+        /// </summary>
+        public float BackOpacity {
+            get { return backOpacity; }
+            set { backOpacity = UIUtils.Clamp(value, 0f, 1f); }
+        }
+        /// <summary>
+        /// The opacity of the item texture in the slot (between 0 and 1).
+        /// </summary>
+        public float ItemOpacity {
+            get { return itemOpacity; }
+            set { itemOpacity = UIUtils.Clamp(value, 0f, 1f); }
+        }
 
         /// <summary>
         /// Create a new UIItemSlot.
@@ -190,7 +206,7 @@ namespace TerraUI.Objects {
                 backTex,
                 Rectangle.TopLeft(),
                 null,
-                Color.White,
+                Color.White * BackOpacity,
                 0f,
                 Vector2.Zero,
                 Scale(true),
@@ -221,7 +237,7 @@ namespace TerraUI.Objects {
                 texture2D,
                 position,
                 new Rectangle?(rectangle),
-                Color.White,
+                Color.White * ItemOpacity,
                 0f,
                 origin,
                 Scale(true),
