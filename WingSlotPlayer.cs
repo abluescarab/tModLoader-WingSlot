@@ -195,7 +195,7 @@ namespace WingSlot {
                 slot.OnDrawBackground(spriteBatch);
 
                 if(slot.Item.stack == 0) {
-                    Texture2D tex = mod.GetTexture(WingSlot.wingSlotBackground);
+                    Texture2D tex = mod.GetTexture(WingSlot.WING_SLOT_BACK_TEX);
                     Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
                     Vector2 position = slot.Rectangle.TopLeft();
 

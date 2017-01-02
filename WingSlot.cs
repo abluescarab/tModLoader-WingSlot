@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace WingSlot {
     public class WingSlot : Mod {
-        public const string wingSlotBackground = "WingSlotBackground";
+        public const string WING_SLOT_BACK_TEX = "WingSlotBackground";
 
         public override void Load() {
             Properties = new ModProperties() {
