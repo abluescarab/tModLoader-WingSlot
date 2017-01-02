@@ -42,26 +42,6 @@ namespace TerraUI.Utilities {
         }
 
         /// <summary>
-        /// Check if any children of the object intersect a chosen rectangle.
-        /// </summary>
-        /// <param name="obj">parent object</param>
-        /// <param name="rect">intersection rectangle</param>
-        /// <returns>true if no children intersect the rectangle</returns>
-        public static bool NoChildrenIntersect(UIObject obj, Rectangle rect) {
-            bool flag = true;
-
-            foreach(UIObject ob in obj.Children) {
-                if(ob.GetType() != typeof(UILabel)) {
-                    if(ob.Rectangle.Intersects(rect)) {
-                        flag = false;
-                    }
-                }
-            }
-
-            return flag;
-        }
-
-        /// <summary>
         /// Play a game sound.
         /// </summary>
         /// <param name="type">sound</param>
