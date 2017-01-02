@@ -15,6 +15,7 @@ namespace WingSlot {
             };
 
             TerraUI.Utilities.UIUtils.Mod = this;
+            TerraUI.Utilities.UIUtils.Subdirectory = "TerraUI";
         }
 
         public override void PostDrawInterface(SpriteBatch spriteBatch) {
