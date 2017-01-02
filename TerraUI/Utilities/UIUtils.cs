@@ -18,7 +18,7 @@ namespace TerraUI.Utilities {
         /// Example: Addons/TerraUI
         /// </summary>
         public static string Subdirectory { get; set; }
-        
+
         /// <summary>
         /// Returns a Texture2D with the specified name from the Textures directory.
         /// </summary>
@@ -26,7 +26,7 @@ namespace TerraUI.Utilities {
         /// <returns>Texture2D</returns>
         public static Texture2D GetTexture(string texture) {
             string tex = "";
-            string subdir = Subdirectory.Replace(@"\", "/");
+            string subdir = (string.IsNullOrEmpty(Subdirectory) ? "" : Subdirectory.Replace(@"\", "/"));
 
             if(!string.IsNullOrWhiteSpace(subdir)) {
                 tex += subdir;
@@ -394,7 +394,7 @@ namespace TerraUI.Utilities {
             }
             return "";
         }
-        
+
         /// <summary>
         /// Helper function for TranslateChar().
         /// </summary>
