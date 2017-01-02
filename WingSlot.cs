@@ -27,7 +27,7 @@ namespace WingSlot {
         /// </summary>
         /// <returns>whether to draw the slots</returns>
         public bool ShouldDrawSlots() {
-            if(Main.playerInventory && Main.EquipPage == 0) {
+            if(Main.playerInventory && Main.EquipPage == 2) {
                 return true;
             }
 
@@ -59,8 +59,8 @@ namespace WingSlot {
                     }
                 }
 
-                rX = Main.screenWidth - 92; //- (47 * 2);
-                rY = mapH + 174 + (48 * 8) + 1;
+                rX = Main.screenWidth - 92 - (47 * 2);
+                rY = mapH + 174;
 
                 if(Main.netMode == 1) {
                     rX -= 47;
