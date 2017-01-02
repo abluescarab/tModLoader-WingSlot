@@ -23,14 +23,25 @@ namespace WingSlot {
         }
 
         /// <summary>
+        /// Whether to draw the UIItemSlots.
+        /// </summary>
+        /// <returns>whether to draw the slots</returns>
+        public bool ShouldDrawSlots() {
+            if(Main.playerInventory && Main.EquipPage == 0) {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Draws the wing equipment slots.
         /// Based on code provided by jopojelly.
         /// </summary>
         private void DrawSlots(SpriteBatch spriteBatch) {
             WingSlotPlayer mp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(this);
 
-            if(mp.ShouldDrawSlots()) {
-
+            if(ShouldDrawSlots()) {
                 int mapH = 0;
                 int rX = 0;
                 int rY = 0;
@@ -48,8 +59,8 @@ namespace WingSlot {
                     }
                 }
 
-                rX = Main.screenWidth - 92 - (47 * 2);
-                rY = mapH + 174;
+                rX = Main.screenWidth - 92; //- (47 * 2);
+                rY = mapH + 174 + (48 * 8) + 1;
 
                 if(Main.netMode == 1) {
                     rX -= 47;

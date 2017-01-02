@@ -39,6 +39,8 @@ namespace WingSlot {
                 conditions: WingDyeSlot_Conditions, drawBackground: WingDyeSlot_DrawBackground,
                 scaleToInventory: true);
             VanityWingSlot.Partner = EquipWingSlot;
+            EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = 
+                WingDyeSlot.BackOpacity = 0.75f;
 
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
@@ -69,7 +71,7 @@ namespace WingSlot {
         private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(ShouldDrawSlots()) {
+            if(((WingSlot)mod).ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
                 if(slot.Item.stack == 0) {
@@ -81,7 +83,7 @@ namespace WingSlot {
                         tex,
                         position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
                         null,
-                        Color.White * 0.15f,
+                        Color.White * 0.35f,
                         0f,
                         origin,
                         Main.inventoryScale,
@@ -101,7 +103,7 @@ namespace WingSlot {
         private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(ShouldDrawSlots()) {
+            if(((WingSlot)mod).ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
                 if(slot.Item.stack == 0) {
@@ -134,7 +136,7 @@ namespace WingSlot {
         }
 
         public override void PreUpdate() {
-            if(ShouldDrawSlots()) {
+            if(((WingSlot)mod).ShouldDrawSlots()) {
                 EquipWingSlot.Update();
                 VanityWingSlot.Update();
                 WingDyeSlot.Update();
@@ -296,18 +298,6 @@ namespace WingSlot {
                 Recipe.FindRecipes();
                 SetWings(isVanity, item);
             }
-        }
-
-        /// <summary>
-        /// Whether to draw the UIItemSlots.
-        /// </summary>
-        /// <returns>whether to draw the slots</returns>
-        public bool ShouldDrawSlots() {
-            if(Main.playerInventory && Main.EquipPage == 2) {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
