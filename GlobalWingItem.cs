@@ -10,16 +10,12 @@ namespace WingSlot {
         public override bool Autoload(ref string name) {
             return true;
         }
-
-        public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame,
-            Color drawColor, Color itemColor, Vector2 origin, float scale) {
-            base.PostDrawInInventory(item, spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-        }
-
+        
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
             if(item.wingSlot > 0) {
                 return false;
             }
+
             return base.CanEquipAccessory(item, player, slot);
         }
 
