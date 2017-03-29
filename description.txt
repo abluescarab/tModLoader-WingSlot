@@ -17,6 +17,9 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, to t
 * Boffin for TerraUI
 
 [Changelog]
+v1.2.5  2017-03-28
+* Fix: slots work with autopause on
+
 v1.2.4  2017-01-02 (HOTFIX)
 * Fix: wing slot moved back to second equip page
 
