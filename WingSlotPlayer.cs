@@ -78,13 +78,7 @@ namespace WingSlot {
         /// Update the slots and settings window.
         /// </summary>
         public override void PreUpdate() {
-            if(ShouldDrawSlots()) {
-                EquipWingSlot.Update();
-                VanityWingSlot.Update();
-                WingDyeSlot.Update();
-            }
-
-            UIUtils.UpdateInput();
+            
 
             base.PreUpdate();
         }
@@ -303,6 +297,12 @@ namespace WingSlot {
                 WingDyeSlot.Draw(spriteBatch);
 
                 Main.inventoryScale = origScale;
+                
+                EquipWingSlot.Update();
+                VanityWingSlot.Update();
+                WingDyeSlot.Update();
+            
+                UIUtils.UpdateInput();
             }
         }
 
