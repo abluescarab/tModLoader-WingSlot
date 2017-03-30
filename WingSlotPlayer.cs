@@ -75,15 +75,6 @@ namespace WingSlot {
         }
 
         /// <summary>
-        /// Update the slots and settings window.
-        /// </summary>
-        public override void PreUpdate() {
-            
-
-            base.PreUpdate();
-        }
-
-        /// <summary>
         /// Modify draw layers to draw the wing dye.
         /// </summary>
         /// <param name="layers"></param>
