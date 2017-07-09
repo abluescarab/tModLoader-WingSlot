@@ -12,11 +12,19 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, to t
 * Left-click the eye icon on the equip slot to toggle visibility.
 * Left-click a dye to pick it up, then place it in the dye slot.
 
+[Known Issues]
+* Yoraiz0r's Spell eye glow doesn't work
+
 [Credits]
 * jopojelly for code that draws a slot to the left of the dyes
 * Boffin for TerraUI
+* Zsashas for bug report (custom dye incompatibility)
 
 [Changelog]
+v1.2.6  2017-07-09
+* Compiled for tModLoader v0.10.0.2
+* Added support for custom dyes
+
 v1.2.5  2017-03-28
 * Fix: slots work with autopause on
 

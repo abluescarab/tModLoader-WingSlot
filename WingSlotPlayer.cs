@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using TerraUI;
@@ -23,7 +24,7 @@ namespace WingSlot {
         public UIItemSlot EquipWingSlot;
         public UIItemSlot VanityWingSlot;
         public UIItemSlot WingDyeSlot;
-        
+
         /// <summary>
         /// Whether to autoload the ModPlayer.
         /// </summary>
@@ -45,9 +46,9 @@ namespace WingSlot {
                 conditions: WingDyeSlot_Conditions, drawBackground: WingDyeSlot_DrawBackground,
                 scaleToInventory: true);
             VanityWingSlot.Partner = EquipWingSlot;
-            EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = 
+            EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity =
                 WingDyeSlot.BackOpacity = .8f;
-            
+
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
                 Player player = drawInfo.drawPlayer;
@@ -55,8 +56,8 @@ namespace WingSlot {
                 Item wings = wsp.GetDyedWings();
                 Item dye = wsp.WingDyeSlot.Item;
                 int index = Main.playerDrawData.Count - 1;
-                
-                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active || 
+
+                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active ||
                   (wsp.VanityWingSlot.Item.stack <= 0 && !wsp.EquipWingSlot.ItemVisible && player.wingFrame == 0))
                     return;
 
@@ -65,9 +66,9 @@ namespace WingSlot {
 
                 if(index < 0 || index > Main.playerDrawData.Count)
                     return;
-
+                
                 DrawData data = Main.playerDrawData[index];
-                data.shader = dye.dye;
+                data.shader = GameShaders.Armor.GetShaderIdFromItemId(dye.type);
                 Main.playerDrawData[index] = data;
             });
 
@@ -288,11 +289,11 @@ namespace WingSlot {
                 WingDyeSlot.Draw(spriteBatch);
 
                 Main.inventoryScale = origScale;
-                
+
                 EquipWingSlot.Update();
                 VanityWingSlot.Update();
                 WingDyeSlot.Update();
-            
+
                 UIUtils.UpdateInput();
             }
         }

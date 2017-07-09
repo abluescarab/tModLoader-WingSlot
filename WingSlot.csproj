@@ -32,15 +32,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono">
+      <HintPath>..\..\References\ShaderLib\Mono.dll</HintPath>
+    </Reference>
+    <Reference Include="ReLogic">
+      <HintPath>..\..\References\ReLogic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Terraria, Version=1.3.5.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Games\steamapps\common\Terraria\Terraria.exe</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Game" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="Terraria">
-      <HintPath>E:\Games\steamapps\common\Terraria\Terraria.exe</HintPath>
+    <Reference Include="Windows">
+      <HintPath>..\..\References\ShaderLib\Windows.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
