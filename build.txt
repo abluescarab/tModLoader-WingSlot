@@ -1,6 +1,6 @@
 ﻿displayName=Wing Slot
 author=abluescarab, Boffin
-version=1.2.6
+version=1.2.7
 dllReferences=
 modReferences=
 noCompile=false

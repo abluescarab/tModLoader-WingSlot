@@ -21,6 +21,9 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, to t
 * Zsashas for bug report (custom dye incompatibility)
 
 [Changelog]
+v1.2.7  2017-07-09
+* Removed unneeded references
+
 v1.2.6  2017-07-09
 * Compiled for tModLoader v0.10.0.2
 * Added support for custom dyes
