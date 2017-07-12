@@ -1,0 +1,3 @@
+[submodule "TerraUI"]
+	path = TerraUI
+	url = https://github.com/TerraUI/TerraUI.git
