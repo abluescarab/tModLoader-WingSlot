@@ -52,6 +52,7 @@
     <Compile Include="TerraUI\Enums\MouseButtons.cs" />
     <Compile Include="TerraUI\Enums\Sounds.cs" />
     <Compile Include="TerraUI\Objects\UIItemSlot.cs" />
+    <Compile Include="TerraUI\Objects\UILabel.cs" />
     <Compile Include="TerraUI\Objects\UIObject.cs" />
     <Compile Include="TerraUI\Utilities\BaseTextureDrawing.cs" />
     <Compile Include="TerraUI\Utilities\Events.cs" />
