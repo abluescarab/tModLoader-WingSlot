@@ -54,10 +54,12 @@
     <Compile Include="TerraUI\Objects\UIItemSlot.cs" />
     <Compile Include="TerraUI\Objects\UILabel.cs" />
     <Compile Include="TerraUI\Objects\UIObject.cs" />
+    <Compile Include="TerraUI\Objects\UIObjectBordered.cs" />
     <Compile Include="TerraUI\Utilities\BaseTextureDrawing.cs" />
     <Compile Include="TerraUI\Utilities\Events.cs" />
     <Compile Include="TerraUI\Utilities\KeyboardUtils.cs" />
     <Compile Include="TerraUI\Utilities\MouseUtils.cs" />
+    <Compile Include="TerraUI\Utilities\UIColors.cs" />
     <Compile Include="TerraUI\Utilities\UIUtils.cs" />
     <Compile Include="WingSlotPlayer.cs" />
     <Compile Include="GlobalWingItem.cs" />
