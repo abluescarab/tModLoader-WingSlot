@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using TerraUI;
@@ -38,7 +39,8 @@ namespace WingSlot {
         public override void Initialize() {
             EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory, hoverText: "Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
-            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity, hoverText: "Social Wings",
+            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity, hoverText:
+                Language.GetTextValue("LegacyInterface.11") + " Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
             WingDyeSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipDye, conditions: WingDyeSlot_Conditions,
                 drawBackground: WingDyeSlot_DrawBackground, scaleToInventory: true);
