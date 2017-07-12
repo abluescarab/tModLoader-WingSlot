@@ -36,18 +36,14 @@ namespace WingSlot {
         /// Initialize the ModPlayer.
         /// </summary>
         public override void Initialize() {
-            EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory,
-                conditions: Slot_Conditions, drawBackground: Slot_DrawBackground,
-                scaleToInventory: true);
-            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity,
-                conditions: Slot_Conditions, drawBackground: Slot_DrawBackground,
-                scaleToInventory: true);
-            WingDyeSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipDye,
-                conditions: WingDyeSlot_Conditions, drawBackground: WingDyeSlot_DrawBackground,
-                scaleToInventory: true);
+            EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory, hoverText: "Wings",
+                conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
+            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity, hoverText: "Social Wings",
+                conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
+            WingDyeSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipDye, conditions: WingDyeSlot_Conditions,
+                drawBackground: WingDyeSlot_DrawBackground, scaleToInventory: true);
             VanityWingSlot.Partner = EquipWingSlot;
-            EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity =
-                WingDyeSlot.BackOpacity = .8f;
+            EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = WingDyeSlot.BackOpacity = .8f;
 
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
