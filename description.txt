@@ -22,6 +22,9 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, to t
 * VVV101 for released updated version
 
 [Changelog]
+v1.2.10 2017-11-06
+* Compiled for tModLoader v0.10.1
+
 v1.2.9  2017-07-12
 * Shows hover text on wing slots
 
