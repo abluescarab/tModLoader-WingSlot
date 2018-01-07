@@ -41,26 +41,23 @@ namespace WingSlot {
             EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = WingDyeSlot.BackOpacity = .8f;
 
             // Big thanks to thegamemaster1234 for the example code used to write this!
-            wingsDye = new PlayerLayer(UIUtils.Mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
+            wingsDye = new PlayerLayer(mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
                 Player player = drawInfo.drawPlayer;
-                WingSlotPlayer wsp = player.GetModPlayer<WingSlotPlayer>(UIUtils.Mod);
+                WingSlotPlayer wsp = player.GetModPlayer<WingSlotPlayer>(mod);
                 Item wings = wsp.GetDyedWings();
                 Item dye = wsp.WingDyeSlot.Item;
-                int index = Main.playerDrawData.Count - 1;
 
                 if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active ||
                   (wsp.VanityWingSlot.Item.stack <= 0 && !wsp.EquipWingSlot.ItemVisible && player.wingFrame == 0))
                     return;
 
-                if(wings.flame)
-                    index -= 1;
+                int shader = GameShaders.Armor.GetShaderIdFromItemId(dye.type);
 
-                if(index < 0 || index > Main.playerDrawData.Count)
-                    return;
-                
-                DrawData data = Main.playerDrawData[index];
-                data.shader = GameShaders.Armor.GetShaderIdFromItemId(dye.type);
-                Main.playerDrawData[index] = data;
+                for(int i = 0; i < Main.playerDrawData.Count; i++) {
+                    DrawData data = Main.playerDrawData[i];
+                    data.shader = shader;
+                    Main.playerDrawData[i] = data;
+                }
             });
 
             InitializeWings();
