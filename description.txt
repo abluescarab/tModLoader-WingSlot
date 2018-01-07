@@ -21,6 +21,9 @@ This mod adds a dedicated wing slot to the armor and accessories page of the inv
 * VVV101 for released updated version
 
 [Changelog]
+v1.3.1  2018-01-07
+* Removed boffin from authors
+
 v1.3.0  2018-01-07
 * Moved slots back to main equipment page
 * Fix: dyes should apply correctly
