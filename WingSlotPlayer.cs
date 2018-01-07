@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameInput;
 using Terraria.Graphics.Shaders;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -252,21 +253,29 @@ namespace WingSlot {
                 Main.inventoryScale = 0.85f;
 
                 if(Main.mapEnabled) {
+                    int adjustY = 600;
+
                     if(!Main.mapFullscreen && Main.mapStyle == 1) {
                         mapH = 256;
                     }
 
-                    if((mapH + 600) > Main.screenHeight) {
-                        mapH = Main.screenHeight - 600;
+                    if(Main.player[Main.myPlayer].ExtraAccessorySlotsShouldShow) {
+                        adjustY = 610 + PlayerInput.UsingGamepad.ToInt() * 30;
+                    }
+
+                    if((mapH + adjustY) > Main.screenHeight) {
+                        mapH = Main.screenHeight - adjustY;
                     }
                 }
 
-                rX = Main.screenWidth - 92 - (47 * 2);
-                rY = mapH + 174;
+                int slotCount = 7 + Main.player[Main.myPlayer].extraAccessorySlots;
 
-                if(Main.netMode == 1) {
-                    rX -= 47;
+                if(Main.screenHeight < 900) {
+                    slotCount--;
                 }
+
+                rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
+                rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
 
                 EquipWingSlot.Position = new Vector2(rX, rY);
                 VanityWingSlot.Position = new Vector2(rX -= 47, rY);
@@ -291,7 +300,7 @@ namespace WingSlot {
         /// </summary>
         /// <returns>whether to draw the slots</returns>
         public bool ShouldDrawSlots() {
-            if(Main.playerInventory && Main.EquipPage == 2) {
+            if(Main.playerInventory && Main.EquipPage == 0) {
                 return true;
             }
 

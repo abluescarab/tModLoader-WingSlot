@@ -3,14 +3,13 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 
 ---
 
-This mod adds a dedicated wing slot to the equipment page of the inventory, to the left of the dyes.
+This mod adds a dedicated wing slot to the armor and accessories page of the inventory (next to the defense icon).
 
-* Right-click to equip.
-* Shift-right-click to equip in the vanity slot.
-* Right-click vanity wings to switch with equipped wings.
-* Left-click equipped wings to unequip.
+* Left-click a set of wings or a dye, then place it in the slot.
+* Right-click to equip wings.
+* Shift-right-click to equip wings in the vanity slot.
+* Right-click vanity wings to swap with equipped wings.
 * Left-click the eye icon on the equip slot to toggle visibility.
-* Left-click a dye to pick it up, then place it in the dye slot.
 
 [Known Issues]
 * Yoraiz0r's Spell eye glow doesn't work
@@ -22,6 +21,10 @@ This mod adds a dedicated wing slot to the equipment page of the inventory, to t
 * VVV101 for released updated version
 
 [Changelog]
+v1.3.0  2018-01-07
+* Moved slots back to main equipment page
+* Fix: dyes should apply correctly
+
 v1.2.10 2017-11-06
 * Compiled for tModLoader v0.10.1
 
