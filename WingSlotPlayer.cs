@@ -27,13 +27,6 @@ namespace WingSlot {
         public UIItemSlot WingDyeSlot;
 
         /// <summary>
-        /// Whether to autoload the ModPlayer.
-        /// </summary>
-        public override bool Autoload(ref string name) {
-            return true;
-        }
-
-        /// <summary>
         /// Initialize the ModPlayer.
         /// </summary>
         public override void Initialize() {

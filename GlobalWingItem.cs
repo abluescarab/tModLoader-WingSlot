@@ -5,10 +5,6 @@ using TerraUI.Utilities;
 
 namespace WingSlot {
     class GlobalWingItem : GlobalItem {
-        public override bool Autoload(ref string name) {
-            return true;
-        }
-
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
             if(item.wingSlot > 0) {
                 return false;
