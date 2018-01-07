@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.ModLoader;
 using TerraUI.Utilities;
@@ -10,7 +8,7 @@ namespace WingSlot {
         public override bool Autoload(ref string name) {
             return true;
         }
-        
+
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
             if(item.wingSlot > 0) {
                 return false;
