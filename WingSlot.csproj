@@ -48,15 +48,12 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TerraUI\Enums\Contexts.cs" />
-    <Compile Include="TerraUI\Enums\MouseButtons.cs" />
-    <Compile Include="TerraUI\Enums\Sounds.cs" />
+    <Compile Include="TerraUI\Events.cs" />
+    <Compile Include="TerraUI\MouseButtons.cs" />
     <Compile Include="TerraUI\Objects\UIItemSlot.cs" />
     <Compile Include="TerraUI\Objects\UILabel.cs" />
     <Compile Include="TerraUI\Objects\UIObject.cs" />
     <Compile Include="TerraUI\Objects\UIObjectBordered.cs" />
-    <Compile Include="TerraUI\Utilities\BaseTextureDrawing.cs" />
-    <Compile Include="TerraUI\Utilities\Events.cs" />
     <Compile Include="TerraUI\Utilities\KeyboardUtils.cs" />
     <Compile Include="TerraUI\Utilities\MouseUtils.cs" />
     <Compile Include="TerraUI\Utilities\UIColors.cs" />
@@ -67,17 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TerraUI\Textures\1x1.png" />
-    <Content Include="TerraUI\Textures\Background.png" />
-    <Content Include="TerraUI\Textures\BackgroundSolid.png" />
-    <Content Include="TerraUI\Textures\Buttons\Cross.png" />
-    <Content Include="TerraUI\Textures\Buttons\Enter.png" />
-    <Content Include="TerraUI\Textures\Buttons\Integrate.png" />
-    <Content Include="TerraUI\Textures\Corner.png" />
-    <Content Include="TerraUI\Textures\CornerSolid.png" />
-    <Content Include="TerraUI\Textures\Side.png" />
-    <Content Include="TerraUI\Textures\SideSolid.png" />
-    <Content Include="TerraUI\Textures\Tick.png" />
     <Content Include="WingSlotBackground.png" />
     <Content Include="build.txt" />
     <Content Include="description.txt" />
