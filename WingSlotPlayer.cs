@@ -270,8 +270,8 @@ namespace WingSlot {
 
                 int slotCount = 7 + Main.player[Main.myPlayer].extraAccessorySlots;
 
-                if(Main.screenHeight < 900) {
-                    slotCount--;
+                if((Main.screenHeight < 900) && (slotCount >= 8)) {
+                    slotCount = 7;
                 }
 
                 rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
