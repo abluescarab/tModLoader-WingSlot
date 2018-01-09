@@ -7,12 +7,12 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using TerraUI;
+using Terraria.UI;
 using TerraUI.Objects;
-using TerraUI.Utilities;
 
 namespace WingSlot {
     internal class WingSlotPlayer : ModPlayer {
@@ -31,12 +31,12 @@ namespace WingSlot {
         /// Initialize the ModPlayer.
         /// </summary>
         public override void Initialize() {
-            EquipWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessory, hoverText: "Wings",
+            EquipWingSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessory, hoverText: "Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
-            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipAccessoryVanity, hoverText:
+            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessoryVanity, hoverText:
                 Language.GetTextValue("LegacyInterface.11") + " Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
-            WingDyeSlot = new UIItemSlot(Vector2.Zero, context: Contexts.EquipDye, conditions: WingDyeSlot_Conditions,
+            WingDyeSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipDye, conditions: WingDyeSlot_Conditions,
                 drawBackground: WingDyeSlot_DrawBackground, scaleToInventory: true);
             VanityWingSlot.Partner = EquipWingSlot;
             EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = WingDyeSlot.BackOpacity = .8f;
@@ -136,11 +136,11 @@ namespace WingSlot {
                 int context = ReadWingsLegacy(ref wings1, reader);
                 ReadWingsLegacy(ref wings2, reader);
 
-                if(context == (int)Contexts.EquipAccessory) {
+                if(context == ItemSlot.Context.EquipAccessory) {
                     SetWings(false, wings1);
                     SetWings(true, wings2);
                 }
-                else if(context == (int)Contexts.EquipAccessoryVanity) {
+                else if(context == ItemSlot.Context.EquipAccessoryVanity) {
                     SetWings(true, wings1);
                     SetWings(false, wings2);
                 }
@@ -290,8 +290,6 @@ namespace WingSlot {
                 EquipWingSlot.Update();
                 VanityWingSlot.Update();
                 WingDyeSlot.Update();
-
-                UIUtils.UpdateInput();
             }
         }
 
@@ -377,7 +375,7 @@ namespace WingSlot {
             if(fromSlot > -1) {
                 item.favorited = false;
                 player.inventory[fromSlot] = slot.Item.Clone();
-                UIUtils.PlaySound(Sounds.Grab);
+                Main.PlaySound(SoundID.Grab);
                 Recipe.FindRecipes();
                 SetWings(isVanity, item);
             }
@@ -394,7 +392,7 @@ namespace WingSlot {
             if(fromSlot > -1) {
                 item.favorited = false;
                 player.inventory[fromSlot] = WingDyeSlot.Item.Clone();
-                UIUtils.PlaySound(Sounds.Grab);
+                Main.PlaySound(SoundID.Grab);
                 Recipe.FindRecipes();
                 SetDye(item);
             }
