@@ -5,7 +5,6 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.IO;
-using Terraria.ModLoader;
 
 namespace ModConfiguration {
     public class ModConfig {
@@ -136,13 +135,6 @@ namespace ModConfiguration {
         }
 
         /// <summary>
-        /// Perform an action on each ModOption in the configuration file.
-        /// </summary>
-        public void ForEach(Action<ModOption> action) {
-            _options.Values.ToList().ForEach(action);
-        }
-
-        /// <summary>
         /// Sorts the elements of a sequence in descending order according to a key.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -157,6 +149,13 @@ namespace ModConfiguration {
         /// </summary>
         public IOrderedEnumerable<ModOption> OrderByDescending<T>(Func<ModOption, T> keySelector, IComparer<T> comparer) {
             return _options.Values.ToList().OrderByDescending(keySelector, comparer);
+        }
+
+        /// <summary>
+        /// Perform an action on each ModOption in the configuration file.
+        /// </summary>
+        public void ForEach(Action<ModOption> action) {
+            _options.Values.ToList().ForEach(action);
         }
 
         /// <summary>
