@@ -165,7 +165,7 @@ namespace WingSlot {
         /// </summary>
         private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
-
+            
             if(ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
@@ -203,7 +203,7 @@ namespace WingSlot {
         /// </summary>
         private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
-
+            
             if(ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
@@ -244,7 +244,9 @@ namespace WingSlot {
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public void Draw(SpriteBatch spriteBatch) {
-            if(ShouldDrawSlots()) {
+            int slotLocation = 1;
+
+            if(ShouldDrawSlots(out slotLocation)) {
                 int mapH = 0;
                 int rX = 0;
                 int rY = 0;
@@ -253,30 +255,48 @@ namespace WingSlot {
                 Main.inventoryScale = 0.85f;
 
                 if(Main.mapEnabled) {
-                    int adjustY = 600;
-
                     if(!Main.mapFullscreen && Main.mapStyle == 1) {
                         mapH = 256;
                     }
-
-                    if(Main.player[Main.myPlayer].ExtraAccessorySlotsShouldShow) {
-                        adjustY = 610 + PlayerInput.UsingGamepad.ToInt() * 30;
-                    }
-
-                    if((mapH + adjustY) > Main.screenHeight) {
-                        mapH = Main.screenHeight - adjustY;
-                    }
                 }
 
-                int slotCount = 7 + Main.player[Main.myPlayer].extraAccessorySlots;
+                if(slotLocation == 2) {
+                    if(Main.mapEnabled) {
+                        if((mapH + 600) > Main.screenHeight) {
+                            mapH = Main.screenHeight - 600;
+                        }
+                    }
 
-                if((Main.screenHeight < 900) && (slotCount >= 8)) {
-                    slotCount = 7;
+                    rX = Main.screenWidth - 92 - (47 * 2);
+                    rY = mapH + 174;
+
+                    if(Main.netMode == 1) {
+                        rX -= 47;
+                    }
                 }
+                else {
+                    if(Main.mapEnabled) {
+                        int adjustY = 600;
 
-                rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
-                rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
+                        if(Main.player[Main.myPlayer].ExtraAccessorySlotsShouldShow) {
+                            adjustY = 610 + PlayerInput.UsingGamepad.ToInt() * 30;
+                        }
 
+                        if((mapH + adjustY) > Main.screenHeight) {
+                            mapH = Main.screenHeight - adjustY;
+                        }
+                    }
+
+                    int slotCount = 7 + Main.player[Main.myPlayer].extraAccessorySlots;
+
+                    if((Main.screenHeight < 900) && (slotCount >= 8)) {
+                        slotCount = 7;
+                    }
+
+                    rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
+                    rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
+                }
+                
                 EquipWingSlot.Position = new Vector2(rX, rY);
                 VanityWingSlot.Position = new Vector2(rX -= 47, rY);
                 WingDyeSlot.Position = new Vector2(rX -= 47, rY);
@@ -297,12 +317,27 @@ namespace WingSlot {
         /// Whether to draw the UIItemSlots.
         /// </summary>
         /// <returns>whether to draw the slots</returns>
-        public bool ShouldDrawSlots() {
-            if(Main.playerInventory && Main.EquipPage == 0) {
-                return true;
+        public bool ShouldDrawSlots(out int slotLocation) {
+            if(Main.playerInventory) {
+                slotLocation = Convert.ToInt32(WingSlot.Config.Get(WingSlot.SLOT_LOCATION));
+
+                if((slotLocation == 1 && Main.EquipPage == 0) ||
+                   (slotLocation == 2 && Main.EquipPage == 2)) {
+                    return true;
+                }
             }
 
+            slotLocation = 1;
             return false;
+        }
+        
+        /// <summary>
+        /// Whether to draw the UIItemSlots.
+        /// </summary>
+        /// <returns>whether to draw the slots</returns>
+        public bool ShouldDrawSlots() {
+            int slotLocation = 1;
+            return ShouldDrawSlots(out slotLocation);
         }
 
         /// <summary>
