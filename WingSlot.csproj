@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ReLogic">
       <HintPath>..\..\References\ReLogic.dll</HintPath>
     </Reference>
@@ -48,6 +51,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModConfig.cs" />
     <Compile Include="TerraUI\Events.cs" />
     <Compile Include="TerraUI\MouseButtons.cs" />
     <Compile Include="TerraUI\Objects\UIItemSlot.cs" />
@@ -68,7 +72,6 @@
     <Content Include="build.txt" />
     <Content Include="description.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\Terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>

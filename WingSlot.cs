@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using ModConfiguration;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace WingSlot {
     public class WingSlot : Mod {
+        public const string ALLOW_ACCESSORY_SLOTS = "allowWingsInAccessorySlots";
         public const string WING_SLOT_BACK_TEX = "WingSlotBackground";
+        public static readonly ModConfig Config = new ModConfig("WingSlot");
 
         public override void Load() {
             Properties = new ModProperties() {
@@ -15,6 +18,9 @@ namespace WingSlot {
 
             TerraUI.Utilities.UIUtils.Mod = this;
             TerraUI.Utilities.UIUtils.Subdirectory = "TerraUI";
+            
+            Config.Add(ALLOW_ACCESSORY_SLOTS, false);
+            Config.Load();
         }
 
         public override void PostDrawInterface(SpriteBatch spriteBatch) {

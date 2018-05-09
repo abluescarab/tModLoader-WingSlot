@@ -6,7 +6,7 @@ using TerraUI.Utilities;
 namespace WingSlot {
     class GlobalWingItem : GlobalItem {
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
-            if(item.wingSlot > 0) {
+            if(!(bool)WingSlot.Config.Get(WingSlot.ALLOW_ACCESSORY_SLOTS) && (item.wingSlot > 0)) {
                 return false;
             }
 
