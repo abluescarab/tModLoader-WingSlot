@@ -5,6 +5,10 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 
 This mod adds a dedicated wing slot to the armor and accessories page of the inventory (next to the defense icon).
 
+Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\WingSlot.json)! It contains two options:
+* allowWingsInAccessorySlots - allows equipping wings in normal accessory slots (default: false, options: true or false)
+* slotLocation - changes the slots' location (default: 1, options: 1 or 2)
+
 * Left-click a set of wings or a dye, then place it in the slot.
 * Right-click to equip wings.
 * Shift-right-click to equip wings in the vanity slot.
@@ -19,8 +23,13 @@ This mod adds a dedicated wing slot to the armor and accessories page of the inv
 * Boffin for TerraUI
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
+* vizthex for suggesting slot location option
 
 [Changelog]
+v1.4.0  2018-00-00
+* Setting to allow equipping wings in normal accessory slot
+* Setting to change slots' location
+
 v1.3.2  2018-01-09
 * Fix: slots move correctly based on window size
 
