@@ -162,17 +162,30 @@ namespace ModConfiguration {
         /// Load the configuration from <see cref="FilePath"/>, or write to a new file if it doesn't exist.
         /// </summary>
         public void Load() {
-            if(!Read()) {
-                ErrorLogger.Log("Failed to read " + FilePath + ". Recreating config...");
-                Save();
+            Read();
+
+            var prefKeys = _preferences.GetAllKeys();
+
+            if((prefKeys.Count > 0 && _options.Keys.Count > 0) &&
+               (_options.Keys.Except(prefKeys).Any() || prefKeys.Except(_options.Keys).Any())) {
+                int fileIndex = 0;
+                string newFile = FilePath.Remove(FilePath.LastIndexOf('.')) + ".bak";
+
+                while(File.Exists(newFile + fileIndex)) {
+                    fileIndex++;
+                }
+
+                File.Copy(FilePath, newFile + fileIndex, true);
             }
+
+            Save();
         }
 
         /// <summary>
         /// Read the configuration from <see cref="FilePath"/>.
         /// </summary>
         /// <returns>whether a configuration file exists</returns>
-        private bool Read() {
+        private void Read() {
             if(_preferences.Load()) {
                 foreach(ModOption opt in _options.Values) {
                     object value = _preferences.Get(opt.Name, opt.Value);
@@ -187,11 +200,7 @@ namespace ModConfiguration {
                         opt.Value = value;
                     }
                 }
-
-                return true;
             }
-
-            return false;
         }
 
         /// <summary>
