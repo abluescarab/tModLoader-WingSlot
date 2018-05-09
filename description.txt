@@ -26,6 +26,9 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * vizthex for suggesting slot location option
 
 [Changelog]
+v1.4.1  2018-05-09
+* Fixed release date in description
+
 v1.4.0  2018-05-09
 * Setting to allow equipping wings in normal accessory slot
 * Setting to change slots' location
