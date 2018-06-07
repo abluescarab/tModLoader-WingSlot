@@ -60,6 +60,7 @@ namespace WingSlot {
         private void SendPacket(PacketMessageType message, int whoAmI) {
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)message);
+            packet.Write(player.whoAmI);
             packet.Write(whoAmI);
             packet.Send();
         }
@@ -67,8 +68,9 @@ namespace WingSlot {
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
             ModPacket packet = mod.GetPacket();
             WingSlotPlayer modPlayer = player.GetModPlayer<WingSlotPlayer>();
-            packet.Write(player.whoAmI);
+
             packet.Write((byte)PacketMessageType.All);
+            packet.Write(player.whoAmI);
             packet.Write(modPlayer.EquipSlot.Item.whoAmI);
             packet.Write(modPlayer.VanitySlot.Item.whoAmI);
             packet.Write(modPlayer.DyeSlot.Item.whoAmI);
