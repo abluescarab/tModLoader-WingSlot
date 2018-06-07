@@ -59,8 +59,8 @@ namespace WingSlot {
 
         private void SendPacket(PacketMessageType message, int whoAmI) {
             ModPacket packet = mod.GetPacket();
-            packet.Write(whoAmI);
             packet.Write((byte)message);
+            packet.Write(whoAmI);
             packet.Send();
         }
 
