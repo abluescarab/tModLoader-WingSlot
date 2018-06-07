@@ -23,33 +23,33 @@ namespace WingSlot {
         private const string WING_DYE_LAYER = "WingDye";
         private PlayerLayer wingsDye;
 
-        public UIItemSlot EquipWingSlot;
-        public UIItemSlot VanityWingSlot;
-        public UIItemSlot WingDyeSlot;
+        public UIItemSlot EquipSlot;
+        public UIItemSlot VanitySlot;
+        public UIItemSlot DyeSlot;
 
         /// <summary>
         /// Initialize the ModPlayer.
         /// </summary>
         public override void Initialize() {
-            EquipWingSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessory, hoverText: "Wings",
+            EquipSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessory, hoverText: "Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
-            VanityWingSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessoryVanity, hoverText:
+            VanitySlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessoryVanity, hoverText:
                 Language.GetTextValue("LegacyInterface.11") + " Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
-            WingDyeSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipDye, conditions: WingDyeSlot_Conditions,
+            DyeSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipDye, conditions: WingDyeSlot_Conditions,
                 drawBackground: WingDyeSlot_DrawBackground, scaleToInventory: true);
-            VanityWingSlot.Partner = EquipWingSlot;
-            EquipWingSlot.BackOpacity = VanityWingSlot.BackOpacity = WingDyeSlot.BackOpacity = .8f;
+            VanitySlot.Partner = EquipSlot;
+            EquipSlot.BackOpacity = VanitySlot.BackOpacity = DyeSlot.BackOpacity = .8f;
 
             // Big thanks to thegamemaster1234 for the example code used to write this!
             wingsDye = new PlayerLayer(mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
                 Player player = drawInfo.drawPlayer;
                 WingSlotPlayer wsp = player.GetModPlayer<WingSlotPlayer>(mod);
                 Item wings = wsp.GetDyedWings();
-                Item dye = wsp.WingDyeSlot.Item;
+                Item dye = wsp.DyeSlot.Item;
 
                 if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active ||
-                  (wsp.VanityWingSlot.Item.stack <= 0 && !wsp.EquipWingSlot.ItemVisible && player.wingFrame == 0))
+                  (wsp.VanitySlot.Item.stack <= 0 && !wsp.EquipSlot.ItemVisible && player.wingFrame == 0))
                     return;
 
                 int shader = GameShaders.Armor.GetShaderIdFromItemId(dye.type);
@@ -78,12 +78,12 @@ namespace WingSlot {
         /// Update player with the equipped wings.
         /// </summary>
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
-            Item wings = EquipWingSlot.Item;
-            Item vanityWings = VanityWingSlot.Item;
+            Item wings = EquipSlot.Item;
+            Item vanityWings = VanitySlot.Item;
 
             if(wings.stack > 0) {
                 player.VanillaUpdateEquip(wings);
-                player.VanillaUpdateAccessory(player.whoAmI, wings, !EquipWingSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
+                player.VanillaUpdateAccessory(player.whoAmI, wings, !EquipSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
                     ref tileRangeBuff);
             }
 
@@ -97,10 +97,10 @@ namespace WingSlot {
         /// </summary>
         public override TagCompound Save() {
             return new TagCompound {
-                { HIDDEN_TAG, EquipWingSlot.ItemVisible },
-                { WINGS_TAG, ItemIO.Save(EquipWingSlot.Item) },
-                { VANITY_WINGS_TAG, ItemIO.Save(VanityWingSlot.Item) },
-                { WING_DYE_TAG, ItemIO.Save(WingDyeSlot.Item) }
+                { HIDDEN_TAG, EquipSlot.ItemVisible },
+                { WINGS_TAG, ItemIO.Save(EquipSlot.Item) },
+                { VANITY_WINGS_TAG, ItemIO.Save(VanitySlot.Item) },
+                { WING_DYE_TAG, ItemIO.Save(DyeSlot.Item) }
             };
         }
 
@@ -111,7 +111,7 @@ namespace WingSlot {
             SetWings(false, ItemIO.Load(tag.GetCompound(WINGS_TAG)));
             SetWings(true, ItemIO.Load(tag.GetCompound(VANITY_WINGS_TAG)));
             SetDye(ItemIO.Load(tag.GetCompound(WING_DYE_TAG)));
-            EquipWingSlot.ItemVisible = tag.GetBool(HIDDEN_TAG);
+            EquipSlot.ItemVisible = tag.GetBool(HIDDEN_TAG);
         }
 
         /// <summary>
@@ -128,10 +128,10 @@ namespace WingSlot {
                 try { hide = reader.ReadInt32(); }
                 catch(EndOfStreamException) { hide = 0; }
 
-                EquipWingSlot.ItemVisible = (hide == 1 ? false : true);
+                EquipSlot.ItemVisible = (hide == 1 ? false : true);
 
-                Item wings1 = EquipWingSlot.Item;
-                Item wings2 = VanityWingSlot.Item;
+                Item wings1 = EquipSlot.Item;
+                Item wings2 = VanitySlot.Item;
 
                 int context = ReadWingsLegacy(ref wings1, reader);
                 ReadWingsLegacy(ref wings2, reader);
@@ -297,19 +297,19 @@ namespace WingSlot {
                     rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
                 }
                 
-                EquipWingSlot.Position = new Vector2(rX, rY);
-                VanityWingSlot.Position = new Vector2(rX -= 47, rY);
-                WingDyeSlot.Position = new Vector2(rX -= 47, rY);
+                EquipSlot.Position = new Vector2(rX, rY);
+                VanitySlot.Position = new Vector2(rX -= 47, rY);
+                DyeSlot.Position = new Vector2(rX -= 47, rY);
 
-                VanityWingSlot.Draw(spriteBatch);
-                EquipWingSlot.Draw(spriteBatch);
-                WingDyeSlot.Draw(spriteBatch);
+                VanitySlot.Draw(spriteBatch);
+                EquipSlot.Draw(spriteBatch);
+                DyeSlot.Draw(spriteBatch);
 
                 Main.inventoryScale = origScale;
 
-                EquipWingSlot.Update();
-                VanityWingSlot.Update();
-                WingDyeSlot.Update();
+                EquipSlot.Update();
+                VanitySlot.Update();
+                DyeSlot.Update();
             }
         }
 
@@ -344,12 +344,12 @@ namespace WingSlot {
         /// Initialize the items in the UIItemSlots.
         /// </summary>
         private void InitializeWings() {
-            EquipWingSlot.Item = new Item();
-            VanityWingSlot.Item = new Item();
-            WingDyeSlot.Item = new Item();
-            EquipWingSlot.Item.SetDefaults();
-            VanityWingSlot.Item.SetDefaults();
-            WingDyeSlot.Item.SetDefaults();
+            EquipSlot.Item = new Item();
+            VanitySlot.Item = new Item();
+            DyeSlot.Item = new Item();
+            EquipSlot.Item.SetDefaults();
+            VanitySlot.Item.SetDefaults();
+            DyeSlot.Item.SetDefaults();
         }
 
         /// <summary>
@@ -359,10 +359,10 @@ namespace WingSlot {
         /// <param name="item">wings</param>
         public void SetWings(bool isVanity, Item item) {
             if(!isVanity) {
-                EquipWingSlot.Item = item.Clone();
+                EquipSlot.Item = item.Clone();
             }
             else {
-                VanityWingSlot.Item = item.Clone();
+                VanitySlot.Item = item.Clone();
             }
         }
 
@@ -372,12 +372,12 @@ namespace WingSlot {
         /// <param name="isVanity">whether to unequip from the vanity slot</param>
         public void ClearWings(bool isVanity) {
             if(!isVanity) {
-                EquipWingSlot.Item = new Item();
-                EquipWingSlot.Item.SetDefaults();
+                EquipSlot.Item = new Item();
+                EquipSlot.Item.SetDefaults();
             }
             else {
-                VanityWingSlot.Item = new Item();
-                VanityWingSlot.Item.SetDefaults();
+                VanitySlot.Item = new Item();
+                VanitySlot.Item.SetDefaults();
             }
         }
 
@@ -386,15 +386,15 @@ namespace WingSlot {
         /// </summary>
         /// <param name="item">dye</param>
         public void SetDye(Item item) {
-            WingDyeSlot.Item = item.Clone();
+            DyeSlot.Item = item.Clone();
         }
 
         /// <summary>
         /// Clear the wing dye.
         /// </summary>
         public void ClearDye() {
-            WingDyeSlot.Item = new Item();
-            WingDyeSlot.Item.SetDefaults();
+            DyeSlot.Item = new Item();
+            DyeSlot.Item.SetDefaults();
         }
 
         /// <summary>
@@ -403,7 +403,7 @@ namespace WingSlot {
         /// <param name="isVanity">whether the wings should go in the vanity slot</param>
         /// <param name="item">wings</param>
         public void EquipWings(bool isVanity, Item item) {
-            UIItemSlot slot = (isVanity ? VanityWingSlot : EquipWingSlot);
+            UIItemSlot slot = (isVanity ? VanitySlot : EquipSlot);
             int fromSlot = Array.FindIndex(player.inventory, i => i == item);
 
             // from inv to slot
@@ -426,7 +426,7 @@ namespace WingSlot {
             // from inv to slot
             if(fromSlot > -1) {
                 item.favorited = false;
-                player.inventory[fromSlot] = WingDyeSlot.Item.Clone();
+                player.inventory[fromSlot] = DyeSlot.Item.Clone();
                 Main.PlaySound(SoundID.Grab);
                 Recipe.FindRecipes();
                 SetDye(item);
@@ -438,11 +438,11 @@ namespace WingSlot {
         /// </summary>
         /// <returns>dyed wings</returns>
         public Item GetDyedWings() {
-            if(VanityWingSlot.Item.stack > 0) {
-                return VanityWingSlot.Item;
+            if(VanitySlot.Item.stack > 0) {
+                return VanitySlot.Item;
             }
-            else if(EquipWingSlot.Item.stack > 0) {
-                return EquipWingSlot.Item;
+            else if(EquipSlot.Item.stack > 0) {
+                return EquipSlot.Item;
             }
 
             return new Item();
