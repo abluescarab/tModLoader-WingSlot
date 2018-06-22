@@ -21,7 +21,6 @@ namespace WingSlot {
         private const string VANITY_WINGS_TAG = "vanitywings";
         private const string WING_DYE_TAG = "wingdye";
         private const string WING_DYE_LAYER = "WingDye";
-        private PlayerLayer wingsDye;
 
         public UIItemSlot EquipSlot;
         public UIItemSlot VanitySlot;
@@ -36,43 +35,27 @@ namespace WingSlot {
             VanitySlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipAccessoryVanity, hoverText:
                 Language.GetTextValue("LegacyInterface.11") + " Wings",
                 conditions: Slot_Conditions, drawBackground: Slot_DrawBackground, scaleToInventory: true);
-            DyeSlot = new UIItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipDye, conditions: WingDyeSlot_Conditions,
+            DyeSlot = new UIDyeItemSlot(Vector2.Zero, context: ItemSlot.Context.EquipDye, conditions: WingDyeSlot_Conditions,
                 drawBackground: WingDyeSlot_DrawBackground, scaleToInventory: true);
             VanitySlot.Partner = EquipSlot;
             EquipSlot.BackOpacity = VanitySlot.BackOpacity = DyeSlot.BackOpacity = .8f;
 
-            // Big thanks to thegamemaster1234 for the example code used to write this!
-            wingsDye = new PlayerLayer(mod.Name, WING_DYE_LAYER, delegate (PlayerDrawInfo drawInfo) {
-                Player player = drawInfo.drawPlayer;
-                WingSlotPlayer wsp = player.GetModPlayer<WingSlotPlayer>(mod);
-                Item wings = wsp.GetDyedWings();
-                Item dye = wsp.DyeSlot.Item;
-
-                if(dye.stack <= 0 || wings.stack <= 0 || !wings.active || wings.noUseGraphic || player.mount.Active ||
-                  (wsp.VanitySlot.Item.stack <= 0 && !wsp.EquipSlot.ItemVisible && player.wingFrame == 0))
-                    return;
-
-                int shader = GameShaders.Armor.GetShaderIdFromItemId(dye.type);
-
-                for(int i = 0; i < Main.playerDrawData.Count; i++) {
-                    DrawData data = Main.playerDrawData[i];
-                    data.shader = shader;
-                    Main.playerDrawData[i] = data;
-                }
-            });
-
             InitializeWings();
         }
 
-        /// <summary>
-        /// Modify draw layers to draw the wing dye.
-        /// </summary>
-        /// <param name="layers"></param>
-        public override void ModifyDrawLayers(List<PlayerLayer> layers) {
-            if(!Main.gameMenu) {
-                layers.Insert(layers.IndexOf(PlayerLayer.Wings) + 1, wingsDye);
-            }
-        }
+		public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo)
+		{
+			if (DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0)
+			{
+				if (EquipSlot.Item.wingSlot > 0)
+					drawInfo.wingShader = DyeSlot.Item.dye;
+			}
+			if (DyeSlot.Item != null && !VanitySlot.Item.IsAir)
+			{
+				if (VanitySlot.Item.wingSlot > 0)
+					drawInfo.wingShader = DyeSlot.Item.dye;
+			}
+		}
 
         /// <summary>
         /// Update player with the equipped wings.
@@ -91,6 +74,24 @@ namespace WingSlot {
                 player.VanillaUpdateVanityAccessory(vanityWings);
             }
         }
+
+		/// <summary>
+		/// Since there is no tModLoader hook in UpdateDyes, we use PreUpdateBuffs which is right after that.
+		/// </summary>
+		public override void PreUpdateBuffs()
+		{
+			// A little redundant code, but mirrors vanilla code exactly.
+			if(DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0)
+			{
+				if(EquipSlot.Item.wingSlot > 0)
+					player.cWings = DyeSlot.Item.dye;
+			}
+			if (DyeSlot.Item != null && !VanitySlot.Item.IsAir)
+			{
+				if (VanitySlot.Item.wingSlot > 0)
+					player.cWings = DyeSlot.Item.dye;
+			}
+		}
 
         /// <summary>
         /// Save the mod settings.
@@ -347,9 +348,9 @@ namespace WingSlot {
             EquipSlot.Item = new Item();
             VanitySlot.Item = new Item();
             DyeSlot.Item = new Item();
-            EquipSlot.Item.SetDefaults();
-            VanitySlot.Item.SetDefaults();
-            DyeSlot.Item.SetDefaults();
+            EquipSlot.Item.SetDefaults(0, true); // Can remove "0, true" once 0.10.1.5 comes out.
+            VanitySlot.Item.SetDefaults(0, true);
+            DyeSlot.Item.SetDefaults(0, true);
         }
 
         /// <summary>

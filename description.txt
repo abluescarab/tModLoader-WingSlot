@@ -104,9 +104,9 @@ v1.1.1  2016-08-13
 
 v1.1.0  2016-08-10
 * Added vanity slot
-* Visiblity button added to wing slot
-* Visiblity can be changed if the wing slot is empty
-* Sound is played when visiblity is changed
+* Visibility button added to wing slot
+* Visibility can be changed if the wing slot is empty
+* Sound is played when visibility is changed
 * Visibility button must be clicked instead of the whole slot
 * Updated to TerraUI
 
