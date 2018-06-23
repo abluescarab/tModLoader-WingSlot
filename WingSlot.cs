@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ModConfiguration;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using TerraUI.Objects;
 
 namespace WingSlot {
@@ -34,33 +35,49 @@ namespace WingSlot {
 
         public override void HandlePacket(BinaryReader reader, int whoAmI) {
             PacketMessageType message = (PacketMessageType)reader.ReadByte();
-            WingSlotPlayer modPlayer = Main.player[reader.ReadInt32()].GetModPlayer<WingSlotPlayer>();
-            int item = reader.ReadInt32();
+			byte player = reader.ReadByte();
+			WingSlotPlayer modPlayer = Main.player[player].GetModPlayer<WingSlotPlayer>();
 
             switch(message) {
                 case PacketMessageType.All:
-                    HandleItemPacket(ref modPlayer.EquipSlot, item);
-                    HandleItemPacket(ref modPlayer.VanitySlot, reader.ReadInt32());
-                    HandleItemPacket(ref modPlayer.DyeSlot, reader.ReadInt32());
+					modPlayer.EquipSlot.Item = ItemIO.Receive(reader);
+					modPlayer.VanitySlot.Item = ItemIO.Receive(reader);
+					modPlayer.DyeSlot.Item = ItemIO.Receive(reader);
+					if(Main.netMode == 2)
+					{
+						ModPacket packet = GetPacket();
+						packet.Write((byte)PacketMessageType.All);
+						packet.Write(player);
+						ItemIO.Send(modPlayer.EquipSlot.Item, packet);
+						ItemIO.Send(modPlayer.VanitySlot.Item, packet);
+						ItemIO.Send(modPlayer.DyeSlot.Item, packet);
+						packet.Send(-1, whoAmI);
+					}
                     break;
                 case PacketMessageType.EquipSlot:
-                    HandleItemPacket(ref modPlayer.EquipSlot, item);
-                    break;
+					modPlayer.EquipSlot.Item = ItemIO.Receive(reader);
+					if (Main.netMode == 2)
+					{
+						modPlayer.SendSingleItemPacket(PacketMessageType.EquipSlot, modPlayer.EquipSlot.Item, -1, whoAmI);
+					}
+					break;
                 case PacketMessageType.VanitySlot:
-                    HandleItemPacket(ref modPlayer.VanitySlot, item);
-                    break;
+					modPlayer.VanitySlot.Item = ItemIO.Receive(reader);
+					if (Main.netMode == 2)
+					{
+						modPlayer.SendSingleItemPacket(PacketMessageType.VanitySlot, modPlayer.VanitySlot.Item, -1, whoAmI);
+					}
+					break;
                 case PacketMessageType.DyeSlot:
-                    HandleItemPacket(ref modPlayer.DyeSlot, item);
-                    break;
+					modPlayer.DyeSlot.Item = ItemIO.Receive(reader);
+					if (Main.netMode == 2)
+					{
+						modPlayer.SendSingleItemPacket(PacketMessageType.DyeSlot, modPlayer.DyeSlot.Item, -1, whoAmI);
+					}
+					break;
                 default:
                     ErrorLogger.Log("Wing Slot: Unknown message type: " + message);
                     break;
-            }
-        }
-
-        private void HandleItemPacket(ref UIItemSlot slot, int item) {
-            if(slot.Item.whoAmI != item) {
-                slot.Item.CloneDefaults(item);
             }
         }
     }
