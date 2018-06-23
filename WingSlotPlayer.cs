@@ -26,6 +26,50 @@ namespace WingSlot {
         public UIItemSlot VanitySlot;
         public UIItemSlot DyeSlot;
 
+        public override void clientClone(ModPlayer clientClone) {
+            WingSlotPlayer clone = clientClone as WingSlotPlayer;
+
+            if(clone != null) {
+                clone.EquipSlot.Item = EquipSlot.Item.Clone();
+                clone.VanitySlot.Item = VanitySlot.Item.Clone();
+                clone.DyeSlot.Item = DyeSlot.Item.Clone();
+            }
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer) {
+            WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
+
+            if(oldClone.EquipSlot.Item.IsNotTheSameAs(EquipSlot.Item)) {
+                SendSingleItemPacket(PacketMessageType.EquipSlot, EquipSlot.Item, -1, player.whoAmI);
+            }
+
+            if(oldClone.VanitySlot.Item.IsNotTheSameAs(VanitySlot.Item)) {
+                SendSingleItemPacket(PacketMessageType.VanitySlot, VanitySlot.Item, -1, player.whoAmI);
+            }
+
+            if(oldClone.DyeSlot.Item.IsNotTheSameAs(DyeSlot.Item)) {
+                SendSingleItemPacket(PacketMessageType.DyeSlot, DyeSlot.Item, -1, player.whoAmI);
+            }
+        }
+
+        internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)message);
+            packet.Write((byte)player.whoAmI);
+            ItemIO.Send(item, packet);
+            packet.Send(toWho, fromWho);
+        }
+
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)PacketMessageType.All);
+            packet.Write((byte)player.whoAmI);
+            ItemIO.Send(EquipSlot.Item, packet);
+            ItemIO.Send(VanitySlot.Item, packet);
+            ItemIO.Send(DyeSlot.Item, packet);
+            packet.Send(toWho, fromWho);
+        }
+
         /// <summary>
         /// Initialize the ModPlayer.
         /// </summary>
@@ -65,7 +109,6 @@ namespace WingSlot {
             Item vanityWings = VanitySlot.Item;
 
             if(wings.stack > 0) {
-                player.VanillaUpdateEquip(wings);
                 player.VanillaUpdateAccessory(player.whoAmI, wings, !EquipSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
                     ref tileRangeBuff);
             }
@@ -166,7 +209,7 @@ namespace WingSlot {
         /// </summary>
         private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
-            
+
             if(ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
@@ -204,7 +247,7 @@ namespace WingSlot {
         /// </summary>
         private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
-            
+
             if(ShouldDrawSlots()) {
                 slot.OnDrawBackground(spriteBatch);
 
@@ -297,7 +340,7 @@ namespace WingSlot {
                     rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
                     rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
                 }
-                
+
                 EquipSlot.Position = new Vector2(rX, rY);
                 VanitySlot.Position = new Vector2(rX -= 47, rY);
                 DyeSlot.Position = new Vector2(rX -= 47, rY);
@@ -331,7 +374,7 @@ namespace WingSlot {
             slotLocation = 1;
             return false;
         }
-        
+
         /// <summary>
         /// Whether to draw the UIItemSlots.
         /// </summary>
