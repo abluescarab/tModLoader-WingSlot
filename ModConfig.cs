@@ -98,7 +98,7 @@ namespace ModConfiguration {
         public object Get(string name) {
             return (_options.ContainsKey(name) ? _options[name].Value : null);
         }
-        
+
         /// <summary>
         /// Gets all of the configuration options.
         /// </summary>
