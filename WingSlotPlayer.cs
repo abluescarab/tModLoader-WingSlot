@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -87,19 +84,16 @@ namespace WingSlot {
             InitializeWings();
         }
 
-		public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo)
-		{
-			if (DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0)
-			{
-				if (EquipSlot.Item.wingSlot > 0)
-					drawInfo.wingShader = DyeSlot.Item.dye;
-			}
-			if (DyeSlot.Item != null && !VanitySlot.Item.IsAir)
-			{
-				if (VanitySlot.Item.wingSlot > 0)
-					drawInfo.wingShader = DyeSlot.Item.dye;
-			}
-		}
+        public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
+            if(DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0) {
+                if(EquipSlot.Item.wingSlot > 0)
+                    drawInfo.wingShader = DyeSlot.Item.dye;
+            }
+            if(DyeSlot.Item != null && !VanitySlot.Item.IsAir) {
+                if(VanitySlot.Item.wingSlot > 0)
+                    drawInfo.wingShader = DyeSlot.Item.dye;
+            }
+        }
 
         /// <summary>
         /// Update player with the equipped wings.
@@ -118,23 +112,20 @@ namespace WingSlot {
             }
         }
 
-		/// <summary>
-		/// Since there is no tModLoader hook in UpdateDyes, we use PreUpdateBuffs which is right after that.
-		/// </summary>
-		public override void PreUpdateBuffs()
-		{
-			// A little redundant code, but mirrors vanilla code exactly.
-			if(DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0)
-			{
-				if(EquipSlot.Item.wingSlot > 0)
-					player.cWings = DyeSlot.Item.dye;
-			}
-			if (DyeSlot.Item != null && !VanitySlot.Item.IsAir)
-			{
-				if (VanitySlot.Item.wingSlot > 0)
-					player.cWings = DyeSlot.Item.dye;
-			}
-		}
+        /// <summary>
+        /// Since there is no tModLoader hook in UpdateDyes, we use PreUpdateBuffs which is right after that.
+        /// </summary>
+        public override void PreUpdateBuffs() {
+            // A little redundant code, but mirrors vanilla code exactly.
+            if(DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0) {
+                if(EquipSlot.Item.wingSlot > 0)
+                    player.cWings = DyeSlot.Item.dye;
+            }
+            if(DyeSlot.Item != null && !VanitySlot.Item.IsAir) {
+                if(VanitySlot.Item.wingSlot > 0)
+                    player.cWings = DyeSlot.Item.dye;
+            }
+        }
 
         /// <summary>
         /// Save the mod settings.
