@@ -62,6 +62,7 @@
     <Compile Include="TerraUI\Utilities\MouseUtils.cs" />
     <Compile Include="TerraUI\Utilities\UIColors.cs" />
     <Compile Include="TerraUI\Utilities\UIUtils.cs" />
+    <Compile Include="UIDyeItemSlot.cs" />
     <Compile Include="WingSlotPlayer.cs" />
     <Compile Include="GlobalWingItem.cs" />
     <Compile Include="WingSlot.cs" />
