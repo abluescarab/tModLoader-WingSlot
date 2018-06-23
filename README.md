@@ -13,7 +13,8 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 * Yoraiz0r's Spell eye glow doesn't work
 
 ## Credits
-* jopojelly for code that draws a slot to the left of the dyes
+* jopojelly for code that draws a slot to the left of the dyes; for fixing multiplayer issues and various other bugs
 * Boffin for TerraUI
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
+* vizthex for suggesting slot location option
