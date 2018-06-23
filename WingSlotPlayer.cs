@@ -38,44 +38,38 @@ namespace WingSlot {
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer) {
-            WingSlotPlayer modPlayer = clientPlayer as WingSlotPlayer;
+            WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
 
-            if(modPlayer != null) {
-                int whoAmI = clientPlayer.player.whoAmI;
+            if(oldClone.EquipSlot.Item.IsNotTheSameAs(EquipSlot.Item)) {
+                SendSingleItemPacket(PacketMessageType.EquipSlot, EquipSlot.Item, -1, player.whoAmI);
+            }
 
-                if(modPlayer.EquipSlot.Item != EquipSlot.Item) {
-                    SendPacket(PacketMessageType.EquipSlot, whoAmI);
-                }
+            if(oldClone.VanitySlot.Item.IsNotTheSameAs(VanitySlot.Item)) {
+                SendSingleItemPacket(PacketMessageType.VanitySlot, VanitySlot.Item, -1, player.whoAmI);
+            }
 
-                if(modPlayer.VanitySlot.Item != VanitySlot.Item) {
-                    SendPacket(PacketMessageType.VanitySlot, whoAmI);
-                }
-
-                if(modPlayer.DyeSlot.Item != DyeSlot.Item) {
-                    SendPacket(PacketMessageType.DyeSlot, whoAmI);
-                }
+            if(oldClone.DyeSlot.Item.IsNotTheSameAs(DyeSlot.Item)) {
+                SendSingleItemPacket(PacketMessageType.DyeSlot, DyeSlot.Item, -1, player.whoAmI);
             }
         }
 
-        private void SendPacket(PacketMessageType message, int whoAmI) {
+        internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)message);
-            packet.Write(player.whoAmI);
-            packet.Write(whoAmI);
-            packet.Send();
-        }
+            packet.Write((byte)player.whoAmI);
+			ItemIO.Send(item, packet);
+			packet.Send(toWho, fromWho);
+		}
 
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
             ModPacket packet = mod.GetPacket();
-            WingSlotPlayer modPlayer = player.GetModPlayer<WingSlotPlayer>();
-
             packet.Write((byte)PacketMessageType.All);
-            packet.Write(player.whoAmI);
-            packet.Write(modPlayer.EquipSlot.Item.whoAmI);
-            packet.Write(modPlayer.VanitySlot.Item.whoAmI);
-            packet.Write(modPlayer.DyeSlot.Item.whoAmI);
+            packet.Write((byte)player.whoAmI);
+			ItemIO.Send(EquipSlot.Item, packet);
+			ItemIO.Send(VanitySlot.Item, packet);
+			ItemIO.Send(DyeSlot.Item, packet);
             packet.Send(toWho, fromWho);
-        }
+		}
 
         /// <summary>
         /// Initialize the ModPlayer.
