@@ -19,15 +19,23 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * Yoraiz0r's Spell eye glow doesn't work
 
 [Credits]
-* jopojelly for code that draws a slot to the left of the dyes
+* jopojelly for code that draws a slot to the left of the dyes; for fixing multiplayer issues and various other bugs
 * Boffin for TerraUI
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
 * vizthex for suggesting slot location option
 
 [Changelog]
+v1.5.0  2018-06-22
+Thank you, jopojelly, for making this release possible!
+* Added multiplayer functionality
+* Fix: Applies correct dust to wings
+* Fix: Removed WingSlotPlayer.Initialize() lag
+* Fix: Can no longer place multiple dyes in dye slots
+* Fix: Can only place wings in wing slots
+
 v1.4.1  2018-05-09
-* Fixed release date in description
+* Fix: Corrected release date in description
 
 v1.4.0  2018-05-09
 * Setting to allow equipping wings in normal accessory slot
