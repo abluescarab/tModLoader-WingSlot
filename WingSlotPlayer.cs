@@ -57,19 +57,19 @@ namespace WingSlot {
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)message);
             packet.Write((byte)player.whoAmI);
-			ItemIO.Send(item, packet);
-			packet.Send(toWho, fromWho);
-		}
+            ItemIO.Send(item, packet);
+            packet.Send(toWho, fromWho);
+        }
 
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)PacketMessageType.All);
             packet.Write((byte)player.whoAmI);
-			ItemIO.Send(EquipSlot.Item, packet);
-			ItemIO.Send(VanitySlot.Item, packet);
-			ItemIO.Send(DyeSlot.Item, packet);
+            ItemIO.Send(EquipSlot.Item, packet);
+            ItemIO.Send(VanitySlot.Item, packet);
+            ItemIO.Send(DyeSlot.Item, packet);
             packet.Send(toWho, fromWho);
-		}
+        }
 
         /// <summary>
         /// Initialize the ModPlayer.
