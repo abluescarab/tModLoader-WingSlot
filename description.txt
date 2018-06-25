@@ -26,6 +26,9 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * vizthex for suggesting slot location option
 
 [Changelog]
+v1.5.2  2018-06-25 (HOTFIX)
+* Fix: Mod is visible in tModLoader again
+
 v1.5.1  2018-06-23 (HOTFIX)
 * Fix: Can remove items from slots again
 
