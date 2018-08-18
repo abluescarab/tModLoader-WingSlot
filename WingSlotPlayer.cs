@@ -12,7 +12,7 @@ using Terraria.UI;
 using TerraUI.Objects;
 
 namespace WingSlot {
-    internal class WingSlotPlayer : ModPlayer {
+    public class WingSlotPlayer : ModPlayer {
         private const string HIDDEN_TAG = "hidden";
         private const string WINGS_TAG = "wings";
         private const string VANITY_WINGS_TAG = "vanitywings";
@@ -226,7 +226,7 @@ namespace WingSlot {
         /// <summary>
         /// Control what can be placed in the wing slots.
         /// </summary>
-        private bool Slot_Conditions(Item item) {
+        public bool Slot_Conditions(Item item) {
             if(item.wingSlot > 0) {
                 return true;
             }
@@ -267,7 +267,7 @@ namespace WingSlot {
         /// <summary>
         /// Control what can be placed in the wing dye slot.
         /// </summary>
-        private bool WingDyeSlot_Conditions(Item item) {
+        public bool WingDyeSlot_Conditions(Item item) {
             if(item.dye > 0 && item.hairDye < 0) {
                 return true;
             }
