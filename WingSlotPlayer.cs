@@ -228,7 +228,7 @@ namespace WingSlot {
         /// </summary>
         public bool Slot_Conditions(Item item) {
             if(item.wingSlot > 0) {
-                foreach(Func<bool> func in WingSlot.SlotConditionsOverrides.Values) {
+                foreach(var func in WingSlot.SlotConditionsOverrides) {
                     if(func() == false) {
                         return false;
                     }
