@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using ModConfiguration;
 using Terraria;
@@ -11,6 +13,8 @@ namespace WingSlot {
         public const string SLOT_LOCATION = "slotLocation";
         public const string WING_SLOT_BACK_TEX = "WingSlotBackground";
         public static readonly ModConfig Config = new ModConfig("WingSlot");
+
+        internal static readonly Dictionary<Mod, Func<bool>> SlotConditionsOverrides = new Dictionary<Mod, Func<bool>>();
 
         public override void Load() {
             Properties = new ModProperties() {
@@ -25,6 +29,23 @@ namespace WingSlot {
             Config.Add(ALLOW_ACCESSORY_SLOTS, false);
             Config.Add(SLOT_LOCATION, 1);
             Config.Load();
+        }
+
+        public override object Call(params object[] args) {
+            Mod mod = args[0] as Mod;
+            string keyword = args[1] as string;
+            Func<bool> func = args[2] as Func<bool>;
+            
+            if(mod != null) {
+                if(keyword?.ToLower() == "add" && func != null) {
+                    SlotConditionsOverrides[mod] = func;
+                }
+                else if(keyword?.ToLower() == "remove") {
+                    SlotConditionsOverrides.Remove(mod);
+                }
+            }
+
+            return null;
         }
 
         public override void PostDrawInterface(SpriteBatch spriteBatch) {
