@@ -201,7 +201,7 @@ namespace WingSlot {
         /// <summary>
         /// Draw the wing dye slot background.
         /// </summary>
-        private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
+        private static void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
 
             if(!ShouldDrawSlots()) {
