@@ -28,7 +28,8 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 
 [Changelog]
 v1.6.1  2018-09-16
-* Fix: wing modifiers are applied correctly
+* Fix: Wing modifiers are applied correctly
+* Fix: Dyes work with visibility off
 
 v1.6.0  2018-09-15
 * Added mod compatibility slot overrides
