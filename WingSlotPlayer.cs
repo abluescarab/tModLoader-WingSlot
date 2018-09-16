@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -238,10 +237,7 @@ namespace WingSlot {
         /// Control what can be placed in the wing dye slot.
         /// </summary>
         private static bool WingDyeSlot_Conditions(Item item) {
-            if(item.dye > 0 && item.hairDye < 0) {
-                return true;
-            }
-            return false;
+            return item.dye > 0 && item.hairDye < 0;
         }
 
         /// <summary>
@@ -452,7 +448,8 @@ namespace WingSlot {
             if(VanitySlot.Item.stack > 0) {
                 return VanitySlot.Item;
             }
-            else if(EquipSlot.Item.stack > 0) {
+
+            if(EquipSlot.Item.stack > 0) {
                 return EquipSlot.Item;
             }
 
