@@ -216,7 +216,7 @@ namespace WingSlot {
             }
 
             Texture2D tex = Main.extraTexture[54];
-            Rectangle rectangle = tex.Frame(3, 6, 1 % 3, 1 / 3);
+            Rectangle rectangle = tex.Frame(3, 6, 1 % 3);
             rectangle.Width -= 2;
             rectangle.Height -= 2;
             Vector2 origin = rectangle.Size() / 2f * Main.inventoryScale;
@@ -246,15 +246,15 @@ namespace WingSlot {
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public void Draw(SpriteBatch spriteBatch) {
-            int slotLocation = 1;
+            int slotLocation;
 
             if(!ShouldDrawSlots(out slotLocation)) {
                 return;
             }
 
             int mapH = 0;
-            int rX = 0;
-            int rY = 0;
+            int rX;
+            int rY;
             float origScale = Main.inventoryScale;
 
             Main.inventoryScale = 0.85f;
@@ -304,7 +304,7 @@ namespace WingSlot {
 
             EquipSlot.Position = new Vector2(rX, rY);
             VanitySlot.Position = new Vector2(rX -= 47, rY);
-            DyeSlot.Position = new Vector2(rX -= 47, rY);
+            DyeSlot.Position = new Vector2(rX - 47, rY);
 
             VanitySlot.Draw(spriteBatch);
             EquipSlot.Draw(spriteBatch);
@@ -340,7 +340,7 @@ namespace WingSlot {
         /// </summary>
         /// <returns>whether to draw the slots</returns>
         private static bool ShouldDrawSlots() {
-            int slotLocation = 1;
+            int slotLocation;
             return ShouldDrawSlots(out slotLocation);
         }
 

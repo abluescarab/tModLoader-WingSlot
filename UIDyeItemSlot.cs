@@ -12,14 +12,14 @@ namespace WingSlot {
 
         public override void OnLeftClick() {
             if(Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && Item.type > 0 && Item.type != Main.mouseItem.type) {
-                Utils.Swap<Item>(ref item, ref Main.mouseItem);
-                Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+                Utils.Swap(ref item, ref Main.mouseItem);
+                Main.PlaySound(7);
                 if(Item.stack > 0) {
                     AchievementsHelper.HandleOnEquip(Main.LocalPlayer, Item, 12);
                 }
             }
             else if(Main.mouseItem.type == 0 && Item.type > 0) {
-                Utils.Swap<Item>(ref item, ref Main.mouseItem);
+                Utils.Swap(ref item, ref Main.mouseItem);
                 if(Item.type == 0 || Item.stack < 1) {
                     Item = new Item();
                 }
@@ -28,12 +28,12 @@ namespace WingSlot {
                 }
                 if(Main.mouseItem.type > 0 || Item.type > 0) {
                     Recipe.FindRecipes();
-                    Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+                    Main.PlaySound(7);
                 }
             }
             else if(Main.mouseItem.dye > 0 && Item.type == 0) {
                 if(Main.mouseItem.stack == 1) {
-                    Utils.Swap<Item>(ref item, ref Main.mouseItem);
+                    Utils.Swap(ref item, ref Main.mouseItem);
                     if(Item.type == 0 || Item.stack < 1) {
                         Item = new Item();
                     }
@@ -42,14 +42,14 @@ namespace WingSlot {
                     }
                     if(Main.mouseItem.type > 0 || Item.type > 0) {
                         Recipe.FindRecipes();
-                        Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+                        Main.PlaySound(7);
                     }
                 }
                 else {
                     Main.mouseItem.stack--;
-                    Item.SetDefaults(Main.mouseItem.type, false);
+                    Item.SetDefaults(Main.mouseItem.type);
                     Recipe.FindRecipes();
-                    Main.PlaySound(7, -1, -1, 1, 1f, 0f);
+                    Main.PlaySound(7);
                 }
                 if(Item.stack > 0) {
                     AchievementsHelper.HandleOnEquip(Main.LocalPlayer, Item, 12);
