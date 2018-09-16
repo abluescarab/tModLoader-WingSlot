@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using TerraUI.Utilities;
 
 namespace WingSlot {
-    class GlobalWingItem : GlobalItem {
+    internal class GlobalWingItem : GlobalItem {
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
             if(!(bool)WingSlot.Config.Get(WingSlot.AllowAccessorySlots) && (item.wingSlot > 0)) {
                 return false;
