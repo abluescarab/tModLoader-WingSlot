@@ -6,31 +6,18 @@ using TerraUI.Utilities;
 namespace WingSlot {
     internal class GlobalWingItem : GlobalItem {
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
-            if(!(bool)WingSlot.Config.Get(WingSlot.AllowAccessorySlots) && (item.wingSlot > 0)) {
-                return false;
-            }
-
-            return base.CanEquipAccessory(item, player, slot);
+            bool allowAccessorySlots = (bool)WingSlot.Config.Get(WingSlot.AllowAccessorySlots);
+            return ((item.wingSlot > 0) && allowAccessorySlots) || base.CanEquipAccessory(item, player, slot);
         }
 
         public override bool CanRightClick(Item item) {
-            if(item.wingSlot > 0) {
-                return true;
-            }
-
-            return base.CanRightClick(item);
+            return item.wingSlot > 0 || base.CanRightClick(item);
         }
 
         public override void RightClick(Item item, Player player) {
             if(item.wingSlot > 0) {
                 WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>(mod);
-
-                if(KeyboardUtils.HeldDown(Keys.LeftShift)) {
-                    mp.EquipWings(true, item);
-                }
-                else {
-                    mp.EquipWings(false, item);
-                }
+                mp.EquipWings(KeyboardUtils.HeldDown(Keys.LeftShift), item);
             }
             else {
                 base.RightClick(item, player);

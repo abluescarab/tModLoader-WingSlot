@@ -34,16 +34,18 @@ namespace WingSlot {
         public override object Call(params object[] args) {
             string keyword = args[0] as string;
             Func<bool> func = args[1] as Func<bool>;
-            
-            if(!string.IsNullOrEmpty(keyword) && func != null) {
-                keyword = keyword.ToLower();
 
-                if(keyword == "add") {
-                    SlotConditionsOverrides.Add(func);
-                }
-                else if(keyword == "remove") {
-                    SlotConditionsOverrides.Remove(func);
-                }
+            if(string.IsNullOrEmpty(keyword) || func == null) {
+                return null;
+            }
+
+            keyword = keyword.ToLower();
+
+            if(keyword == "add") {
+                SlotConditionsOverrides.Add(func);
+            }
+            else if(keyword == "remove") {
+                SlotConditionsOverrides.Remove(func);
             }
 
             return null;
