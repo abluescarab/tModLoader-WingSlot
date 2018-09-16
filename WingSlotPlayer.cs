@@ -227,16 +227,17 @@ namespace WingSlot {
         /// Control what can be placed in the wing slots.
         /// </summary>
         public bool Slot_Conditions(Item item) {
-            if(item.wingSlot > 0) {
-                foreach(var func in WingSlot.SlotConditionsOverrides) {
-                    if(func() == false) {
-                        return false;
-                    }
-                }
-
-                return true;
+            if(item.wingSlot <= 0) {
+                return false;
             }
-            return false;
+
+            foreach(var func in WingSlot.SlotConditionsOverrides) {
+                if(func() == false) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
