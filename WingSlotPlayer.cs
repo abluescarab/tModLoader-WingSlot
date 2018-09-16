@@ -89,13 +89,8 @@ namespace WingSlot {
         }
 
         public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
-            if(DyeSlot.Item != null && !EquipSlot.Item.IsAir && EquipSlot.ItemVisible && EquipSlot.Item.wingSlot > 0) {
-                if(EquipSlot.Item.wingSlot > 0)
-                    drawInfo.wingShader = DyeSlot.Item.dye;
-            }
-            if(DyeSlot.Item != null && !VanitySlot.Item.IsAir) {
-                if(VanitySlot.Item.wingSlot > 0)
-                    drawInfo.wingShader = DyeSlot.Item.dye;
+            if(DyeSlot.Item.stack > 0 && (EquipSlot.Item.wingSlot > 0 || VanitySlot.Item.wingSlot > 0)) {
+                drawInfo.wingShader = DyeSlot.Item.dye;
             }
         }
 
