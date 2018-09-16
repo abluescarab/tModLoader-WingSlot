@@ -226,11 +226,18 @@ namespace WingSlot {
         /// <summary>
         /// Control what can be placed in the wing slots.
         /// </summary>
-        private bool Slot_Conditions(Item item) {
-            if(item.wingSlot > 0) {
-                return true;
+        public bool Slot_Conditions(Item item) {
+            if(item.wingSlot <= 0) {
+                return false;
             }
-            return false;
+
+            foreach(var func in WingSlot.SlotConditionsOverrides) {
+                if(func() == false) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -267,7 +274,7 @@ namespace WingSlot {
         /// <summary>
         /// Control what can be placed in the wing dye slot.
         /// </summary>
-        private bool WingDyeSlot_Conditions(Item item) {
+        public bool WingDyeSlot_Conditions(Item item) {
             if(item.dye > 0 && item.hairDye < 0) {
                 return true;
             }
