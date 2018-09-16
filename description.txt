@@ -24,8 +24,12 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
 * vizthex for suggesting slot location option
+* jofairden for suggesting mod compatibility slot overrides
 
 [Changelog]
+v1.6.0  2018-09-15
+* Added mod compatibility slot overrides
+
 v1.5.2  2018-06-25 (HOTFIX)
 * Fix: Mod is visible in tModLoader again
 
