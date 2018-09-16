@@ -30,3 +30,4 @@ These functions are checked during `WingSlotPlayer.Slot_Conditions()`. If any of
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
 * vizthex for suggesting slot location option
+* jofairden for suggesting mod compatibility slot overrides
