@@ -150,52 +150,6 @@ namespace WingSlot {
         }
 
         /// <summary>
-        /// Load legacy mod settings.
-        /// </summary>
-        public override void LoadLegacy(BinaryReader reader) {
-            int hide = 0;
-
-            InitializeWings();
-
-            ushort installedFlag = reader.ReadUInt16();
-
-            if(installedFlag == 0) {
-                try { hide = reader.ReadInt32(); }
-                catch(EndOfStreamException) { hide = 0; }
-
-                EquipSlot.ItemVisible = (hide == 1 ? false : true);
-
-                Item wings1 = EquipSlot.Item;
-                Item wings2 = VanitySlot.Item;
-
-                int context = ReadWingsLegacy(ref wings1, reader);
-                ReadWingsLegacy(ref wings2, reader);
-
-                if(context == ItemSlot.Context.EquipAccessory) {
-                    SetWings(false, wings1);
-                    SetWings(true, wings2);
-                }
-                else if(context == ItemSlot.Context.EquipAccessoryVanity) {
-                    SetWings(true, wings1);
-                    SetWings(false, wings2);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Read the wings in legacy mod settings.
-        /// </summary>
-        internal static int ReadWingsLegacy(ref Item wings, BinaryReader reader) {
-            try {
-                ItemIO.LoadLegacy(wings, reader, false, false);
-                return reader.ReadInt32();
-            }
-            catch(EndOfStreamException) {
-                return -1;
-            }
-        }
-
-        /// <summary>
         /// Draw the wing slot backgrounds.
         /// </summary>
         private void Slot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
