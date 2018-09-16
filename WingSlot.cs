@@ -9,9 +9,9 @@ using Terraria.ModLoader.IO;
 
 namespace WingSlot {
     public class WingSlot : Mod {
-        public const string ALLOW_ACCESSORY_SLOTS = "allowWingsInAccessorySlots";
-        public const string SLOT_LOCATION = "slotLocation";
-        public const string WING_SLOT_BACK_TEX = "WingSlotBackground";
+        public const string AllowAccessorySlots = "allowWingsInAccessorySlots";
+        public const string SlotLocation = "slotLocation";
+        public const string WingSlotBackTex = "WingSlotBackground";
         public static readonly ModConfig Config = new ModConfig("WingSlot");
 
         internal static readonly List<Func<bool>> SlotConditionsOverrides = new List<Func<bool>>();
@@ -26,8 +26,8 @@ namespace WingSlot {
             TerraUI.Utilities.UIUtils.Mod = this;
             TerraUI.Utilities.UIUtils.Subdirectory = "TerraUI";
 
-            Config.Add(ALLOW_ACCESSORY_SLOTS, false);
-            Config.Add(SLOT_LOCATION, 1);
+            Config.Add(AllowAccessorySlots, false);
+            Config.Add(SlotLocation, 1);
             Config.Load();
         }
 

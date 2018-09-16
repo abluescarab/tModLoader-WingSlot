@@ -13,11 +13,10 @@ using TerraUI.Objects;
 
 namespace WingSlot {
     internal class WingSlotPlayer : ModPlayer {
-        private const string HIDDEN_TAG = "hidden";
-        private const string WINGS_TAG = "wings";
-        private const string VANITY_WINGS_TAG = "vanitywings";
-        private const string WING_DYE_TAG = "wingdye";
-        private const string WING_DYE_LAYER = "WingDye";
+        private const string HiddenTag = "hidden";
+        private const string WingsTag = "wings";
+        private const string VanityWingsTag = "vanitywings";
+        private const string WingDyeTag = "wingdye";
 
         public UIItemSlot EquipSlot;
         public UIItemSlot VanitySlot;
@@ -132,10 +131,10 @@ namespace WingSlot {
         /// </summary>
         public override TagCompound Save() {
             return new TagCompound {
-                { HIDDEN_TAG, EquipSlot.ItemVisible },
-                { WINGS_TAG, ItemIO.Save(EquipSlot.Item) },
-                { VANITY_WINGS_TAG, ItemIO.Save(VanitySlot.Item) },
-                { WING_DYE_TAG, ItemIO.Save(DyeSlot.Item) }
+                { HiddenTag, EquipSlot.ItemVisible },
+                { WingsTag, ItemIO.Save(EquipSlot.Item) },
+                { VanityWingsTag, ItemIO.Save(VanitySlot.Item) },
+                { WingDyeTag, ItemIO.Save(DyeSlot.Item) }
             };
         }
 
@@ -143,10 +142,10 @@ namespace WingSlot {
         /// Load the mod settings.
         /// </summary>
         public override void Load(TagCompound tag) {
-            SetWings(false, ItemIO.Load(tag.GetCompound(WINGS_TAG)));
-            SetWings(true, ItemIO.Load(tag.GetCompound(VANITY_WINGS_TAG)));
-            SetDye(ItemIO.Load(tag.GetCompound(WING_DYE_TAG)));
-            EquipSlot.ItemVisible = tag.GetBool(HIDDEN_TAG);
+            SetWings(false, ItemIO.Load(tag.GetCompound(WingsTag)));
+            SetWings(true, ItemIO.Load(tag.GetCompound(VanityWingsTag)));
+            SetDye(ItemIO.Load(tag.GetCompound(WingDyeTag)));
+            EquipSlot.ItemVisible = tag.GetBool(HiddenTag);
         }
 
         /// <summary>
@@ -159,7 +158,7 @@ namespace WingSlot {
                 slot.OnDrawBackground(spriteBatch);
 
                 if(slot.Item.stack == 0) {
-                    Texture2D tex = mod.GetTexture(WingSlot.WING_SLOT_BACK_TEX);
+                    Texture2D tex = mod.GetTexture(WingSlot.WingSlotBackTex);
                     Vector2 origin = tex.Size() / 2f * Main.inventoryScale;
                     Vector2 position = slot.Rectangle.TopLeft();
 
@@ -315,7 +314,7 @@ namespace WingSlot {
         /// <returns>whether to draw the slots</returns>
         public bool ShouldDrawSlots(out int slotLocation) {
             if(Main.playerInventory) {
-                slotLocation = Convert.ToInt32(WingSlot.Config.Get(WingSlot.SLOT_LOCATION));
+                slotLocation = Convert.ToInt32(WingSlot.Config.Get(WingSlot.SlotLocation));
 
                 if((slotLocation == 1 && Main.EquipPage == 0) ||
                    (slotLocation == 2 && Main.EquipPage == 2)) {
