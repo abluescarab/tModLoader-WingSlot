@@ -185,7 +185,7 @@ namespace WingSlot {
         /// <summary>
         /// Control what can be placed in the wing slots.
         /// </summary>
-        public bool Slot_Conditions(Item item) {
+        private static bool Slot_Conditions(Item item) {
             if(item.wingSlot <= 0) {
                 return false;
             }
@@ -237,7 +237,7 @@ namespace WingSlot {
         /// <summary>
         /// Control what can be placed in the wing dye slot.
         /// </summary>
-        public bool WingDyeSlot_Conditions(Item item) {
+        private static bool WingDyeSlot_Conditions(Item item) {
             if(item.dye > 0 && item.hairDye < 0) {
                 return true;
             }
@@ -324,7 +324,7 @@ namespace WingSlot {
         /// Whether to draw the UIItemSlots.
         /// </summary>
         /// <returns>whether to draw the slots</returns>
-        public bool ShouldDrawSlots(out int slotLocation) {
+        private static bool ShouldDrawSlots(out int slotLocation) {
             if(Main.playerInventory) {
                 slotLocation = Convert.ToInt32(WingSlot.Config.Get(WingSlot.SlotLocation));
 
@@ -342,7 +342,7 @@ namespace WingSlot {
         /// Whether to draw the UIItemSlots.
         /// </summary>
         /// <returns>whether to draw the slots</returns>
-        public bool ShouldDrawSlots() {
+        private static bool ShouldDrawSlots() {
             int slotLocation = 1;
             return ShouldDrawSlots(out slotLocation);
         }
@@ -364,7 +364,7 @@ namespace WingSlot {
         /// </summary>
         /// <param name="isVanity">whether to equip in the vanity slot</param>
         /// <param name="item">wings</param>
-        public void SetWings(bool isVanity, Item item) {
+        private void SetWings(bool isVanity, Item item) {
             if(!isVanity) {
                 EquipSlot.Item = item.Clone();
             }
@@ -392,7 +392,7 @@ namespace WingSlot {
         /// Set the wing dye.
         /// </summary>
         /// <param name="item">dye</param>
-        public void SetDye(Item item) {
+        private void SetDye(Item item) {
             DyeSlot.Item = item.Clone();
         }
 
