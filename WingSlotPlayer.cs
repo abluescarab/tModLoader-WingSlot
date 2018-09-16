@@ -25,15 +25,21 @@ namespace WingSlot {
         public override void clientClone(ModPlayer clientClone) {
             WingSlotPlayer clone = clientClone as WingSlotPlayer;
 
-            if(clone != null) {
-                clone.EquipSlot.Item = EquipSlot.Item.Clone();
-                clone.VanitySlot.Item = VanitySlot.Item.Clone();
-                clone.DyeSlot.Item = DyeSlot.Item.Clone();
+            if(clone == null) {
+                return;
             }
+
+            clone.EquipSlot.Item = EquipSlot.Item.Clone();
+            clone.VanitySlot.Item = VanitySlot.Item.Clone();
+            clone.DyeSlot.Item = DyeSlot.Item.Clone();
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer) {
             WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
+
+            if(oldClone == null) {
+                return;
+            }
 
             if(oldClone.EquipSlot.Item.IsNotTheSameAs(EquipSlot.Item)) {
                 SendSingleItemPacket(PacketMessageType.EquipSlot, EquipSlot.Item, -1, player.whoAmI);
@@ -199,29 +205,33 @@ namespace WingSlot {
         private void WingDyeSlot_DrawBackground(UIObject sender, SpriteBatch spriteBatch) {
             UIItemSlot slot = (UIItemSlot)sender;
 
-            if(ShouldDrawSlots()) {
-                slot.OnDrawBackground(spriteBatch);
-
-                if(slot.Item.stack == 0) {
-                    Texture2D tex = Main.extraTexture[54];
-                    Rectangle rectangle = tex.Frame(3, 6, 1 % 3, 1 / 3);
-                    rectangle.Width -= 2;
-                    rectangle.Height -= 2;
-                    Vector2 origin = rectangle.Size() / 2f * Main.inventoryScale;
-                    Vector2 position = slot.Rectangle.TopLeft();
-
-                    spriteBatch.Draw(
-                        tex,
-                        position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
-                        new Rectangle?(rectangle),
-                        Color.White * 0.35f,
-                        0f,
-                        origin,
-                        Main.inventoryScale,
-                        SpriteEffects.None,
-                        0f); // layer depth 0 = front
-                }
+            if(!ShouldDrawSlots()) {
+                return;
             }
+
+            slot.OnDrawBackground(spriteBatch);
+            
+            if(slot.Item.stack != 0) {
+                return;
+            }
+
+            Texture2D tex = Main.extraTexture[54];
+            Rectangle rectangle = tex.Frame(3, 6, 1 % 3, 1 / 3);
+            rectangle.Width -= 2;
+            rectangle.Height -= 2;
+            Vector2 origin = rectangle.Size() / 2f * Main.inventoryScale;
+            Vector2 position = slot.Rectangle.TopLeft();
+
+            spriteBatch.Draw(
+                tex,
+                position + (slot.Rectangle.Size() / 2f) - (origin / 2f),
+                rectangle,
+                Color.White * 0.35f,
+                0f,
+                origin,
+                Main.inventoryScale,
+                SpriteEffects.None,
+                0f); // layer depth 0 = front
         }
 
         /// <summary>
@@ -241,71 +251,73 @@ namespace WingSlot {
         public void Draw(SpriteBatch spriteBatch) {
             int slotLocation = 1;
 
-            if(ShouldDrawSlots(out slotLocation)) {
-                int mapH = 0;
-                int rX = 0;
-                int rY = 0;
-                float origScale = Main.inventoryScale;
-
-                Main.inventoryScale = 0.85f;
-
-                if(Main.mapEnabled) {
-                    if(!Main.mapFullscreen && Main.mapStyle == 1) {
-                        mapH = 256;
-                    }
-                }
-
-                if(slotLocation == 2) {
-                    if(Main.mapEnabled) {
-                        if((mapH + 600) > Main.screenHeight) {
-                            mapH = Main.screenHeight - 600;
-                        }
-                    }
-
-                    rX = Main.screenWidth - 92 - (47 * 2);
-                    rY = mapH + 174;
-
-                    if(Main.netMode == 1) {
-                        rX -= 47;
-                    }
-                }
-                else {
-                    if(Main.mapEnabled) {
-                        int adjustY = 600;
-
-                        if(Main.player[Main.myPlayer].ExtraAccessorySlotsShouldShow) {
-                            adjustY = 610 + PlayerInput.UsingGamepad.ToInt() * 30;
-                        }
-
-                        if((mapH + adjustY) > Main.screenHeight) {
-                            mapH = Main.screenHeight - adjustY;
-                        }
-                    }
-
-                    int slotCount = 7 + Main.player[Main.myPlayer].extraAccessorySlots;
-
-                    if((Main.screenHeight < 900) && (slotCount >= 8)) {
-                        slotCount = 7;
-                    }
-
-                    rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
-                    rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
-                }
-
-                EquipSlot.Position = new Vector2(rX, rY);
-                VanitySlot.Position = new Vector2(rX -= 47, rY);
-                DyeSlot.Position = new Vector2(rX -= 47, rY);
-
-                VanitySlot.Draw(spriteBatch);
-                EquipSlot.Draw(spriteBatch);
-                DyeSlot.Draw(spriteBatch);
-
-                Main.inventoryScale = origScale;
-
-                EquipSlot.Update();
-                VanitySlot.Update();
-                DyeSlot.Update();
+            if(!ShouldDrawSlots(out slotLocation)) {
+                return;
             }
+
+            int mapH = 0;
+            int rX = 0;
+            int rY = 0;
+            float origScale = Main.inventoryScale;
+
+            Main.inventoryScale = 0.85f;
+
+            if(Main.mapEnabled) {
+                if(!Main.mapFullscreen && Main.mapStyle == 1) {
+                    mapH = 256;
+                }
+            }
+
+            if(slotLocation == 2) {
+                if(Main.mapEnabled) {
+                    if((mapH + 600) > Main.screenHeight) {
+                        mapH = Main.screenHeight - 600;
+                    }
+                }
+
+                rX = Main.screenWidth - 92 - (47 * 2);
+                rY = mapH + 174;
+
+                if(Main.netMode == 1) {
+                    rX -= 47;
+                }
+            }
+            else {
+                if(Main.mapEnabled) {
+                    int adjustY = 600;
+
+                    if(Main.player[Main.myPlayer].ExtraAccessorySlotsShouldShow) {
+                        adjustY = 610 + PlayerInput.UsingGamepad.ToInt() * 30;
+                    }
+
+                    if((mapH + adjustY) > Main.screenHeight) {
+                        mapH = Main.screenHeight - adjustY;
+                    }
+                }
+
+                int slotCount = 7 + Main.player[Main.myPlayer].extraAccessorySlots;
+
+                if((Main.screenHeight < 900) && (slotCount >= 8)) {
+                    slotCount = 7;
+                }
+
+                rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * Main.inventoryScale);
+                rY = (int)(mapH + 174 + 4 + slotCount * 56 * Main.inventoryScale);
+            }
+
+            EquipSlot.Position = new Vector2(rX, rY);
+            VanitySlot.Position = new Vector2(rX -= 47, rY);
+            DyeSlot.Position = new Vector2(rX -= 47, rY);
+
+            VanitySlot.Draw(spriteBatch);
+            EquipSlot.Draw(spriteBatch);
+            DyeSlot.Draw(spriteBatch);
+
+            Main.inventoryScale = origScale;
+
+            EquipSlot.Update();
+            VanitySlot.Update();
+            DyeSlot.Update();
         }
 
         /// <summary>
@@ -402,13 +414,15 @@ namespace WingSlot {
             int fromSlot = Array.FindIndex(player.inventory, i => i == item);
 
             // from inv to slot
-            if(fromSlot > -1) {
-                item.favorited = false;
-                player.inventory[fromSlot] = slot.Item.Clone();
-                Main.PlaySound(SoundID.Grab);
-                Recipe.FindRecipes();
-                SetWings(isVanity, item);
+            if(fromSlot < 0) {
+                return;
             }
+
+            item.favorited = false;
+            player.inventory[fromSlot] = slot.Item.Clone();
+            Main.PlaySound(SoundID.Grab);
+            Recipe.FindRecipes();
+            SetWings(isVanity, item);
         }
 
         /// <summary>
@@ -419,13 +433,15 @@ namespace WingSlot {
             int fromSlot = Array.FindIndex(player.inventory, i => i == item);
 
             // from inv to slot
-            if(fromSlot > -1) {
-                item.favorited = false;
-                player.inventory[fromSlot] = DyeSlot.Item.Clone();
-                Main.PlaySound(SoundID.Grab);
-                Recipe.FindRecipes();
-                SetDye(item);
+            if(fromSlot < 0) {
+                return;
             }
+
+            item.favorited = false;
+            player.inventory[fromSlot] = DyeSlot.Item.Clone();
+            Main.PlaySound(SoundID.Grab);
+            Recipe.FindRecipes();
+            SetDye(item);
         }
 
         /// <summary>
