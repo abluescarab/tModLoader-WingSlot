@@ -109,6 +109,7 @@ namespace WingSlot {
             if(wings.stack > 0) {
                 player.VanillaUpdateAccessory(player.whoAmI, wings, !EquipSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
                     ref tileRangeBuff);
+                player.VanillaUpdateEquip(wings);
             }
 
             if(vanityWings.stack > 0) {
