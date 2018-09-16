@@ -12,7 +12,7 @@ using Terraria.UI;
 using TerraUI.Objects;
 
 namespace WingSlot {
-    public class WingSlotPlayer : ModPlayer {
+    internal class WingSlotPlayer : ModPlayer {
         private const string HIDDEN_TAG = "hidden";
         private const string WINGS_TAG = "wings";
         private const string VANITY_WINGS_TAG = "vanitywings";
