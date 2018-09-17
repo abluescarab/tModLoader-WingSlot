@@ -14,7 +14,7 @@ namespace WingSlot {
         public const string WingSlotBackTex = "WingSlotBackground";
         public static readonly ModConfig Config = new ModConfig("WingSlot");
 
-        internal static readonly List<Func<bool>> SlotConditionsOverrides = new List<Func<bool>>();
+        private static readonly List<Func<bool>> RightClickOverrides = new List<Func<bool>>();
 
         public override void Load() {
             Properties = new ModProperties() {
@@ -42,10 +42,10 @@ namespace WingSlot {
             keyword = keyword.ToLower();
 
             if(keyword == "add") {
-                SlotConditionsOverrides.Add(func);
+                RightClickOverrides.Add(func);
             }
             else if(keyword == "remove") {
-                SlotConditionsOverrides.Remove(func);
+                RightClickOverrides.Remove(func);
             }
 
             return null;
@@ -98,6 +98,16 @@ namespace WingSlot {
                     ErrorLogger.Log("Wing Slot: Unknown message type: " + message);
                     break;
             }
+        }
+
+        public static bool OverrideRightClick() {
+            foreach(var func in RightClickOverrides) {
+                if(func()) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

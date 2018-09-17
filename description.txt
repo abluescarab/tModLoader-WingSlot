@@ -24,9 +24,12 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
 * vizthex for suggesting slot location option
-* jofairden for suggesting mod compatibility slot overrides
+* jofairden for suggesting mod compatibility right-click overrides
 
 [Changelog]
+v1.6.2  2018-09-16
+* Changed equip override to right-click override
+
 v1.6.1  2018-09-16
 * Fix: Wing modifiers are applied correctly
 * Fix: Dyes work with visibility off

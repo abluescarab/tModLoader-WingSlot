@@ -185,12 +185,6 @@ namespace WingSlot {
                 return false;
             }
 
-            foreach(var func in WingSlot.SlotConditionsOverrides) {
-                if(func() == false) {
-                    return false;
-                }
-            }
-
             return true;
         }
 

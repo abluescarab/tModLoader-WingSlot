@@ -13,16 +13,16 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 * Yoraiz0r's Spell eye glow doesn't work
 
 ## Mod Compatibility
-If your mod needs to override equipping functionality:
+If your mod needs to override right-click functionality:
 ```csharp
 Mod wingSlot = ModLoader.GetMod("WingSlot");
 
 if(wingSlot != null) {
-    wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to equip/false to cancel */);
+    wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue normal execution */);
 }
 ```
 
-These functions are checked during `WingSlotPlayer.Slot_Conditions()`. If any of them returns false, `Slot_Conditions()` cancels equipping a pair of wings, so please ensure that your method is relatively bug-free.
+These functions are checked during `GlobalWingItem.CanRightClick()`. If any of them returns true, `CanRightClick()` cancels equipping a pair of wings, so please ensure that your method is relatively bug-free.
 
 ## Credits
 * jopojelly for code that draws a slot to the left of the dyes; for fixing multiplayer issues and various other bugs

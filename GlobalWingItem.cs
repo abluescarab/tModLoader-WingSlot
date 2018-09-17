@@ -11,7 +11,7 @@ namespace WingSlot {
         }
 
         public override bool CanRightClick(Item item) {
-            return item.wingSlot > 0 || base.CanRightClick(item);
+            return (item.wingSlot > 0 && !WingSlot.OverrideRightClick()) || base.CanRightClick(item);
         }
 
         public override void RightClick(Item item, Player player) {
