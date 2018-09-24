@@ -28,6 +28,10 @@ namespace WingSlot {
             Config.Load();
         }
 
+        public override void Unload() {
+            RightClickOverrides.Clear();
+        }
+
         public override object Call(params object[] args) {
             string keyword = args[0] as string;
             Func<bool> func = args[1] as Func<bool>;

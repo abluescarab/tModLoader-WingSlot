@@ -11,17 +11,16 @@ namespace WingSlot {
         }
 
         public override bool CanRightClick(Item item) {
-            return (item.wingSlot > 0 && !WingSlot.OverrideRightClick()) || base.CanRightClick(item);
+            return (item.wingSlot > 0 && !WingSlot.OverrideRightClick());
         }
 
         public override void RightClick(Item item, Player player) {
-            if(item.wingSlot > 0) {
-                WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>(mod);
-                mp.EquipWings(KeyboardUtils.HeldDown(Keys.LeftShift), item);
+            if(!CanRightClick(item)) {
+                return;
             }
-            else {
-                base.RightClick(item, player);
-            }
+
+            WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>(mod);
+            mp.EquipWings(KeyboardUtils.HeldDown(Keys.LeftShift), item);
         }
     }
 }
