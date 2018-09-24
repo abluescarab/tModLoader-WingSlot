@@ -22,10 +22,7 @@ namespace WingSlot {
                 AutoloadBackgrounds = true,
                 AutoloadSounds = true
             };
-
-            TerraUI.Utilities.UIUtils.Mod = this;
-            TerraUI.Utilities.UIUtils.Subdirectory = "TerraUI";
-
+            
             Config.Add(AllowAccessorySlots, false);
             Config.Add(SlotLocation, 1);
             Config.Load();
