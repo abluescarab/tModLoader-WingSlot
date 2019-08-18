@@ -27,6 +27,9 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * jofairden for suggesting mod compatibility right-click overrides
 
 [Changelog]
+v1.6.3  2019-08-17
+* Build for tModLoader v0.11.4
+
 v1.6.2  2018-09-16
 * Fix: Changed equip override to right-click override and corrected functionality
 
