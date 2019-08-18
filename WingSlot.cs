@@ -12,9 +12,9 @@ namespace WingSlot {
         public const string AllowAccessorySlots = "allowWingsInAccessorySlots";
         public const string SlotLocation = "slotLocation";
         public const string WingSlotBackTex = "WingSlotBackground";
-        public static readonly ModConfig Config = new ModConfig("WingSlot");
+        public static ModConfig Config;
 
-        private static readonly List<Func<bool>> RightClickOverrides = new List<Func<bool>>();
+        private static List<Func<bool>> RightClickOverrides;
 
         public override void Load() {
             Properties = new ModProperties() {
@@ -22,7 +22,10 @@ namespace WingSlot {
                 AutoloadBackgrounds = true,
                 AutoloadSounds = true
             };
-            
+
+            Config = new ModConfig("WingSlot");
+            RightClickOverrides = new List<Func<bool>>();
+
             Config.Add(AllowAccessorySlots, false);
             Config.Add(SlotLocation, 1);
             Config.Load();
@@ -30,6 +33,8 @@ namespace WingSlot {
 
         public override void Unload() {
             RightClickOverrides.Clear();
+            RightClickOverrides = null;
+            Config = null;
         }
 
         public override object Call(params object[] args) {
