@@ -101,7 +101,7 @@ namespace WingSlot {
                     }
                     break;
                 default:
-                    ErrorLogger.Log("Wing Slot: Unknown message type: " + message);
+                    Logger.InfoFormat("[Wing Slot] Unknown message type: {0}", message);
                     break;
             }
         }
