@@ -65,9 +65,10 @@ namespace WingSlot {
                         //Can't use these three in PostSetupContent because EquipSlot is a field in WingSlotPlayer, but that's not initialized yet
                         //Hence why I couldn't make some sort of delegate as an argument that assigned it
 
-                        //Item wingItem = (Item)wingSlot.Call(/* "getequipslotitem" or "getvanityslotitem" or "getdisplayeditem"*/);
+                        //Item wingItem = (Item)wingSlot.Call(/* "getequipslotitem" or "getvanityslotitem" or "getdisplayeditem"*/, player.whoAmI);
                         //These three should be called on demand
-                        WingSlotPlayer wsp = Main.LocalPlayer.GetModPlayer<WingSlotPlayer>();
+                        int whoAmI = Convert.ToInt32(args[1]);
+                        WingSlotPlayer wsp = Main.player[whoAmI].GetModPlayer<WingSlotPlayer>();
                         if(keyword == "getequipslotitem") {
                             return wsp.EquipSlot.Item;
                         }
