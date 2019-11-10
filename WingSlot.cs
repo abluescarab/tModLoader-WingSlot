@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
-using ModConfiguration;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace WingSlot {
     public class WingSlot : Mod {
-        public const string AllowAccessorySlots = "allowWingsInAccessorySlots";
-        public const string SlotLocation = "slotLocation";
         public const string WingSlotBackTex = "WingSlotBackground";
-        public static ModConfig Config;
+        public static bool AllowAccessorySlots = false;
+        public static bool SlotsNextToAccessories = true;
 
         private static List<Func<bool>> RightClickOverrides;
 
@@ -23,18 +21,12 @@ namespace WingSlot {
                 AutoloadSounds = true
             };
 
-            Config = new ModConfig("WingSlot");
             RightClickOverrides = new List<Func<bool>>();
-
-            Config.Add(AllowAccessorySlots, false);
-            Config.Add(SlotLocation, 1);
-            Config.Load();
         }
 
         public override void Unload() {
             RightClickOverrides.Clear();
             RightClickOverrides = null;
-            Config = null;
         }
 
         public override object Call(params object[] args) {
@@ -50,7 +42,7 @@ namespace WingSlot {
                 switch(keyword) {
                     case "add":
                     case "remove":
-                        // wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue normal execution */);
+                        // wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue */);
                         // These two should be called in PostSetupContent
                         Func<bool> func = args[1] as Func<bool>;
 

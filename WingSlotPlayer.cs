@@ -199,7 +199,7 @@ namespace WingSlot {
             }
 
             slot.OnDrawBackground(spriteBatch);
-            
+
             if(slot.Item.stack != 0) {
                 return;
             }
@@ -235,9 +235,7 @@ namespace WingSlot {
         /// </summary>
         /// <param name="spriteBatch">drawing SpriteBatch</param>
         public void Draw(SpriteBatch spriteBatch) {
-            int slotLocation;
-
-            if(!ShouldDrawSlots(out slotLocation)) {
+            if(!ShouldDrawSlots()) {
                 return;
             }
 
@@ -254,7 +252,7 @@ namespace WingSlot {
                 }
             }
 
-            if(slotLocation == 2) {
+            if(!WingSlot.SlotsNextToAccessories) {
                 if(Main.mapEnabled) {
                     if((mapH + 600) > Main.screenHeight) {
                         mapH = Main.screenHeight - 600;
@@ -310,27 +308,10 @@ namespace WingSlot {
         /// Whether to draw the UIItemSlots.
         /// </summary>
         /// <returns>whether to draw the slots</returns>
-        private static bool ShouldDrawSlots(out int slotLocation) {
-            if(Main.playerInventory) {
-                slotLocation = Convert.ToInt32(WingSlot.Config.Get(WingSlot.SlotLocation));
-
-                if((slotLocation == 1 && Main.EquipPage == 0) ||
-                   (slotLocation == 2 && Main.EquipPage == 2)) {
-                    return true;
-                }
-            }
-
-            slotLocation = 1;
-            return false;
-        }
-
-        /// <summary>
-        /// Whether to draw the UIItemSlots.
-        /// </summary>
-        /// <returns>whether to draw the slots</returns>
+        // private static bool ShouldDrawSlots(out int slotLocation) {
         private static bool ShouldDrawSlots() {
-            int slotLocation;
-            return ShouldDrawSlots(out slotLocation);
+            return Main.playerInventory && ((WingSlot.SlotsNextToAccessories && Main.EquipPage == 0) ||
+                    (!WingSlot.SlotsNextToAccessories && Main.EquipPage == 2));
         }
 
         /// <summary>
