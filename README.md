@@ -18,7 +18,7 @@ If your mod needs to access the items in the slots:
 Item wingItem = null;
 
 if (ModLoader.GetMod("WingSlot") is Mod wingSlot && wingSlot != null) {
-    wingItem = (Item)wingSlot.Call(/* "getvisibleitem"/"getvanityitem"/"getequipslotitem" */, player.whoAmI);
+    wingItem = (Item)wingSlot.Call(/* "getVisible"/"getVanity"/"getEquip" */, player.whoAmI);
 }
 ```
 

@@ -7,8 +7,11 @@ using TerraUI.Objects;
 namespace WingSlot {
     // Because I can't change TerraUI, I subclass UIItemSlot to get proper dye slot behavior.
     internal class UIDyeItemSlot : UIItemSlot {
-        public UIDyeItemSlot(Vector2 position, int size = 52, int context = 0, string hoverText = "", UIObject parent = null, ConditionHandler conditions = null, DrawHandler drawBackground = null, DrawHandler drawItem = null, DrawHandler postDrawItem = null, bool drawAsNormalSlot = false, bool scaleToInventory = false) : base(position, size, context, hoverText, parent, conditions, drawBackground, drawItem, postDrawItem, drawAsNormalSlot, scaleToInventory) {
-        }
+        public UIDyeItemSlot(Vector2 position, int size = 52, int context = 0, string hoverText = "",
+            UIObject parent = null, ConditionHandler conditions = null, DrawHandler drawBackground = null,
+            DrawHandler drawItem = null, DrawHandler postDrawItem = null, bool drawAsNormalSlot = false,
+            bool scaleToInventory = false) : base(position, size, context, hoverText, parent, conditions,
+            drawBackground, drawItem, postDrawItem, drawAsNormalSlot, scaleToInventory) { }
 
         public override void OnLeftClick() {
             if(Main.mouseItem.stack == 1 && Main.mouseItem.dye > 0 && Item.type > 0 && Item.type != Main.mouseItem.type) {

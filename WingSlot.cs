@@ -55,26 +55,26 @@ namespace WingSlot {
                             RightClickOverrides.Remove(func);
                         }
                         break;
-                    case "getEquipSlotItem":
-                    case "getVanitySlotItem":
-                    case "getVisibleItem":
+                    case "getEquip":
+                    case "getVanity":
+                    case "getVisible":
                         /* Can't use these three in PostSetupContent because EquipSlot is a field in WingSlotPlayer, but
                          * that's not initialized yet, hence why I couldn't make some sort of delegate as an argument
                          * that assigned it */
 
-                        // Item wingItem = (Item)wingSlot.Call(/* "getequipslotitem"/"getvanityslotitem"/"getdisplayeditem"*/, player.whoAmI);
+                        // Item wingItem = (Item)wingSlot.Call(/* "getEquip"/"getVanity"/"getVisible" */, player.whoAmI);
                         // These three should be called on demand
                         int whoAmI = Convert.ToInt32(args[1]);
                         WingSlotPlayer wsp = Main.player[whoAmI].GetModPlayer<WingSlotPlayer>();
 
-                        if(keyword == "getequipslotitem") {
+                        if(keyword == "getEquip") {
                             return wsp.EquipSlot.Item;
                         }
-                        else if(keyword == "getvanityslotitem") {
+                        else if(keyword == "getVanity") {
                             return wsp.VanitySlot.Item;
                         }
                         // Returns the item that is responsible for the wings to display on the player (at all times or during flight)
-                        else if(keyword == "getvisibleitem") {
+                        else if(keyword == "getVisible") {
                             if(wsp.VanitySlot.Item.wingSlot > 0) {
                                 return wsp.VanitySlot.Item;
                             }
