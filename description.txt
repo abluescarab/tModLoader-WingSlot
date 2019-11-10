@@ -28,6 +28,10 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
 
 [Changelog]
+v1.7.3  2019-11-10 (HOTFIX)
+* Fix: mod.Call() keywords should work (again)
+* Fix: Cancelling mod loading won't crash the game
+
 v1.7.2  2019-11-10 (HOTFIX)
 * Fix: mod.Call() keywords work
 

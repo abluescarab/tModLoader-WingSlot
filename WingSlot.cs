@@ -25,8 +25,10 @@ namespace WingSlot {
         }
 
         public override void Unload() {
-            RightClickOverrides.Clear();
-            RightClickOverrides = null;
+            if(RightClickOverrides != null) {
+                RightClickOverrides.Clear();
+                RightClickOverrides = null;
+            }
         }
 
         public override object Call(params object[] args) {
@@ -36,8 +38,6 @@ namespace WingSlot {
                 if(string.IsNullOrEmpty(keyword)) {
                     return null;
                 }
-
-                keyword = keyword.ToLower();
 
                 switch(keyword) {
                     case "add":
