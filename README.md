@@ -13,12 +13,21 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 * Yoraiz0r's Spell eye glow doesn't work
 
 ## Mod Compatibility
+If your mod needs to access the items in the slots:
+```csharp
+Item wingItem = null;
+
+if (ModLoader.GetMod("WingSlot") is Mod wingSlot && wingSlot != null) {
+    wingItem = (Item)wingSlot.Call(/* "getvisibleitem"/"getvanityitem"/"getequipslotitem" */, player.whoAmI);
+}
+```
+
 If your mod needs to override right-click functionality:
 ```csharp
 Mod wingSlot = ModLoader.GetMod("WingSlot");
 
 if(wingSlot != null) {
-    wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue normal execution */);
+    wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue */);
 }
 ```
 
@@ -31,3 +40,4 @@ These functions are checked during `GlobalWingItem.CanRightClick()`. If any of t
 * VVV101 for released updated version
 * vizthex for suggesting slot location option
 * jofairden for suggesting mod compatibility slot overrides
+* direwolf420 for fixing the mod for 0.11.5 and adding getEquipSlotItem & other `mod.Call()`s
