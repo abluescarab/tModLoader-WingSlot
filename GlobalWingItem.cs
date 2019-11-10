@@ -19,7 +19,7 @@ namespace WingSlot {
                 return;
             }
 
-            WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>(mod);
+            WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>();
             mp.EquipWings(KeyboardUtils.HeldDown(Keys.LeftShift), item);
         }
     }
