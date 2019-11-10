@@ -38,27 +38,63 @@ namespace WingSlot {
         }
 
         public override object Call(params object[] args) {
-            string keyword = args[0] as string;
-            Func<bool> func = args[1] as Func<bool>;
+            try {
+                string keyword = args[0] as string;
+                if(string.IsNullOrEmpty(keyword)) {
+                    return null;
+                }
+                keyword = keyword.ToLower();
 
-            if(string.IsNullOrEmpty(keyword) || func == null) {
+                switch(keyword) {
+                    case "add":
+                    case "remove":
+                        //wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue normal execution */);
+                        //These two should be called in PostSetupContent
+                        Func<bool> func = args[1] as Func<bool>;
+                        if(func == null) return null;
+                        if(keyword == "add") {
+                            RightClickOverrides.Add(func);
+                        }
+                        else if(keyword == "remove") {
+                            RightClickOverrides.Remove(func);
+                        }
+                        break;
+                    case "getequipslotitem":
+                    case "getvanityslotitem":
+                    case "getvisibleitem":
+                        //Can't use these three in PostSetupContent because EquipSlot is a field in WingSlotPlayer, but that's not initialized yet
+                        //Hence why I couldn't make some sort of delegate as an argument that assigned it
+
+                        //Item wingItem = (Item)wingSlot.Call(/* "getequipslotitem" or "getvanityslotitem" or "getdisplayeditem"*/);
+                        //These three should be called on demand
+                        WingSlotPlayer wsp = Main.LocalPlayer.GetModPlayer<WingSlotPlayer>();
+                        if(keyword == "getequipslotitem") {
+                            return wsp.EquipSlot.Item;
+                        }
+                        else if(keyword == "getvanityslotitem") {
+                            return wsp.VanitySlot.Item;
+                        }
+                        //Returns the item that is responsible for the wings to display on the player (at all times or during flight)
+                        else if(keyword == "getvisibleitem") {
+                            if(wsp.VanitySlot.Item.wingSlot > 0) {
+                                return wsp.VanitySlot.Item;
+                            }
+                            else {
+                                return wsp.EquipSlot.Item;
+                            }
+                        }
+                        break;
+                }
+            }
+            catch {
                 return null;
-            }
-
-            keyword = keyword.ToLower();
-
-            if(keyword == "add") {
-                RightClickOverrides.Add(func);
-            }
-            else if(keyword == "remove") {
-                RightClickOverrides.Remove(func);
             }
 
             return null;
         }
 
         public override void PostDrawInterface(SpriteBatch spriteBatch) {
-            WingSlotPlayer wsp = Main.player[Main.myPlayer].GetModPlayer<WingSlotPlayer>(this);
+            WingSlotPlayer wsp = Main.LocalPlayer.GetModPlayer<WingSlotPlayer>();
             wsp.Draw(spriteBatch);
         }
 
