@@ -40,18 +40,22 @@ namespace WingSlot {
         public override object Call(params object[] args) {
             try {
                 string keyword = args[0] as string;
+
                 if(string.IsNullOrEmpty(keyword)) {
                     return null;
                 }
+
                 keyword = keyword.ToLower();
 
                 switch(keyword) {
                     case "add":
                     case "remove":
-                        //wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue normal execution */);
-                        //These two should be called in PostSetupContent
+                        // wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue normal execution */);
+                        // These two should be called in PostSetupContent
                         Func<bool> func = args[1] as Func<bool>;
+
                         if(func == null) return null;
+
                         if(keyword == "add") {
                             RightClickOverrides.Add(func);
                         }
@@ -59,23 +63,25 @@ namespace WingSlot {
                             RightClickOverrides.Remove(func);
                         }
                         break;
-                    case "getequipslotitem":
-                    case "getvanityslotitem":
-                    case "getvisibleitem":
-                        //Can't use these three in PostSetupContent because EquipSlot is a field in WingSlotPlayer, but that's not initialized yet
-                        //Hence why I couldn't make some sort of delegate as an argument that assigned it
+                    case "getEquipSlotItem":
+                    case "getVanitySlotItem":
+                    case "getVisibleItem":
+                        /* Can't use these three in PostSetupContent because EquipSlot is a field in WingSlotPlayer, but
+                         * that's not initialized yet, hence why I couldn't make some sort of delegate as an argument
+                         * that assigned it */
 
-                        //Item wingItem = (Item)wingSlot.Call(/* "getequipslotitem" or "getvanityslotitem" or "getdisplayeditem"*/, player.whoAmI);
-                        //These three should be called on demand
+                        // Item wingItem = (Item)wingSlot.Call(/* "getequipslotitem"/"getvanityslotitem"/"getdisplayeditem"*/, player.whoAmI);
+                        // These three should be called on demand
                         int whoAmI = Convert.ToInt32(args[1]);
                         WingSlotPlayer wsp = Main.player[whoAmI].GetModPlayer<WingSlotPlayer>();
+
                         if(keyword == "getequipslotitem") {
                             return wsp.EquipSlot.Item;
                         }
                         else if(keyword == "getvanityslotitem") {
                             return wsp.VanitySlot.Item;
                         }
-                        //Returns the item that is responsible for the wings to display on the player (at all times or during flight)
+                        // Returns the item that is responsible for the wings to display on the player (at all times or during flight)
                         else if(keyword == "getvisibleitem") {
                             if(wsp.VanitySlot.Item.wingSlot > 0) {
                                 return wsp.VanitySlot.Item;
