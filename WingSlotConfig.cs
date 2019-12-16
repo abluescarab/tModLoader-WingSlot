@@ -13,10 +13,5 @@ namespace WingSlot {
         [DefaultValue(false)]
         [Label("Allow equipping in accessory slots")]
         public bool AllowAccessorySlots;
-
-        public override void OnChanged() {
-            WingSlot.SlotsNextToAccessories = SlotsNextToAccessories;
-            WingSlot.AllowAccessorySlots = AllowAccessorySlots;
-        }
     }
 }
