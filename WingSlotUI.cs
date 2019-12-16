@@ -23,7 +23,7 @@ namespace WingSlot {
 
         public override void OnInitialize() {
             WingSlot mod = ModContent.GetInstance<WingSlot>();
-            CroppedTexture2D backTexture = new CroppedTexture2D(mod.GetTexture(WingSlot.WingSlotBackTex));
+            CroppedTexture2D backTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"));
 
             EquipSlot = new CustomItemSlot(ItemSlot.Context.EquipAccessory, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,

@@ -8,8 +8,6 @@ using Terraria.UI;
 
 namespace WingSlot {
     public class WingSlot : Mod {
-        public const string WingSlotBackTex = "WingSlotBackground";
-
         private UserInterface _wingSlotInterface;
 
         private static List<Func<bool>> _rightClickOverrides;
