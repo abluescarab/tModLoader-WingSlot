@@ -119,11 +119,6 @@ namespace WingSlot {
         //    return null;
         //}
 
-        //public override void PostDrawInterface(SpriteBatch spriteBatch) {
-        //    WingSlotPlayer wsp = Main.LocalPlayer.GetModPlayer<WingSlotPlayer>();
-        //    wsp.Draw(spriteBatch);
-        //}
-
         //public override void HandlePacket(BinaryReader reader, int whoAmI) {
         //    PacketMessageType message = (PacketMessageType)reader.ReadByte();
         //    byte player = reader.ReadByte();

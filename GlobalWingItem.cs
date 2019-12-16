@@ -12,13 +12,13 @@ namespace WingSlot {
             return (item.wingSlot > 0 && !WingSlot.OverrideRightClick());
         }
 
-        //public override void RightClick(Item item, Player player) {
-        //    if(!CanRightClick(item)) {
-        //        return;
-        //    }
+        public override void RightClick(Item item, Player player) {
+            if(!CanRightClick(item)) {
+                return;
+            }
 
-        //    WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>();
-        //    mp.EquipWings(KeyboardUtils.Shift, item);
-        //}
+            WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>();
+            mp.EquipItem(item, KeyboardUtils.Shift, true);
+        }
     }
 }

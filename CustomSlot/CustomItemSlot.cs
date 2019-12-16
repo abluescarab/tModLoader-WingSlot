@@ -10,7 +10,7 @@ using Terraria.UI;
 /*
  * TODO: fix number text
  * TODO: equip/unequip
- * TODO: partner slot
+ * TODO: partner slot (right-clicking vanity crashes game)
  */
 
 namespace CustomSlot {
@@ -29,8 +29,6 @@ namespace CustomSlot {
         private bool forceToggleButton;
 
         public bool ItemVisible { get; set; }
-
-        public CustomItemSlot Partner { get; set; }
 
         public string HoverText { get; set; }
 
@@ -156,7 +154,7 @@ namespace CustomSlot {
                 Item = new Item();
                 Item.SetDefaults();
             }
-            
+
             protected override void DrawSelf(SpriteBatch spriteBatch) {
                 DoDraw(spriteBatch);
 
@@ -213,6 +211,19 @@ namespace CustomSlot {
                     Scale,
                     SpriteEffects.None,
                     0f);
+
+                // TODO: fix number text
+                //ChatManager.DrawColorCodedStringWithShadow(
+                //    spriteBatch,
+                //    Main.fontItemStack,
+                //    Item.stack.ToString(),
+                //    position + new Vector2(10f, 26f) * Scale,
+                //    Color.White,
+                //    0f,
+                //    Vector2.Zero,
+                //    new Vector2(Scale),
+                //    -1f,
+                //    Scale);
             }
         }
 
@@ -224,7 +235,7 @@ namespace CustomSlot {
 
             protected override void DrawSelf(SpriteBatch spriteBatch) {
                 if(!(Parent is CustomItemSlot slot)) return;
-                
+
                 DoDraw(spriteBatch, slot);
 
                 if(ContainsPoint(Main.MouseScreen) && !PlayerInput.IgnoreMouseInterface) {
@@ -371,61 +382,3 @@ namespace CustomSlot {
         }
     }
 }
-
-//private void Draw(SpriteBatch spriteBatch, Rectangle rectangle) {
-//    spriteBatch.Draw(
-//        _backTexture,
-//        rectangle.TopLeft(),
-//        null,
-//        Color.White * 0.8f,
-//        0f,
-//        Vector2.Zero,
-//        Scale,
-//        SpriteEffects.None,
-//        1f);
-
-//    if(Item.stack > 0) {
-//        Texture2D itemTex = Main.itemTexture[Item.type];
-//        Rectangle itemRect = Main.itemAnimations[Item.type] != null ?
-//            Main.itemAnimations[Item.type].GetFrame(itemTex) :
-//            itemTex.Frame(1, 1, 0, 0);
-
-//        Vector2 position = new Rectangle(itemRect.X, itemRect.Y, itemRect.Width, itemRect.Height).Center.ToVector2();
-
-//        spriteBatch.Draw(
-//            itemTex,
-//            position,
-//            itemRect,
-//            Color.White,
-//            0f,
-//            itemRect.Size() / 2f,
-//            Scale,
-//            SpriteEffects.None,
-//            0f);
-
-//        // TODO: fix number text
-//        ChatManager.DrawColorCodedStringWithShadow(
-//            spriteBatch,
-//            Main.fontItemStack,
-//            Item.stack.ToString(),
-//            position + new Vector2(10f, 26f) * Scale,
-//            Color.White,
-//            0f,
-//            Vector2.Zero,
-//            new Vector2(Scale),
-//            -1f,
-//            Scale);
-//    }
-//    else if(Item.stack == 0 && ValidItemTexture != null) {
-//        spriteBatch.Draw(
-//            ValidItemTexture,
-//            rectangle.TopLeft() + (rectangle.Size() / 2f),
-//            null,
-//            Color.White * 0.35f,
-//            0f,
-//            ValidItemTexture.Size() / 2f,
-//            Scale,
-//            SpriteEffects.None,
-//            0f); // layer depth 0 = front
-//    }
-//}
