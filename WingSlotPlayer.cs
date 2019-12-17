@@ -12,55 +12,17 @@ namespace WingSlot {
         private const string VanityWingsTag = "vanitywings";
         private const string WingDyeTag = "wingdye";
 
-        //public override void clientClone(ModPlayer clientClone) {
-        //    WingSlotPlayer clone = clientClone as WingSlotPlayer;
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+            WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
 
-        //    if(clone == null) {
-        //        return;
-        //    }
-
-        //    clone.WingSlotUI.EquipSlot.Item = WingSlotUI.EquipSlot.Item.Clone();
-        //    clone.WingSlotUI.VanitySlot.Item = WingSlotUI.Item.Clone();
-        //    clone.WingSlotUI.DyeSlot.Item = WingSlotUI.DyeSlot.Item.Clone();
-        //}
-
-        //public override void SendClientChanges(ModPlayer clientPlayer) {
-        //    WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
-
-        //    if(oldClone == null) {
-        //        return;
-        //    }
-
-        //    if(oldClone.WingSlotUI.EquipSlot.Item.IsNotTheSameAs(WingSlotUI.EquipSlot.Item)) {
-        //        SendSingleItemPacket(PacketMessageType.EquipSlot, WingSlotUI.EquipSlot.Item, -1, player.whoAmI);
-        //    }
-
-        //    if(oldClone.VanitySlot.Item.IsNotTheSameAs(VanitySlot.Item)) {
-        //        SendSingleItemPacket(PacketMessageType.VanitySlot, VanitySlot.Item, -1, player.whoAmI);
-        //    }
-
-        //    if(oldClone.DyeSlot.Item.IsNotTheSameAs(DyeSlot.Item)) {
-        //        SendSingleItemPacket(PacketMessageType.DyeSlot, DyeSlot.Item, -1, player.whoAmI);
-        //    }
-        //}
-
-        //internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
-        //    ModPacket packet = mod.GetPacket();
-        //    packet.Write((byte)message);
-        //    packet.Write((byte)player.whoAmI);
-        //    ItemIO.Send(item, packet);
-        //    packet.Send(toWho, fromWho);
-        //}
-
-        //public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-        //    ModPacket packet = mod.GetPacket();
-        //    packet.Write((byte)PacketMessageType.All);
-        //    packet.Write((byte)player.whoAmI);
-        //    ItemIO.Send(WingSlotUI.EquipSlot.Item, packet);
-        //    //ItemIO.Send(VanitySlot.Item, packet);
-        //    //ItemIO.Send(DyeSlot.Item, packet);
-        //    packet.Send(toWho, fromWho);
-        //}
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)PacketMessageType.All);
+            packet.Write((byte)player.whoAmI);
+            ItemIO.Send(ui.EquipSlot.Item, packet);
+            ItemIO.Send(ui.VanitySlot.Item, packet);
+            ItemIO.Send(ui.DyeSlot.Item, packet);
+            packet.Send(toWho, fromWho);
+        }
 
         public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
@@ -154,12 +116,6 @@ namespace WingSlot {
             }
 
             slot.Item = item.Clone();
-        }
-
-        private bool ShowDye() {
-            WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
-            return ui.DyeSlot.Item.stack > 0 && 
-                   (ui.VanitySlot.Item.stack > 0 || (ui.EquipSlot.Item.stack > 0 && ui.EquipSlot.ItemVisible));
         }
     }
 }

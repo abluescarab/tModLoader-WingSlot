@@ -34,7 +34,8 @@ namespace WingSlot {
             VanitySlot = new CustomItemSlot(ItemSlot.Context.EquipAccessoryVanity, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,
                 EmptyTexture = backTexture,
-                HoverText = Language.GetTextValue("Mods.WingSlot.SocialWings")
+                HoverText = Language.GetTextValue("Mods.WingSlot.SocialWings"),
+                Partner = EquipSlot
             };
 
             DyeSlot = new CustomItemSlot(ItemSlot.Context.EquipDye, 0.85f) {
@@ -109,7 +110,7 @@ namespace WingSlot {
                 rY = (int)(mapH + 174 + 4 + slotCount * 56 * EquipSlot.Scale);
             }
 
-            return new Vector2(rX, rY - 2);
+            return new Vector2(rX, rY);
         }
     }
 }
