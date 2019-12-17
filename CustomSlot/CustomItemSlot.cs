@@ -7,6 +7,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 /* TODO: fix number text */
 
@@ -16,6 +17,12 @@ namespace CustomSlot {
             Head,
             Chest,
             Leg
+        }
+
+        public static class DefaultColors {
+            public static readonly Color EmptyTexture = Color.White * 0.35f;
+            public static readonly Color InventoryItemBack = Main.inventoryBack;
+            public static readonly Color EquipBack = Color.White * 0.8f;
         }
 
         internal const int TickOffsetX = 6;
@@ -71,11 +78,9 @@ namespace CustomSlot {
 
         public CustomItemSlot(int context = ItemSlot.Context.InventoryItem, float scale = 1f,
             ArmorType defaultArmorIcon = ArmorType.Head) {
-            Texture2D backgroundTex = GetBackgroundTexture(context);
-
             Context = context;
             _scale = scale;
-            _backgroundTexture = new CroppedTexture2D(backgroundTex);
+            _backgroundTexture = GetBackgroundTexture(context);
             EmptyTexture = GetEmptyTexture(context, defaultArmorIcon);
             ItemVisible = true;
             ForceToggleButton = false;
@@ -123,7 +128,7 @@ namespace CustomSlot {
             Rectangle rectangle = GetDimensions().ToRectangle();
             Texture2D itemTexture = EmptyTexture.Texture;
             Rectangle itemRectangle = EmptyTexture.Rectangle;
-            Color color = Color.White * 0.35f;
+            Color color = EmptyTexture.Color;
 
             if(Item.stack > 0) {
                 itemTexture = Main.itemTexture[Item.type];
@@ -132,28 +137,46 @@ namespace CustomSlot {
                 color = Color.White;
             }
 
-            spriteBatch.Draw(
-                BackgroundTexture.Texture,
-                rectangle.TopLeft(),
-                BackgroundTexture.Rectangle,
-                Color.White * 0.8f,
-                0f,
-                Vector2.Zero,
-                Scale,
-                SpriteEffects.None,
-                1f);
+            if(BackgroundTexture.Texture != null) {
+                spriteBatch.Draw(
+                    BackgroundTexture.Texture,
+                    rectangle.TopLeft(),
+                    BackgroundTexture.Rectangle,
+                    BackgroundTexture.Color,
+                    0f,
+                    Vector2.Zero,
+                    Scale,
+                    SpriteEffects.None,
+                    1f);
+            }
 
-            spriteBatch.Draw(
-                itemTexture,
-                rectangle.Center(),
-                itemRectangle,
-                color,
-                0f,
-                new Vector2(itemRectangle.Center.X - itemRectangle.Location.X,
-                            itemRectangle.Center.Y - itemRectangle.Location.Y),
-                Scale,
-                SpriteEffects.None,
-                0f);
+            if(itemTexture != null) {
+                spriteBatch.Draw(
+                    itemTexture,
+                    rectangle.Center(),
+                    itemRectangle,
+                    color,
+                    0f,
+                    new Vector2(itemRectangle.Center.X - itemRectangle.Location.X,
+                                itemRectangle.Center.Y - itemRectangle.Location.Y),
+                    Scale,
+                    SpriteEffects.None,
+                    0f);
+            }
+
+            if(Item.stack > 1) {
+                ChatManager.DrawColorCodedStringWithShadow(
+                    spriteBatch, 
+                    Main.fontItemStack, 
+                    Item.stack.ToString(),
+                    GetDimensions().Position() + new Vector2(10f, 26f) * Scale,
+                    Color.White, 
+                    0f, 
+                    Vector2.Zero, 
+                    new Vector2(Scale), 
+                    -1f, 
+                    Scale);
+            }
         }
 
         /// <summary>
@@ -232,7 +255,10 @@ namespace CustomSlot {
         /// </summary>
         /// <param name="context">slot context</param>
         /// <returns>background texture of the slot</returns>
-        public static Texture2D GetBackgroundTexture(int context) {
+        public static CroppedTexture2D GetBackgroundTexture(int context) {
+            Texture2D texture;
+            Color color = Main.inventoryBack;
+
             switch(context) {
                 case ItemSlot.Context.EquipAccessory:
                 case ItemSlot.Context.EquipArmor:
@@ -241,27 +267,46 @@ namespace CustomSlot {
                 case ItemSlot.Context.EquipMinecart:
                 case ItemSlot.Context.EquipPet:
                 case ItemSlot.Context.EquipLight:
-                    return Main.inventoryBack3Texture;
+                    color = DefaultColors.EquipBack;
+                    texture = Main.inventoryBack3Texture;
+                    break;
                 case ItemSlot.Context.EquipArmorVanity:
                 case ItemSlot.Context.EquipAccessoryVanity:
-                    return Main.inventoryBack8Texture;
+                    color = DefaultColors.EquipBack;
+                    texture = Main.inventoryBack8Texture;
+                    break;
                 case ItemSlot.Context.EquipDye:
-                    return Main.inventoryBack12Texture;
+                    color = DefaultColors.EquipBack;
+                    texture = Main.inventoryBack12Texture;
+                    break;
                 case ItemSlot.Context.ChestItem:
-                    return Main.inventoryBack5Texture;
+                    color = DefaultColors.InventoryItemBack;
+                    texture = Main.inventoryBack5Texture;
+                    break;
                 case ItemSlot.Context.BankItem:
-                    return Main.inventoryBack2Texture;
+                    color = DefaultColors.InventoryItemBack;
+                    texture = Main.inventoryBack2Texture;
+                    break;
                 case ItemSlot.Context.GuideItem:
                 case ItemSlot.Context.PrefixItem:
                 case ItemSlot.Context.CraftingMaterial:
-                    return Main.inventoryBack4Texture;
+                    color = DefaultColors.InventoryItemBack;
+                    texture = Main.inventoryBack4Texture;
+                    break;
                 case ItemSlot.Context.TrashItem:
-                    return Main.inventoryBack7Texture;
+                    color = DefaultColors.InventoryItemBack;
+                    texture = Main.inventoryBack7Texture;
+                    break;
                 case ItemSlot.Context.ShopItem:
-                    return Main.inventoryBack6Texture;
+                    color = DefaultColors.InventoryItemBack;
+                    texture = Main.inventoryBack6Texture;
+                    break;
                 default:
-                    return Main.inventoryBackTexture;
+                    texture = Main.inventoryBackTexture;
+                    break;
             }
+
+            return new CroppedTexture2D(texture, color);
         }
 
         /// <summary>

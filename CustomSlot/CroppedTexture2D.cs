@@ -6,13 +6,19 @@ namespace CustomSlot {
     public struct CroppedTexture2D {
         public Texture2D Texture { get; }
         public Rectangle Rectangle { get; set; }
+        public Color Color { get; set; }
 
         public static readonly CroppedTexture2D Empty = new CroppedTexture2D();
 
-        public CroppedTexture2D(Texture2D texture) : this(texture, texture.Bounds) { }
+        public CroppedTexture2D(Texture2D texture) : this(texture, Color.White, texture.Bounds) { }
 
-        public CroppedTexture2D(Texture2D texture, Rectangle rectangle) {
+        public CroppedTexture2D(Texture2D texture, Color color) : this(texture, color, texture.Bounds) { }
+
+        public CroppedTexture2D(Texture2D texture, Rectangle rectangle) : this(texture, Color.White, rectangle) { }
+
+        public CroppedTexture2D(Texture2D texture, Color color, Rectangle rectangle) {
             Texture = texture;
+            Color = color;
             Rectangle = rectangle;
         }
 

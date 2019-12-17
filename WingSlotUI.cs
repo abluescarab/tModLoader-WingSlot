@@ -23,17 +23,18 @@ namespace WingSlot {
 
         public override void OnInitialize() {
             WingSlot mod = ModContent.GetInstance<WingSlot>();
-            CroppedTexture2D backTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"));
+            CroppedTexture2D emptyTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"), 
+                                                                 CustomItemSlot.DefaultColors.EmptyTexture);
 
             EquipSlot = new CustomItemSlot(ItemSlot.Context.EquipAccessory, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,
-                EmptyTexture = backTexture,
+                EmptyTexture = emptyTexture,
                 HoverText = Language.GetTextValue("Mods.WingSlot.Wings")
             };
 
             VanitySlot = new CustomItemSlot(ItemSlot.Context.EquipAccessoryVanity, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,
-                EmptyTexture = backTexture,
+                EmptyTexture = emptyTexture,
                 HoverText = Language.GetTextValue("Mods.WingSlot.SocialWings"),
                 Partner = EquipSlot
             };
