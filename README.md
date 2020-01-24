@@ -34,6 +34,7 @@ if(wingSlot != null) {
 These functions are checked during `GlobalWingItem.CanRightClick()`. If any of them returns true, `CanRightClick()` cancels equipping a pair of wings, so please ensure that your method is relatively bug-free.
 
 ## Credits
+* Blockaroz for the fantastic mod icon!
 * jopojelly for code that draws a slot to the left of the dyes; for fixing multiplayer issues and various other bugs
 * Boffin for TerraUI
 * Zsashas for bug report (custom dye incompatibility)
