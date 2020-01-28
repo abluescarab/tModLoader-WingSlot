@@ -68,9 +68,9 @@ namespace WingSlot {
 
                 switch(keyword) {
                     case "getConfig":
-                        return new (string, object)[] {
-                            ("SlotsNextToAccessories", WingSlotConfig.Instance.SlotsNextToAccessories),
-                            ("AllowAccessorySlots", WingSlotConfig.Instance.AllowAccessorySlots)
+                        return new Dictionary<string, object> {
+                            { "SlotsNextToAccessories", WingSlotConfig.Instance.SlotsNextToAccessories },
+                            { "AllowAccessorySlots", WingSlotConfig.Instance.AllowAccessorySlots }
                         };
                     default:
                         return "Error: not a valid command";
