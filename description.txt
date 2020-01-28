@@ -19,6 +19,7 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * Yoraiz0r's Spell eye glow doesn't work
 
 [Credits]
+* Blockaroz for the fantastic mod icon!
 * jopojelly for code that draws a slot to the left of the dyes; for fixing multiplayer issues and various other bugs
 * Boffin for TerraUI
 * Zsashas for bug report (custom dye incompatibility)
