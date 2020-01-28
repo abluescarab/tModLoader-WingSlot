@@ -68,17 +68,17 @@ namespace WingSlot {
 
                 switch(keyword) {
                     case "getConfig":
-                        return new[] {
+                        return new (string, object)[] {
                             ("SlotsNextToAccessories", WingSlotConfig.Instance.SlotsNextToAccessories),
                             ("AllowAccessorySlots", WingSlotConfig.Instance.AllowAccessorySlots)
                         };
+                    default:
+                        return "Error: not a valid command";
                 }
             }
             catch {
                 return null;
             }
-
-            return null;
         }
 
         //public override object Call(params object[] args) {
