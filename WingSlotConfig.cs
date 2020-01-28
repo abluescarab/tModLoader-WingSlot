@@ -5,7 +5,7 @@ namespace WingSlot {
     public class WingSlotConfig : ModConfig {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
-        public static WingSlotConfig Instance = null;
+        public static WingSlotConfig Instance;
 
         [DefaultValue(true)]
         [Tooltip("Place the new slots next to accessories or next to\nunique equipment (pets, minecart, etc.)")]
