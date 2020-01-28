@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using CustomSlot;
+using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using WingSlot.UI;
 
 namespace WingSlot {
     internal class WingSlotPlayer : ModPlayer {
+        private const string PanelX = "panelx";
+        private const string PanelY = "panely";
         private const string HiddenTag = "hidden";
         private const string WingsTag = "wings";
         private const string VanityWingsTag = "vanitywings";
@@ -72,6 +77,8 @@ namespace WingSlot {
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
 
             return new TagCompound {
+                { PanelX, ui.Panel.Left.Pixels },
+                { PanelY, ui.Panel.Top.Pixels },
                 { HiddenTag, ui.EquipSlot.ItemVisible },
                 { WingsTag, ItemIO.Save(ui.EquipSlot.Item) },
                 { VanityWingsTag, ItemIO.Save(ui.VanitySlot.Item) },
@@ -83,10 +90,15 @@ namespace WingSlot {
         /// Load the mod settings.
         /// </summary>
         public override void Load(TagCompound tag) {
+            WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
+
             EquipItem(ItemIO.Load(tag.GetCompound(WingsTag)), false, false);
             EquipItem(ItemIO.Load(tag.GetCompound(VanityWingsTag)), true, false);
             EquipItem(ItemIO.Load(tag.GetCompound(WingDyeTag)), false, false);
-            ((WingSlot)mod).WingSlotUI.EquipSlot.ItemVisible = tag.GetBool(HiddenTag);
+
+            ui.EquipSlot.ItemVisible = tag.GetBool(HiddenTag);
+            ui.Panel.Left.Set(tag.GetFloat(PanelX), 0);
+            ui.Panel.Top.Set(tag.GetFloat(PanelY), 0);
         }
 
         /// <summary>

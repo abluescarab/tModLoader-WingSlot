@@ -7,17 +7,20 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace WingSlot {
+namespace WingSlot.UI {
     public class WingSlotUI : UIState {
+        private const int SlotMargin = 3;
+
         public CustomItemSlot EquipSlot;
         public CustomItemSlot VanitySlot;
         public CustomItemSlot DyeSlot;
 
+        public CustomUIPanel Panel { get; private set; }
+
         public bool IsVisible {
             get {
-                bool slotsNextToAccessories = WingSlotConfig.Instance.SlotsNextToAccessories;
-                return Main.playerInventory && ((slotsNextToAccessories && Main.EquipPage == 0) ||
-                                                (!slotsNextToAccessories && Main.EquipPage == 2));
+                bool nextToUniques = WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Uniques;
+                return Main.playerInventory && (!nextToUniques || Main.EquipPage == 2);
             }
         }
 
@@ -43,27 +46,39 @@ namespace WingSlot {
                 IsValidItem = item => item.dye > 0
             };
 
-            Append(EquipSlot);
-            Append(VanitySlot);
-            Append(DyeSlot);
+            float slotSize = EquipSlot.Width.Pixels;
+
+            Panel = new CustomUIPanel();
+            Panel.Left.Set(200, 0);
+            Panel.Top.Set(300, 0);
+            Panel.Width.Set((slotSize * 3) + (SlotMargin * 2) + Panel.PaddingLeft + Panel.PaddingRight, 0);
+            Panel.Height.Set(slotSize + Panel.PaddingTop + Panel.PaddingBottom, 0);
+
+            Panel.BackgroundColor = Color.Transparent;
+
+            VanitySlot.Left.Set(slotSize + SlotMargin, 0);
+            EquipSlot.Left.Set((slotSize * 2) + (SlotMargin * 2), 0);
+
+            Panel.Append(EquipSlot);
+            Panel.Append(VanitySlot);
+            Panel.Append(DyeSlot);
+
+            Append(Panel);
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch) {
+            base.DrawSelf(spriteBatch);
+
+            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom) return;
+
             Vector2 pos = CalculatePosition();
 
-            EquipSlot.Left.Set(pos.X, EquipSlot.Left.Percent);
-            EquipSlot.Top.Set(pos.Y, EquipSlot.Top.Percent);
-
-            VanitySlot.Left.Set(pos.X - 47, VanitySlot.Left.Percent);
-            VanitySlot.Top.Set(pos.Y, VanitySlot.Top.Percent);
-
-            DyeSlot.Left.Set(pos.X - (47 * 2), DyeSlot.Left.Percent);
-            DyeSlot.Top.Set(pos.Y, DyeSlot.Top.Percent);
-
-            base.DrawSelf(spriteBatch);
+            Panel.Left.Set(pos.X - Panel.PaddingLeft - ((EquipSlot.Width.Pixels + SlotMargin) * 2), 0);
+            Panel.Top.Set(pos.Y - Panel.PaddingTop, 0);
         }
 
         private Vector2 CalculatePosition() {
+            int slotSize = (int)EquipSlot.Width.Pixels;
             int mapH = 0;
             int rX;
             int rY;
@@ -74,18 +89,18 @@ namespace WingSlot {
                 }
             }
 
-            if(!WingSlotConfig.Instance.SlotsNextToAccessories) {
+            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Uniques) {
                 if(Main.mapEnabled) {
                     if((mapH + 600) > Main.screenHeight) {
                         mapH = Main.screenHeight - 600;
                     }
                 }
 
-                rX = Main.screenWidth - 92 - (47 * 2);
+                rX = Main.screenWidth - 92 - ((slotSize + SlotMargin) * 2);
                 rY = mapH + 174;
 
                 if(Main.netMode == 1) {
-                    rX -= 47;
+                    rX -= slotSize + SlotMargin;
                 }
             }
             else {
@@ -107,7 +122,8 @@ namespace WingSlot {
                     slotCount = 7;
                 }
 
-                rX = Main.screenWidth - 92 - 14 - (47 * 3) - (int)(Main.extraTexture[58].Width * EquipSlot.Scale);
+                rX = Main.screenWidth - 92 - 14 - ((slotSize + SlotMargin) * 3) 
+                     - (int)(Main.extraTexture[58].Width * EquipSlot.Scale);
                 rY = (int)(mapH + 174 + 4 + slotCount * 56 * EquipSlot.Scale);
             }
 

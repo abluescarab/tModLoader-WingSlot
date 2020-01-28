@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using WingSlot.UI;
 
 namespace WingSlot {
     public class WingSlot : Mod {
@@ -66,11 +66,12 @@ namespace WingSlot {
                     return "Error: no command provided";
                 }
 
-                switch(keyword) {
-                    case "getConfig":
+                switch(keyword.ToLower()) {
+                    case "getconfig":
                         return new Dictionary<string, object> {
-                            { "SlotsNextToAccessories", WingSlotConfig.Instance.SlotsNextToAccessories },
-                            { "AllowAccessorySlots", WingSlotConfig.Instance.AllowAccessorySlots }
+                            { "AllowAccessorySlots", WingSlotConfig.Instance.AllowAccessorySlots },
+                            { "SlotLocation", WingSlotConfig.Instance.SlotLocation },
+                            { "ShowCustomLocationPanel", WingSlotConfig.Instance.ShowCustomLocationPanel }
                         };
                     default:
                         return "Error: not a valid command";
