@@ -15,7 +15,7 @@ namespace WingSlot {
 
         public bool IsVisible {
             get {
-                bool slotsNextToAccessories = ModContent.GetInstance<WingSlotConfig>().SlotsNextToAccessories;
+                bool slotsNextToAccessories = WingSlotConfig.Instance.SlotsNextToAccessories;
                 return Main.playerInventory && ((slotsNextToAccessories && Main.EquipPage == 0) ||
                                                 (!slotsNextToAccessories && Main.EquipPage == 2));
             }
@@ -74,7 +74,7 @@ namespace WingSlot {
                 }
             }
 
-            if(!ModContent.GetInstance<WingSlotConfig>().SlotsNextToAccessories) {
+            if(!WingSlotConfig.Instance.SlotsNextToAccessories) {
                 if(Main.mapEnabled) {
                     if((mapH + 600) > Main.screenHeight) {
                         mapH = Main.screenHeight - 600;

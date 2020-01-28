@@ -10,9 +10,4 @@
   <Target Name="BuildMod" AfterTargets="Build">
     <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
   </Target>
-  <ItemGroup>
-    <Compile Remove="old\**" />
-    <EmbeddedResource Remove="old\**" />
-    <None Remove="old\**" />
-  </ItemGroup>
 </Project>

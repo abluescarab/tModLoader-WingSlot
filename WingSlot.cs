@@ -8,9 +8,9 @@ using Terraria.UI;
 
 namespace WingSlot {
     public class WingSlot : Mod {
-        private UserInterface _wingSlotInterface;
-
         private static List<Func<bool>> _rightClickOverrides;
+
+        private UserInterface _wingSlotInterface;
 
         public WingSlotUI WingSlotUI;
 
@@ -56,6 +56,29 @@ namespace WingSlot {
                       },
                       InterfaceScaleType.UI));
             }
+        }
+
+        public override object Call(params object[] args) {
+            try {
+                string keyword = args[0] as string;
+
+                if(string.IsNullOrEmpty(keyword)) {
+                    return "Error: no command provided";
+                }
+
+                switch(keyword) {
+                    case "getConfig":
+                        return new[] {
+                            ("SlotsNextToAccessories", WingSlotConfig.Instance.SlotsNextToAccessories),
+                            ("AllowAccessorySlots", WingSlotConfig.Instance.AllowAccessorySlots)
+                        };
+                }
+            }
+            catch {
+                return null;
+            }
+
+            return null;
         }
 
         //public override object Call(params object[] args) {
