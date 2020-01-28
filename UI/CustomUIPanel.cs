@@ -13,7 +13,7 @@ namespace WingSlot.UI {
         private bool _dragging = false;
         private bool _visible = true;
 
-        public bool CanDrag { get; set; } = true
+        public bool CanDrag { get; set; } = true;
 
         public bool Visible {
             get => _visible;
