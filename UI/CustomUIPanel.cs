@@ -32,7 +32,8 @@ namespace WingSlot.UI {
 
             if(!CanDrag) return;
 
-            if(evt.MousePosition.Y >= Top.Pixels && evt.MousePosition.Y <= (Top.Pixels + PaddingTop)) {
+            if(ContainsPoint(evt.MousePosition) && 
+               !GetInnerDimensions().ToRectangle().Contains(evt.MousePosition.ToPoint())) {
                 DragBegin(evt);
             }
         }
