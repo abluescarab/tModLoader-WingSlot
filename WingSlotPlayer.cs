@@ -24,7 +24,7 @@ namespace WingSlot {
             packet.Write((byte)PacketMessageType.All);
             packet.Write((byte)player.whoAmI);
             ItemIO.Send(ui.EquipSlot.Item, packet);
-            ItemIO.Send(ui.VanitySlot.Item, packet);
+            ItemIO.Send(ui.SocialSlot.Item, packet);
             ItemIO.Send(ui.DyeSlot.Item, packet);
             packet.Send(toWho, fromWho);
         }
@@ -32,7 +32,7 @@ namespace WingSlot {
         public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
 
-            if(ui.DyeSlot.Item.stack > 0 && (ui.EquipSlot.Item.wingSlot > 0 || ui.VanitySlot.Item.wingSlot > 0)) {
+            if(ui.DyeSlot.Item.stack > 0 && (ui.EquipSlot.Item.wingSlot > 0 || ui.SocialSlot.Item.wingSlot > 0)) {
                 drawInfo.wingShader = ui.DyeSlot.Item.dye;
             }
         }
@@ -43,7 +43,7 @@ namespace WingSlot {
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
             Item wings = ui.EquipSlot.Item;
-            Item vanityWings = ui.VanitySlot.Item;
+            Item vanityWings = ui.SocialSlot.Item;
 
             if(wings.stack > 0) {
                 player.VanillaUpdateAccessory(player.whoAmI, wings, !ui.EquipSlot.ItemVisible, ref wallSpeedBuff, ref tileSpeedBuff,
@@ -65,7 +65,7 @@ namespace WingSlot {
             // Cleaned up vanilla code
             if(ui.DyeSlot.Item == null) return;
 
-            if(ui.VanitySlot.Item.wingSlot > 0 || (ui.EquipSlot.Item.wingSlot > 0 && ui.EquipSlot.ItemVisible)) {
+            if(ui.SocialSlot.Item.wingSlot > 0 || (ui.EquipSlot.Item.wingSlot > 0 && ui.EquipSlot.ItemVisible)) {
                 player.cWings = ui.DyeSlot.Item.dye;
             }
         }
@@ -81,7 +81,7 @@ namespace WingSlot {
                 { PanelY, ui.Panel.Top.Pixels },
                 { HiddenTag, ui.EquipSlot.ItemVisible },
                 { WingsTag, ItemIO.Save(ui.EquipSlot.Item) },
-                { VanityWingsTag, ItemIO.Save(ui.VanitySlot.Item) },
+                { VanityWingsTag, ItemIO.Save(ui.SocialSlot.Item) },
                 { WingDyeTag, ItemIO.Save(ui.DyeSlot.Item) }
             };
         }
@@ -112,7 +112,7 @@ namespace WingSlot {
             CustomItemSlot slot;
 
             if(item.dye > 0) slot = ui.DyeSlot;
-            else if(isVanity) slot = ui.VanitySlot;
+            else if(isVanity) slot = ui.SocialSlot;
             else slot = ui.EquipSlot;
 
             if(fromInventory) {

@@ -12,7 +12,7 @@ namespace WingSlot.UI {
         private const int SlotMargin = 3;
 
         public CustomItemSlot EquipSlot;
-        public CustomItemSlot VanitySlot;
+        public CustomItemSlot SocialSlot;
         public CustomItemSlot DyeSlot;
 
         public CustomUIPanel Panel { get; private set; }
@@ -35,7 +35,7 @@ namespace WingSlot.UI {
                 HoverText = Language.GetTextValue("Mods.WingSlot.Wings")
             };
 
-            VanitySlot = new CustomItemSlot(ItemSlot.Context.EquipAccessoryVanity, 0.85f) {
+            SocialSlot = new CustomItemSlot(ItemSlot.Context.EquipAccessoryVanity, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,
                 EmptyTexture = emptyTexture,
                 HoverText = Language.GetTextValue("Mods.WingSlot.SocialWings"),
@@ -49,18 +49,15 @@ namespace WingSlot.UI {
             float slotSize = EquipSlot.Width.Pixels;
 
             Panel = new CustomUIPanel();
-            Panel.Left.Set(200, 0);
-            Panel.Top.Set(300, 0);
             Panel.Width.Set((slotSize * 3) + (SlotMargin * 2) + Panel.PaddingLeft + Panel.PaddingRight, 0);
             Panel.Height.Set(slotSize + Panel.PaddingTop + Panel.PaddingBottom, 0);
+            SetPosition();
 
-            Panel.BackgroundColor = Color.Transparent;
-
-            VanitySlot.Left.Set(slotSize + SlotMargin, 0);
+            SocialSlot.Left.Set(slotSize + SlotMargin, 0);
             EquipSlot.Left.Set((slotSize * 2) + (SlotMargin * 2), 0);
 
             Panel.Append(EquipSlot);
-            Panel.Append(VanitySlot);
+            Panel.Append(SocialSlot);
             Panel.Append(DyeSlot);
 
             Append(Panel);
@@ -71,10 +68,7 @@ namespace WingSlot.UI {
 
             if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom) return;
 
-            Vector2 pos = CalculatePosition();
-
-            Panel.Left.Set(pos.X - Panel.PaddingLeft - ((EquipSlot.Width.Pixels + SlotMargin) * 2), 0);
-            Panel.Top.Set(pos.Y - Panel.PaddingTop, 0);
+            SetPosition();
         }
 
         private Vector2 CalculatePosition() {
@@ -128,6 +122,13 @@ namespace WingSlot.UI {
             }
 
             return new Vector2(rX, rY);
+        }
+
+        private void SetPosition() {
+            Vector2 pos = CalculatePosition();
+
+            Panel.Left.Set(pos.X - Panel.PaddingLeft - ((EquipSlot.Width.Pixels + SlotMargin) * 2), 0);
+            Panel.Top.Set(pos.Y - Panel.PaddingTop, 0);
         }
     }
 }
