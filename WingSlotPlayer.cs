@@ -71,6 +71,23 @@ namespace WingSlot {
         }
 
         /// <summary>
+        /// Drop items if the player character is Medium or Hardcore.
+        /// </summary>
+        public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
+            if(player.difficulty == 0) return;
+
+            WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
+
+            player.QuickSpawnClonedItem(ui.EquipSlot.Item);
+            player.QuickSpawnClonedItem(ui.SocialSlot.Item);
+            player.QuickSpawnClonedItem(ui.DyeSlot.Item);
+
+            ui.EquipSlot.Item = new Item();
+            ui.SocialSlot.Item = new Item();
+            ui.DyeSlot.Item = new Item();
+        }
+
+        /// <summary>
         /// Save the mod settings.
         /// </summary>
         public override TagCompound Save() {
