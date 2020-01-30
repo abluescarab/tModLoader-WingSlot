@@ -1,24 +1,33 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using WingSlot.UI;
 
 namespace WingSlot {
     internal class GlobalWingItem : GlobalItem {
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
-            return item.wingSlot > 0 ? ModContent.GetInstance<WingSlotConfig>().AllowAccessorySlots :
-                base.CanEquipAccessory(item, player, slot);
+            if(item.wingSlot > 0) {
+                WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
+
+                return ui.Panel.ContainsPoint(Main.MouseScreen) ||
+                       (WingSlotConfig.Instance.AllowAccessorySlots && ((WingSlot)mod).WingSlotUI.EquipSlot.Item.IsAir);
+            }
+
+            return base.CanEquipAccessory(item, player, slot);
         }
 
         public override bool CanRightClick(Item item) {
-            return (item.wingSlot > 0 && !WingSlot.OverrideRightClick());
+            WingSlotPlayer mp = Main.LocalPlayer.GetModPlayer<WingSlotPlayer>();
+            WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
+
+            return item.wingSlot > 0 &&
+                   !WingSlot.OverrideRightClick() &&
+                   (!WingSlotConfig.Instance.AllowAccessorySlots ||
+                    !ui.EquipSlot.Item.IsAir ||
+                    Main.LocalPlayer.wingTimeMax == 0);
         }
 
         public override void RightClick(Item item, Player player) {
-            if(!CanRightClick(item)) {
-                return;
-            }
-
-            WingSlotPlayer mp = player.GetModPlayer<WingSlotPlayer>();
-            mp.EquipItem(item, KeyboardUtils.Shift, true);
+            player.GetModPlayer<WingSlotPlayer>().EquipItem(item, KeyboardUtils.Shift, true);
         }
     }
 }
