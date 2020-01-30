@@ -109,65 +109,6 @@ namespace WingSlot {
             return null;
         }
 
-        //public override object Call(params object[] args) {
-        //    try {
-        //        string keyword = args[0] as string;
-
-        //        if(string.IsNullOrEmpty(keyword)) {
-        //            return null;
-        //        }
-
-        //        switch(keyword) {
-        //            case "add":
-        //            case "remove":
-        //                // wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue */);
-        //                // These two should be called in PostSetupContent
-        //                Func<bool> func = args[1] as Func<bool>;
-
-        //                if(func == null) return null;
-
-        //                switch(keyword) {
-        //                    case "add":
-        //                        _rightClickOverrides.Add(func);
-        //                        break;
-        //                    case "remove":
-        //                        _rightClickOverrides.Remove(func);
-        //                        break;
-        //                }
-
-        //                break;
-        //            case "getEquip":
-        //            case "getVanity":
-        //            case "getVisible":
-        //                /* Can't use these three in PostSetupContent because EquipSlot is a field in WingSlotPlayer, but
-        //                 * that's not initialized yet, hence why I couldn't make some sort of delegate as an argument
-        //                 * that assigned it */
-
-        //                // Item wingItem = (Item)wingSlot.Call(/* "getEquip"/"getVanity"/"getVisible" */, player.whoAmI);
-        //                // These three should be called on demand
-        //                int whoAmI = Convert.ToInt32(args[1]);
-        //                WingSlotPlayer wsp = Main.player[whoAmI].GetModPlayer<WingSlotPlayer>();
-
-        //                switch(keyword) {
-        //                    case "getEquip":
-        //                        return wsp.EquipSlot.Item;
-        //                    case "getVanity":
-        //                        return wsp.VanitySlot.Item;
-        //                    // Returns the item that is responsible for the wings to display on the player (at all times or during flight)
-        //                    case "getVisible":
-        //                        return wsp.VanitySlot.Item.stack > 0 ? wsp.VanitySlot.Item : wsp.EquipSlot.Item;
-        //                }
-
-        //                break;
-        //        }
-        //    }
-        //    catch {
-        //        return null;
-        //    }
-
-        //    return null;
-        //}
-
         //public override void HandlePacket(BinaryReader reader, int whoAmI) {
         //    PacketMessageType message = (PacketMessageType)reader.ReadByte();
         //    byte player = reader.ReadByte();
