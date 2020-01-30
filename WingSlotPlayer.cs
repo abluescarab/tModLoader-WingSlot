@@ -13,7 +13,7 @@ namespace WingSlot {
         private const string PanelY = "panely";
         private const string HiddenTag = "hidden";
         private const string WingsTag = "wings";
-        private const string VanityWingsTag = "vanitywings";
+        private const string SocialWingsTag = "vanitywings";
         private const string WingDyeTag = "wingdye";
 
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
@@ -87,7 +87,7 @@ namespace WingSlot {
         }
 
         /// <summary>
-        /// Save the mod settings.
+        /// Save player settings.
         /// </summary>
         public override TagCompound Save() {
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
@@ -97,7 +97,7 @@ namespace WingSlot {
                 { PanelY, ui.Panel.Top.Pixels },
                 { HiddenTag, ui.EquipSlot.ItemVisible },
                 { WingsTag, ItemIO.Save(ui.EquipSlot.Item) },
-                { VanityWingsTag, ItemIO.Save(ui.SocialSlot.Item) },
+                { SocialWingsTag, ItemIO.Save(ui.SocialSlot.Item) },
                 { WingDyeTag, ItemIO.Save(ui.DyeSlot.Item) }
             };
         }
@@ -109,7 +109,7 @@ namespace WingSlot {
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
 
             EquipItem(ItemIO.Load(tag.GetCompound(WingsTag)), false, false);
-            EquipItem(ItemIO.Load(tag.GetCompound(VanityWingsTag)), true, false);
+            EquipItem(ItemIO.Load(tag.GetCompound(SocialWingsTag)), true, false);
             EquipItem(ItemIO.Load(tag.GetCompound(WingDyeTag)), false, false);
 
             ui.EquipSlot.ItemVisible = tag.GetBool(HiddenTag);
