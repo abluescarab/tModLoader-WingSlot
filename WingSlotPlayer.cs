@@ -124,6 +124,8 @@ namespace WingSlot {
         /// <param name="isVanity">whether the item should be equipped in the vanity slot</param>
         /// <param name="fromInventory">whether the item is being equipped from the inventory</param>
         public void EquipItem(Item item, bool isVanity, bool fromInventory) {
+            if(item == null) return;
+
             WingSlotUI ui = ((WingSlot)mod).WingSlotUI;
             CustomItemSlot slot;
 
