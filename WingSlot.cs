@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 using WingSlot.UI;
 
@@ -73,6 +76,31 @@ namespace WingSlot {
                             { "SlotLocation", WingSlotConfig.Instance.SlotLocation },
                             { "ShowCustomLocationPanel", WingSlotConfig.Instance.ShowCustomLocationPanel }
                         };
+                    case "getequip":
+                        return WingSlotUI.EquipSlot.Item;
+                    case "getvanity":
+                    case "getsocial":
+                        return WingSlotUI.SocialSlot.Item;
+                    case "getdye":
+                        return WingSlotUI.DyeSlot.Item;
+                    case "getvisible":
+                        return WingSlotUI.SocialSlot.Item.stack > 0 ? WingSlotUI.SocialSlot.Item
+                                                                    : WingSlotUI.EquipSlot.Item;
+                    case "add":
+                    case "remove":
+                        // wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue */);
+                        // These two should be called in PostSetupContent
+                        if(!(args[1] is Func<bool> func))
+                            return "Error: not a valid Func<bool>";
+
+                        if(keyword == "add") {
+                            _rightClickOverrides.Add(func);
+                        }
+                        else {
+                            _rightClickOverrides.Remove(func);
+                        }
+
+                        break;
                     default:
                         return "Error: not a valid command";
                 }
@@ -80,6 +108,8 @@ namespace WingSlot {
             catch {
                 return null;
             }
+
+            return null;
         }
 
         //public override object Call(params object[] args) {
