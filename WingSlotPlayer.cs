@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using CustomSlot;
-using Steamworks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
