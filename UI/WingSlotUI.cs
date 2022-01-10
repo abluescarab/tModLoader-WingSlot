@@ -1,8 +1,11 @@
-﻿using CustomSlot;
+﻿using System.Text.RegularExpressions;
+using CustomSlot;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -26,9 +29,9 @@ namespace WingSlot.UI {
 
         public override void OnInitialize() {
             WingSlot mod = ModContent.GetInstance<WingSlot>();
-            CroppedTexture2D emptyTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"), 
+            CroppedTexture2D emptyTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"),
                                                                  CustomItemSlot.DefaultColors.EmptyTexture);
-
+            
             EquipSlot = new CustomItemSlot(ItemSlot.Context.EquipAccessory, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,
                 EmptyTexture = emptyTexture,
@@ -91,7 +94,7 @@ namespace WingSlot.UI {
                 rX = Main.screenWidth - 92 - ((slotSize + SlotMargin) * 2);
                 rY = mapH + 174;
 
-                if(Main.netMode == 1) {
+                if(Main.netMode == NetmodeID.MultiplayerClient) {
                     rX -= slotSize + SlotMargin;
                 }
             }

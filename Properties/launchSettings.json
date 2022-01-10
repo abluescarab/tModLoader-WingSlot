@@ -5,12 +5,6 @@
       "executablePath": "$(tMLPath)",
       "workingDirectory": "$(TerrariaSteamPath)"
     },
-    "TerrariaFast": {
-      "commandName": "Executable",
-      "executablePath": "$(tMLPath)",
-      "commandLineArgs": "-skipselect",
-      "workingDirectory": "$(TerrariaSteamPath)"
-    },
     "TerrariaServer": {
       "commandName": "Executable",
       "executablePath": "$(tMLServerPath)",

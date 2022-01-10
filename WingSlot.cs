@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 using WingSlot.UI;
 
@@ -12,21 +15,23 @@ namespace WingSlot {
 
         private UserInterface _wingSlotInterface;
 
-        public WingSlotUI WingSlotUI;
+        public static WingSlotUI UI;
 
         public override void Load() {
             _rightClickOverrides = new List<Func<bool>>();
 
             if(!Main.dedServ) {
                 _wingSlotInterface = new UserInterface();
-                WingSlotUI = new WingSlotUI();
+                UI = new WingSlotUI();
 
-                WingSlotUI.Activate();
-                _wingSlotInterface.SetState(WingSlotUI);
+                UI.Activate();
+                _wingSlotInterface.SetState(UI);
             }
         }
 
         public override void Unload() {
+            UI = null;
+
             if(_rightClickOverrides == null) return;
 
             _rightClickOverrides.Clear();
@@ -34,7 +39,7 @@ namespace WingSlot {
         }
 
         public override void UpdateUI(GameTime gameTime) {
-            if(WingSlotUI.IsVisible) {
+            if(UI.IsVisible) {
                 _wingSlotInterface?.Update(gameTime);
             }
         }
@@ -48,7 +53,7 @@ namespace WingSlot {
                     new LegacyGameInterfaceLayer(
                       "Wing Slot: Custom Slot UI",
                       () => {
-                          if(WingSlotUI.IsVisible) {
+                          if(UI.IsVisible) {
                               _wingSlotInterface.Draw(Main.spriteBatch, new GameTime());
                           }
 
@@ -74,15 +79,15 @@ namespace WingSlot {
                             { "ShowCustomLocationPanel", WingSlotConfig.Instance.ShowCustomLocationPanel }
                         };
                     case "getequip":
-                        return WingSlotUI.EquipSlot.Item;
+                        return UI.EquipSlot.Item;
                     case "getvanity":
                     case "getsocial":
-                        return WingSlotUI.SocialSlot.Item;
+                        return UI.SocialSlot.Item;
                     case "getdye":
-                        return WingSlotUI.DyeSlot.Item;
+                        return UI.DyeSlot.Item;
                     case "getvisible":
-                        return WingSlotUI.SocialSlot.Item.stack > 0 ? WingSlotUI.SocialSlot.Item
-                                                                    : WingSlotUI.EquipSlot.Item;
+                        return UI.SocialSlot.Item.stack > 0 ? UI.SocialSlot.Item
+                                                                    : UI.EquipSlot.Item;
                     case "add":
                     case "remove":
                         // wingSlot.Call(/* "add" or "remove" */, /* func<bool> returns true to cancel/false to continue */);
@@ -116,35 +121,35 @@ namespace WingSlot {
 
         //    switch(message) {
         //        case PacketMessageType.All:
-        //            modPlayer.EquipSlot.Item = ItemIO.Receive(reader);
-        //            modPlayer.VanitySlot.Item = ItemIO.Receive(reader);
-        //            modPlayer.DyeSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == 2) {
+        //            UI.EquipSlot.Item = ItemIO.Receive(reader);
+        //            UI.SocialSlot.Item = ItemIO.Receive(reader);
+        //            UI.DyeSlot.Item = ItemIO.Receive(reader);
+        //            if(Main.netMode == NetmodeID.Server) {
         //                ModPacket packet = GetPacket();
         //                packet.Write((byte)PacketMessageType.All);
         //                packet.Write(player);
-        //                ItemIO.Send(modPlayer.EquipSlot.Item, packet);
-        //                ItemIO.Send(modPlayer.VanitySlot.Item, packet);
-        //                ItemIO.Send(modPlayer.DyeSlot.Item, packet);
+        //                ItemIO.Send(UI.EquipSlot.Item, packet);
+        //                ItemIO.Send(UI.SocialSlot.Item, packet);
+        //                ItemIO.Send(UI.DyeSlot.Item, packet);
         //                packet.Send(-1, whoAmI);
         //            }
         //            break;
         //        case PacketMessageType.EquipSlot:
-        //            modPlayer.EquipSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == 2) {
-        //                modPlayer.SendSingleItemPacket(PacketMessageType.EquipSlot, modPlayer.EquipSlot.Item, -1, whoAmI);
+        //            UI.EquipSlot.Item = ItemIO.Receive(reader);
+        //            if(Main.netMode == NetmodeID.Server) {
+        //                .SendSingleItemPacket(PacketMessageType.EquipSlot, UI.EquipSlot.Item, -1, whoAmI);
         //            }
         //            break;
         //        case PacketMessageType.VanitySlot:
-        //            modPlayer.VanitySlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == 2) {
-        //                modPlayer.SendSingleItemPacket(PacketMessageType.VanitySlot, modPlayer.VanitySlot.Item, -1, whoAmI);
+        //            UI.SocialSlot.Item = ItemIO.Receive(reader);
+        //            if(Main.netMode == NetmodeID.Server) {
+        //                modPlayer.SendSingleItemPacket(PacketMessageType.VanitySlot, UI.SocialSlot.Item, -1, whoAmI);
         //            }
         //            break;
         //        case PacketMessageType.DyeSlot:
-        //            modPlayer.DyeSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == 2) {
-        //                modPlayer.SendSingleItemPacket(PacketMessageType.DyeSlot, modPlayer.DyeSlot.Item, -1, whoAmI);
+        //            UI.DyeSlot.Item = ItemIO.Receive(reader);
+        //            if(Main.netMode == NetmodeID.Server) {
+        //                modPlayer.SendSingleItemPacket(PacketMessageType.DyeSlot, UI.DyeSlot.Item, -1, whoAmI);
         //            }
         //            break;
         //        default:

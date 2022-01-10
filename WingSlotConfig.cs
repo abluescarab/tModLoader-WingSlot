@@ -28,12 +28,13 @@ namespace WingSlot {
         public bool ShowCustomLocationPanel;
 
         public override void OnChanged() {
-            WingSlot wingSlotMod = (WingSlot)mod;
+            if(WingSlot.UI == null) return;
 
-            if(wingSlotMod.WingSlotUI == null) return;
+            WingSlot.UI.Panel.Visible = ShowCustomLocationPanel;
+            WingSlot.UI.Panel.CanDrag = ShowCustomLocationPanel;
 
-            wingSlotMod.WingSlotUI.Panel.Visible = ShowCustomLocationPanel;
-            wingSlotMod.WingSlotUI.Panel.CanDrag = (SlotLocation == Location.Custom);
+            if(ShowCustomLocationPanel)
+                SlotLocation = Location.Custom;
         }
     }
 }
