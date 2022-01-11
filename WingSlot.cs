@@ -114,49 +114,51 @@ namespace WingSlot {
             return null;
         }
 
-        //public override void HandlePacket(BinaryReader reader, int whoAmI) {
-        //    PacketMessageType message = (PacketMessageType)reader.ReadByte();
-        //    byte player = reader.ReadByte();
-        //    WingSlotPlayer modPlayer = Main.player[player].GetModPlayer<WingSlotPlayer>();
+        public override void HandlePacket(BinaryReader reader, int whoAmI) {
+            PacketMessageType message = (PacketMessageType)reader.ReadByte();
+            byte player = reader.ReadByte();
+            WingSlotPlayer modPlayer = Main.player[player].GetModPlayer<WingSlotPlayer>();
 
-        //    switch(message) {
-        //        case PacketMessageType.All:
-        //            UI.EquipSlot.Item = ItemIO.Receive(reader);
-        //            UI.SocialSlot.Item = ItemIO.Receive(reader);
-        //            UI.DyeSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == NetmodeID.Server) {
-        //                ModPacket packet = GetPacket();
-        //                packet.Write((byte)PacketMessageType.All);
-        //                packet.Write(player);
-        //                ItemIO.Send(UI.EquipSlot.Item, packet);
-        //                ItemIO.Send(UI.SocialSlot.Item, packet);
-        //                ItemIO.Send(UI.DyeSlot.Item, packet);
-        //                packet.Send(-1, whoAmI);
-        //            }
-        //            break;
-        //        case PacketMessageType.EquipSlot:
-        //            UI.EquipSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == NetmodeID.Server) {
-        //                .SendSingleItemPacket(PacketMessageType.EquipSlot, UI.EquipSlot.Item, -1, whoAmI);
-        //            }
-        //            break;
-        //        case PacketMessageType.VanitySlot:
-        //            UI.SocialSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == NetmodeID.Server) {
-        //                modPlayer.SendSingleItemPacket(PacketMessageType.VanitySlot, UI.SocialSlot.Item, -1, whoAmI);
-        //            }
-        //            break;
-        //        case PacketMessageType.DyeSlot:
-        //            UI.DyeSlot.Item = ItemIO.Receive(reader);
-        //            if(Main.netMode == NetmodeID.Server) {
-        //                modPlayer.SendSingleItemPacket(PacketMessageType.DyeSlot, UI.DyeSlot.Item, -1, whoAmI);
-        //            }
-        //            break;
-        //        default:
-        //            Logger.InfoFormat("[Wing Slot] Unknown message type: {0}", message);
-        //            break;
-        //    }
-        //}
+            switch(message) {
+                case PacketMessageType.All:
+                    // TODO: test replacing these with EquippedWings, SocialWings, WingsDye from modPlayer
+                    UI.EquipSlot.Item = ItemIO.Receive(reader);
+                    UI.SocialSlot.Item = ItemIO.Receive(reader);
+                    UI.DyeSlot.Item = ItemIO.Receive(reader);
+
+                    if(Main.netMode == NetmodeID.Server) {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)PacketMessageType.All);
+                        packet.Write(player);
+                        ItemIO.Send(UI.EquipSlot.Item, packet);
+                        ItemIO.Send(UI.SocialSlot.Item, packet);
+                        ItemIO.Send(UI.DyeSlot.Item, packet);
+                        packet.Send(-1, whoAmI);
+                    }
+                    break;
+                case PacketMessageType.EquipSlot:
+                    UI.EquipSlot.Item = ItemIO.Receive(reader);
+                    if(Main.netMode == NetmodeID.Server) {
+                        modPlayer.SendSingleItemPacket(PacketMessageType.EquipSlot, UI.EquipSlot.Item, -1, whoAmI);
+                    }
+                    break;
+                case PacketMessageType.VanitySlot:
+                    UI.SocialSlot.Item = ItemIO.Receive(reader);
+                    if(Main.netMode == NetmodeID.Server) {
+                        modPlayer.SendSingleItemPacket(PacketMessageType.VanitySlot, UI.SocialSlot.Item, -1, whoAmI);
+                    }
+                    break;
+                case PacketMessageType.DyeSlot:
+                    UI.DyeSlot.Item = ItemIO.Receive(reader);
+                    if(Main.netMode == NetmodeID.Server) {
+                        modPlayer.SendSingleItemPacket(PacketMessageType.DyeSlot, UI.DyeSlot.Item, -1, whoAmI);
+                    }
+                    break;
+                default:
+                    Logger.InfoFormat("[Wing Slot] Unknown message type: {0}", message);
+                    break;
+            }
+        }
 
         public static bool OverrideRightClick() {
             foreach(var func in _rightClickOverrides) {

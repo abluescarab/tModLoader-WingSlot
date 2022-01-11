@@ -9,6 +9,8 @@ namespace WingSlot {
             Custom
         }
 
+        private Location lastSlotLocation = Location.Accessories;
+
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         public static WingSlotConfig Instance;
@@ -30,11 +32,18 @@ namespace WingSlot {
         public override void OnChanged() {
             if(WingSlot.UI == null) return;
 
+            if(lastSlotLocation == Location.Custom && SlotLocation != Location.Custom) {
+                ShowCustomLocationPanel = false;
+            }
+
             WingSlot.UI.Panel.Visible = ShowCustomLocationPanel;
             WingSlot.UI.Panel.CanDrag = ShowCustomLocationPanel;
 
-            if(ShowCustomLocationPanel)
+            if(ShowCustomLocationPanel) {
                 SlotLocation = Location.Custom;
+            }
+
+            lastSlotLocation = SlotLocation;
         }
     }
 }

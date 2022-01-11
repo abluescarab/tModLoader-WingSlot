@@ -19,28 +19,102 @@ namespace WingSlot {
         private const string HiddenTag = "hidden";
         private const string WingsTag = "wings";
         private const string SocialWingsTag = "vanitywings";
-        private const string WingDyeTag = "wingdye";
+        private const string WingsDyeTag = "wingdye";
+
+        public Item EquippedWings { get; private set; }
+        public Item SocialWings { get; private set; }
+        public Item WingsDye { get; private set; }
+        public bool WingsVisible { get; private set; }
+
+        public override void Initialize() {
+            EquippedWings = new Item();
+            SocialWings = new Item();
+            WingsDye = new Item();
+            WingsVisible = true;
+
+            EquippedWings.SetDefaults();
+            SocialWings.SetDefaults();
+            WingsDye.SetDefaults();
+        }
 
         public override void OnEnterWorld(Player player) {
-            EquipItem(WingSlot.UI.EquipSlot.Item, EquipType.Accessory, false);
-            EquipItem(WingSlot.UI.SocialSlot.Item, EquipType.Social, false);
-            EquipItem(WingSlot.UI.DyeSlot.Item, EquipType.Dye, false);
+            WingSlot.UI.EquipSlot.ItemPlaced += (sender, e) => {
+                EquippedWings = e.Item.Clone();
+            };
+
+            WingSlot.UI.SocialSlot.ItemPlaced += (sender, e) => {
+                SocialWings = e.Item.Clone();
+            };
+
+            WingSlot.UI.DyeSlot.ItemPlaced += (sender, e) => {
+                WingsDye = e.Item.Clone();
+            };
+
+            WingSlot.UI.EquipSlot.ItemVisibilityChanged += (sender, e) => {
+                WingsVisible = e.Visibility;
+            };
+
+            EquipItem(EquippedWings, EquipType.Accessory, false);
+            EquipItem(SocialWings, EquipType.Social, false);
+            EquipItem(WingsDye, EquipType.Dye, false);
+        }
+
+        public override void clientClone(ModPlayer clientClone) {
+            WingSlotPlayer clone = clientClone as WingSlotPlayer;
+
+            if(clone == null) {
+                return;
+            }
+
+            clone.EquippedWings = EquippedWings.Clone();
+            clone.SocialWings = SocialWings.Clone();
+            clone.WingsDye = WingsDye.Clone();
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer) {
+            WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
+
+            if(oldClone == null) {
+                return;
+            }
+
+            if(oldClone.EquippedWings.IsNotTheSameAs(EquippedWings)) {
+                SendSingleItemPacket(PacketMessageType.EquipSlot, EquippedWings, -1, player.whoAmI);
+            }
+
+            if(oldClone.SocialWings.IsNotTheSameAs(SocialWings)) {
+                SendSingleItemPacket(PacketMessageType.VanitySlot, SocialWings, -1, player.whoAmI);
+            }
+
+            if(oldClone.WingsDye.IsNotTheSameAs(WingsDye)) {
+                SendSingleItemPacket(PacketMessageType.DyeSlot, WingsDye, -1, player.whoAmI);
+            }
+        }
+
+        internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)message);
+            packet.Write((byte)player.whoAmI);
+            ItemIO.Send(item, packet);
+            packet.Send(toWho, fromWho);
         }
 
         // TODO: fix sending packets to other players
-        //public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-        //    ModPacket packet = mod.GetPacket();
-        //    packet.Write((byte)PacketMessageType.All);
-        //    packet.Write((byte)player.whoAmI);
-        //    ItemIO.Send(WingSlot.UI.EquipSlot.Item, packet);
-        //    ItemIO.Send(WingSlot.UI.SocialSlot.Item, packet);
-        //    ItemIO.Send(WingSlot.UI.DyeSlot.Item, packet);
-        //    packet.Send(toWho, fromWho);
-        //}
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+            if(WingSlot.UI == null) return;
+
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)PacketMessageType.All);
+            packet.Write((byte)player.whoAmI);
+            ItemIO.Send(EquippedWings, packet);
+            ItemIO.Send(SocialWings, packet);
+            ItemIO.Send(WingsDye, packet);
+            packet.Send(toWho, fromWho);
+        }
 
         public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
-            if(WingSlot.UI.DyeSlot.Item.stack > 0 && (WingSlot.UI.EquipSlot.Item.stack > 0 || WingSlot.UI.SocialSlot.Item.stack > 0)) {
-                drawInfo.wingShader = WingSlot.UI.DyeSlot.Item.dye;
+            if(WingsDye.stack > 0 && (EquippedWings.stack > 0 || SocialWings.stack > 0)) {
+                drawInfo.wingShader = WingsDye.dye;
             }
         }
 
@@ -48,14 +122,16 @@ namespace WingSlot {
         /// Update player with the equipped wings.
         /// </summary>
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
-            if(WingSlot.UI.EquipSlot.Item.stack > 0) {
-                player.VanillaUpdateAccessory(player.whoAmI, WingSlot.UI.EquipSlot.Item, !WingSlot.UI.EquipSlot.ItemVisible, ref wallSpeedBuff, 
+            if(WingSlot.UI == null) return;
+
+            if(EquippedWings.stack > 0) {
+                player.VanillaUpdateAccessory(player.whoAmI, EquippedWings, !WingsVisible, ref wallSpeedBuff, 
                                               ref tileSpeedBuff, ref tileRangeBuff);
-                player.VanillaUpdateEquip(WingSlot.UI.EquipSlot.Item);
+                player.VanillaUpdateEquip(EquippedWings);
             }
 
-            if(WingSlot.UI.SocialSlot.Item.stack > 0) {
-                player.VanillaUpdateVanityAccessory(WingSlot.UI.SocialSlot.Item);
+            if(SocialWings.stack > 0) {
+                player.VanillaUpdateVanityAccessory(SocialWings);
             }
         }
 
@@ -65,11 +141,13 @@ namespace WingSlot {
         public override void PreUpdateBuffs() {
             // Cleaned up vanilla code
             // TODO: throws "object reference not set to instance" error here on joining dedserv
-            if(WingSlot.UI.DyeSlot.Item.stack <= 0) 
+            if(WingSlot.UI == null) return;
+
+            if(WingsDye.stack <= 0) 
                 return;
 
-            if(WingSlot.UI.SocialSlot.Item.stack > 0 || (WingSlot.UI.EquipSlot.Item.stack > 0 && WingSlot.UI.EquipSlot.ItemVisible)) {
-                player.cWings = WingSlot.UI.DyeSlot.Item.dye;
+            if(SocialWings.stack > 0 || (EquippedWings.stack > 0 && WingsVisible)) {
+                player.cWings = WingsDye.dye;
             }
         }
 
@@ -79,13 +157,13 @@ namespace WingSlot {
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
             if(player.difficulty == 0) return;
 
-            player.QuickSpawnClonedItem(WingSlot.UI.EquipSlot.Item);
-            player.QuickSpawnClonedItem(WingSlot.UI.SocialSlot.Item);
-            player.QuickSpawnClonedItem(WingSlot.UI.DyeSlot.Item);
+            player.QuickSpawnClonedItem(EquippedWings);
+            player.QuickSpawnClonedItem(SocialWings);
+            player.QuickSpawnClonedItem(WingsDye);
 
-            WingSlot.UI.EquipSlot.Item = new Item();
-            WingSlot.UI.SocialSlot.Item = new Item();
-            WingSlot.UI.DyeSlot.Item = new Item();
+            EquippedWings = new Item();
+            SocialWings = new Item();
+            WingsDye = new Item();
         }
 
         /// <summary>
@@ -95,10 +173,10 @@ namespace WingSlot {
             return new TagCompound {
                 { PanelXTag, WingSlot.UI.Panel.Left.Pixels },
                 { PanelYTag, WingSlot.UI.Panel.Top.Pixels },
-                { HiddenTag, WingSlot.UI.EquipSlot.ItemVisible },
-                { WingsTag, ItemIO.Save(WingSlot.UI.EquipSlot.Item) },
-                { SocialWingsTag, ItemIO.Save(WingSlot.UI.SocialSlot.Item) },
-                { WingDyeTag, ItemIO.Save(WingSlot.UI.DyeSlot.Item) }
+                { HiddenTag, WingsVisible },
+                { WingsTag, ItemIO.Save(EquippedWings) },
+                { SocialWingsTag, ItemIO.Save(SocialWings) },
+                { WingsDyeTag, ItemIO.Save(WingsDye) }
             };
         }
 
@@ -107,16 +185,16 @@ namespace WingSlot {
         /// </summary>
         public override void Load(TagCompound tag) {
             if(tag.ContainsKey(WingsTag))
-                WingSlot.UI.EquipSlot.Item = ItemIO.Load(tag.GetCompound(WingsTag));
+                EquippedWings = ItemIO.Load(tag.GetCompound(WingsTag));
 
             if(tag.ContainsKey(SocialWingsTag))
-                WingSlot.UI.SocialSlot.Item = ItemIO.Load(tag.GetCompound(SocialWingsTag));
+                SocialWings = ItemIO.Load(tag.GetCompound(SocialWingsTag));
 
-            if(tag.ContainsKey(WingDyeTag))
-                WingSlot.UI.DyeSlot.Item = ItemIO.Load(tag.GetCompound(WingDyeTag));
+            if(tag.ContainsKey(WingsDyeTag))
+                WingsDye = ItemIO.Load(tag.GetCompound(WingsDyeTag));
 
             if(tag.ContainsKey(HiddenTag))
-                WingSlot.UI.EquipSlot.ItemVisible = tag.GetBool(HiddenTag);
+                WingsVisible = tag.GetBool(HiddenTag);
 
             if(tag.ContainsKey(PanelXTag))
                 WingSlot.UI.Panel.Left.Set(tag.GetFloat(PanelXTag), 0);
@@ -126,7 +204,7 @@ namespace WingSlot {
         }
 
         /// <summary>
-        /// Equip either wings or a dye.
+        /// Equip either wings or a dye in a slot.
         /// </summary>
         /// <param name="item">item to equip</param>
         /// <param name="type">what type of slot to equip in</param>
@@ -136,9 +214,24 @@ namespace WingSlot {
 
             CustomItemSlot slot;
 
-            if(type == EquipType.Dye) slot = WingSlot.UI.DyeSlot;
-            else if(type == EquipType.Social) slot = WingSlot.UI.SocialSlot;
-            else slot = WingSlot.UI.EquipSlot;
+            if(type == EquipType.Dye) {
+                slot = WingSlot.UI.DyeSlot;
+
+                if(WingsDye.type != item.type)
+                    WingsDye = item.Clone();
+            }
+            else if(type == EquipType.Social) {
+                slot = WingSlot.UI.SocialSlot;
+
+                if(SocialWings.type != item.type)
+                    SocialWings = item.Clone();
+            }
+            else {
+                slot = WingSlot.UI.EquipSlot;
+
+                if(EquippedWings.type != item.type)
+                    EquippedWings = item.Clone();
+            }
 
             if(fromInventory) {
                 item.favorited = false;

@@ -31,7 +31,7 @@ namespace WingSlot.UI {
             WingSlot mod = ModContent.GetInstance<WingSlot>();
             CroppedTexture2D emptyTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"),
                                                                  CustomItemSlot.DefaultColors.EmptyTexture);
-            
+
             EquipSlot = new CustomItemSlot(ItemSlot.Context.EquipAccessory, 0.85f) {
                 IsValidItem = item => item.wingSlot > 0,
                 EmptyTexture = emptyTexture,
@@ -67,7 +67,8 @@ namespace WingSlot.UI {
         protected override void DrawSelf(SpriteBatch spriteBatch) {
             base.DrawSelf(spriteBatch);
 
-            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom) return;
+            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom)
+                return;
 
             SetPosition();
         }
