@@ -14,7 +14,6 @@ This mod adds a dedicated wing slot to the inventory. Now includes a config file
 [Known Issues]
 * Yoraiz0r's Spell eye glow doesn't work
 * Wings and character movement while flying will not display correctly in multiplayer
-* After loading in, sometimes wings are invisible even if the eye icon is visible; click it twice to fix
 
 [Credits]
 * Blockaroz for the fantastic mod icon!
@@ -27,6 +26,10 @@ This mod adds a dedicated wing slot to the inventory. Now includes a config file
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
 
 [Changelog]
+v1.8.1  2022-01-13 (HOTFIX)
+* Fix: Eye icon has correct visibility after reloading game
+* Fix: Loot bags/boxes should no longer be allowed in the slots
+
 v1.8.0  2022-01-12
 * Added custom location option
 * Added moveable panel

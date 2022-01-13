@@ -1,6 +1,6 @@
 ﻿displayName=Wing Slot
 author=abluescarab
-version=1.8.0
+version=1.8.1
 noCompile=false
 homepage=https://github.com/abluescarab/tModLoader-WingSlot
 hideCode=false

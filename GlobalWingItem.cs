@@ -5,14 +5,13 @@ using WingSlot.UI;
 namespace WingSlot {
     internal class GlobalWingItem : GlobalItem {
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
-            if(item.wingSlot > 0) {
-                WingSlotUI ui = WingSlot.UI;
+            if(item.wingSlot <= 0) return base.CanEquipAccessory(item, player, slot);
 
-                return ui.Panel.ContainsPoint(Main.MouseScreen) ||
-                       (WingSlotConfig.Instance.AllowAccessorySlots && WingSlot.UI.EquipSlot.Item.IsAir);
-            }
-            
-            return base.CanEquipAccessory(item, player, slot);
+            WingSlotUI ui = WingSlot.UI;
+
+            return ui.Panel.ContainsPoint(Main.MouseScreen) ||
+                   (WingSlotConfig.Instance.AllowAccessorySlots && WingSlot.UI.EquipSlot.Item.IsAir);
+
         }
 
         public override bool CanRightClick(Item item) {
@@ -24,12 +23,12 @@ namespace WingSlot {
         }
 
         public override void RightClick(Item item, Player player) {
-            if(item.wingSlot > 0) {
-                player.GetModPlayer<WingSlotPlayer>().EquipItem(
-                    item,
-                    KeyboardUtils.Shift ? WingSlotPlayer.EquipType.Social : WingSlotPlayer.EquipType.Accessory,
-                    true);
-            }
+            if(item.wingSlot <= 0) return;
+
+            player.GetModPlayer<WingSlotPlayer>().EquipItem(
+                item,
+                KeyboardUtils.Shift ? WingSlotPlayer.EquipType.Social : WingSlotPlayer.EquipType.Accessory,
+                true);
         }
     }
 }
