@@ -11,36 +11,36 @@ using WingSlot.UI;
 
 namespace WingSlot {
     public class WingSlot : Mod {
-        private static List<Func<bool>> _rightClickOverrides;
+        private static List<Func<bool>> rightClickOverrides;
 
-        private UserInterface _wingSlotInterface;
+        private UserInterface wingSlotInterface;
 
         public static WingSlotUI UI;
 
         public override void Load() {
-            _rightClickOverrides = new List<Func<bool>>();
+            rightClickOverrides = new List<Func<bool>>();
 
             if(!Main.dedServ) {
-                _wingSlotInterface = new UserInterface();
+                wingSlotInterface = new UserInterface();
                 UI = new WingSlotUI();
 
                 UI.Activate();
-                _wingSlotInterface.SetState(UI);
+                wingSlotInterface.SetState(UI);
             }
         }
 
         public override void Unload() {
             UI = null;
 
-            if(_rightClickOverrides == null) return;
+            if(rightClickOverrides == null) return;
 
-            _rightClickOverrides.Clear();
-            _rightClickOverrides = null;
+            rightClickOverrides.Clear();
+            rightClickOverrides = null;
         }
 
         public override void UpdateUI(GameTime gameTime) {
             if(UI.IsVisible) {
-                _wingSlotInterface?.Update(gameTime);
+                wingSlotInterface?.Update(gameTime);
             }
         }
 
@@ -54,7 +54,7 @@ namespace WingSlot {
                       "Wing Slot: Custom Slot UI",
                       () => {
                           if(UI.IsVisible) {
-                              _wingSlotInterface.Draw(Main.spriteBatch, new GameTime());
+                              wingSlotInterface.Draw(Main.spriteBatch, new GameTime());
                           }
 
                           return true;
@@ -96,10 +96,10 @@ namespace WingSlot {
                             return "Error: not a valid Func<bool>";
 
                         if(keyword == "add") {
-                            _rightClickOverrides.Add(func);
+                            rightClickOverrides.Add(func);
                         }
                         else {
-                            _rightClickOverrides.Remove(func);
+                            rightClickOverrides.Remove(func);
                         }
 
                         break;
@@ -160,7 +160,7 @@ namespace WingSlot {
         }
 
         public static bool OverrideRightClick() {
-            foreach(var func in _rightClickOverrides) {
+            foreach(var func in rightClickOverrides) {
                 if(func()) {
                     return true;
                 }

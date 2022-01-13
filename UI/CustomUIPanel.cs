@@ -6,27 +6,27 @@ using Terraria.UI;
 
 namespace WingSlot.UI {
     public class CustomUIPanel : UIPanel {
-        private readonly Color _defaultBackgroundColor = new Color(63, 82, 151) * 0.7f;
-        private readonly Color _defaultBorderColor = Color.Black;
+        private readonly Color defaultBackgroundColor = new Color(63, 82, 151) * 0.7f;
+        private readonly Color defaultBorderColor = Color.Black;
 
-        private Vector2 _offset;
-        private bool _dragging = false;
-        private bool _visible = true;
+        private Vector2 offset;
+        private bool dragging = false;
+        private bool visible = true;
 
         public bool CanDrag { get; set; } = true;
 
         public bool Visible {
-            get => _visible;
+            get => visible;
             set {
-                _visible = value;
+                visible = value;
 
-                BackgroundColor = _visible ? _defaultBackgroundColor : Color.Transparent;
-                BorderColor = _visible ? _defaultBorderColor : Color.Transparent;
+                BackgroundColor = visible ? defaultBackgroundColor : Color.Transparent;
+                BorderColor = visible ? defaultBorderColor : Color.Transparent;
             }
         }
 
         public override void MouseDown(UIMouseEvent evt) {
-            if(!_visible) return;
+            if(!visible) return;
 
             base.MouseDown(evt);
 
@@ -39,28 +39,28 @@ namespace WingSlot.UI {
         }
 
         public override void MouseUp(UIMouseEvent evt) {
-            if(!_visible) return;
+            if(!visible) return;
 
             base.MouseUp(evt);
 
             if(!CanDrag) return;
 
-            if(_dragging)
+            if(dragging)
                 DragEnd(evt);
         }
 
         public override void Update(GameTime gameTime) {
             base.Update(gameTime);
 
-            if(!_visible) return;
+            if(!visible) return;
 
             if(ContainsPoint(Main.MouseScreen)) {
                 Main.LocalPlayer.mouseInterface = true;
             }
 
-            if(_dragging) {
-                Left.Set(Main.mouseX - _offset.X, 0);
-                Top.Set(Main.mouseY - _offset.Y, 0);
+            if(dragging) {
+                Left.Set(Main.mouseX - offset.X, 0);
+                Top.Set(Main.mouseY - offset.Y, 0);
             }
 
             Rectangle parentDimensions = Parent.GetDimensions().ToRectangle();
@@ -72,16 +72,16 @@ namespace WingSlot.UI {
         }
 
         private void DragBegin(UIMouseEvent e) {
-            _offset = new Vector2(e.MousePosition.X - Left.Pixels, e.MousePosition.Y - Top.Pixels);
-            _dragging = true;
+            offset = new Vector2(e.MousePosition.X - Left.Pixels, e.MousePosition.Y - Top.Pixels);
+            dragging = true;
         }
 
         private void DragEnd(UIMouseEvent e) {
             Vector2 end = e.MousePosition;
-            _dragging = false;
+            dragging = false;
 
-            Left.Set(end.X - _offset.X, 0);
-            Top.Set(end.Y - _offset.Y, 0);
+            Left.Set(end.X - offset.X, 0);
+            Top.Set(end.Y - offset.Y, 0);
         }
     }
 }
