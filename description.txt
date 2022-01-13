@@ -3,11 +3,7 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 
 ---
 
-This mod adds a dedicated wing slot to the armor and accessories page of the inventory (next to the defense icon).
-
-Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\WingSlot.json)! It contains two options:
-* allowWingsInAccessorySlots - allows equipping wings in normal accessory slots (default: false, options: true or false)
-* slotLocation - changes the slots' location (default: 1, options: 1 or 2)
+This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
 
 * Left-click a set of wings or a dye, then place it in the slot.
 * Right-click to equip wings.
@@ -17,10 +13,12 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 
 [Known Issues]
 * Yoraiz0r's Spell eye glow doesn't work
+* Wings and character movement while flying will not display correctly in multiplayer
+* After loading in, sometimes wings are invisible even if the eye icon is visible; click it twice to fix
 
 [Credits]
 * Blockaroz for the fantastic mod icon!
-* jopojelly for code that draws a slot to the left of the dyes; for fixing multiplayer issues and various other bugs
+* jopojelly for code that draws a slot to the left of the dyes; for fixing various other bugs
 * Boffin for TerraUI
 * Zsashas for bug report (custom dye incompatibility)
 * VVV101 for released updated version
@@ -29,6 +27,12 @@ Now includes config file (Documents\My Games\Terraria\ModLoader\Mod Configs\Wing
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
 
 [Changelog]
+v1.8.0
+* Added custom location option
+* Added moveable panel
+* Added translation files (make a pull request if you want to translate the mod!)
+* Fix: Wings and dye will be dropped if character dies in Mediumcore or Hardcore
+
 v1.7.3  2019-11-10 (HOTFIX)
 * Fix: mod.Call() keywords should work (again)
 * Fix: Cancelling mod loading won't crash the game
