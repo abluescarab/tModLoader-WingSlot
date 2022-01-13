@@ -27,7 +27,7 @@ This mod adds a dedicated wing slot to the inventory. Now includes a config file
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
 
 [Changelog]
-v1.8.0
+v1.8.0  2022-01-12
 * Added custom location option
 * Added moveable panel
 * Added translation files (make a pull request if you want to translate the mod!)
