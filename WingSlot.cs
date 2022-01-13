@@ -121,9 +121,9 @@ namespace WingSlot {
 
             switch(message) {
                 case PacketMessageType.All:
-                    UI.EquipSlot.Item = ItemIO.Receive(reader);
-                    UI.SocialSlot.Item = ItemIO.Receive(reader);
-                    UI.DyeSlot.Item = ItemIO.Receive(reader);
+                    UI.EquipSlot.SetItem(ItemIO.Receive(reader), false);
+                    UI.SocialSlot.SetItem(ItemIO.Receive(reader), false);
+                    UI.DyeSlot.SetItem(ItemIO.Receive(reader), false);
 
                     if(Main.netMode == NetmodeID.Server) {
                         ModPacket packet = GetPacket();
@@ -136,19 +136,19 @@ namespace WingSlot {
                     }
                     break;
                 case PacketMessageType.EquipSlot:
-                    UI.EquipSlot.Item = ItemIO.Receive(reader);
+                    UI.EquipSlot.SetItem(ItemIO.Receive(reader), false);
                     if(Main.netMode == NetmodeID.Server) {
                         modPlayer.SendSingleItemPacket(PacketMessageType.EquipSlot, UI.EquipSlot.Item, -1, whoAmI);
                     }
                     break;
                 case PacketMessageType.VanitySlot:
-                    UI.SocialSlot.Item = ItemIO.Receive(reader);
+                    UI.SocialSlot.SetItem(ItemIO.Receive(reader), false);
                     if(Main.netMode == NetmodeID.Server) {
                         modPlayer.SendSingleItemPacket(PacketMessageType.VanitySlot, UI.SocialSlot.Item, -1, whoAmI);
                     }
                     break;
                 case PacketMessageType.DyeSlot:
-                    UI.DyeSlot.Item = ItemIO.Receive(reader);
+                    UI.DyeSlot.SetItem(ItemIO.Receive(reader), false);
                     if(Main.netMode == NetmodeID.Server) {
                         modPlayer.SendSingleItemPacket(PacketMessageType.DyeSlot, UI.DyeSlot.Item, -1, whoAmI);
                     }

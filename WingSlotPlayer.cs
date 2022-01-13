@@ -38,15 +38,15 @@ namespace WingSlot {
         }
 
         public override void OnEnterWorld(Player player) {
-            WingSlot.UI.EquipSlot.ItemPlaced += (sender, e) => {
+            WingSlot.UI.EquipSlot.ItemChanged += (sender, e) => {
                 EquippedWings = e.Item.Clone();
             };
 
-            WingSlot.UI.SocialSlot.ItemPlaced += (sender, e) => {
+            WingSlot.UI.SocialSlot.ItemChanged += (sender, e) => {
                 SocialWings = e.Item.Clone();
             };
 
-            WingSlot.UI.DyeSlot.ItemPlaced += (sender, e) => {
+            WingSlot.UI.DyeSlot.ItemChanged += (sender, e) => {
                 WingsDye = e.Item.Clone();
             };
 
@@ -57,6 +57,7 @@ namespace WingSlot {
             EquipItem(EquippedWings, EquipType.Accessory, false);
             EquipItem(SocialWings, EquipType.Social, false);
             EquipItem(WingsDye, EquipType.Dye, false);
+            WingSlot.UI.EquipSlot.ItemVisible = WingsVisible;
         }
 
         public override void clientClone(ModPlayer clientClone) {
@@ -242,7 +243,7 @@ namespace WingSlot {
                 Recipe.FindRecipes();
             }
 
-            slot.Item = item.Clone();
+            slot.SetItem(item);
         }
     }
 }

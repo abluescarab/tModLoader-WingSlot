@@ -24,10 +24,12 @@ namespace WingSlot {
         }
 
         public override void RightClick(Item item, Player player) {
-            player.GetModPlayer<WingSlotPlayer>().EquipItem(
-                item,
-                KeyboardUtils.Shift ? WingSlotPlayer.EquipType.Social : WingSlotPlayer.EquipType.Accessory,
-                true);
+            if(item.wingSlot > 0) {
+                player.GetModPlayer<WingSlotPlayer>().EquipItem(
+                    item,
+                    KeyboardUtils.Shift ? WingSlotPlayer.EquipType.Social : WingSlotPlayer.EquipType.Accessory,
+                    true);
+            }
         }
     }
 }
