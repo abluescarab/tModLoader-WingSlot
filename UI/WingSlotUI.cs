@@ -17,7 +17,8 @@ namespace WingSlot.UI {
         public CustomItemSlot EquipSlot;
         public CustomItemSlot SocialSlot;
         public CustomItemSlot DyeSlot;
-
+        public float CustomPanelX;
+        public float CustomPanelY;
         public CustomUIPanel Panel { get; private set; }
 
         public bool IsVisible {
@@ -52,7 +53,11 @@ namespace WingSlot.UI {
             Panel = new CustomUIPanel();
             Panel.Width.Set((slotSize * 3) + (SlotMargin * 2) + Panel.PaddingLeft + Panel.PaddingRight, 0);
             Panel.Height.Set(slotSize + Panel.PaddingTop + Panel.PaddingBottom, 0);
-            SetPosition();
+
+            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom)
+                MoveToCustomPosition();
+            else
+                SetPosition();
 
             SocialSlot.Left.Set(slotSize + SlotMargin, 0);
             EquipSlot.Left.Set((slotSize * 2) + (SlotMargin * 2), 0);
@@ -67,10 +72,18 @@ namespace WingSlot.UI {
         protected override void DrawSelf(SpriteBatch spriteBatch) {
             base.DrawSelf(spriteBatch);
 
-            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom)
+            if(WingSlotConfig.Instance.SlotLocation == WingSlotConfig.Location.Custom) {
+                CustomPanelX = Panel.Left.Pixels;
+                CustomPanelY = Panel.Top.Pixels;
                 return;
+            }
 
             SetPosition();
+        }
+
+        public void MoveToCustomPosition() {
+            Panel.Left.Set(CustomPanelX, 0);
+            Panel.Top.Set(CustomPanelY, 0);
         }
 
         private Vector2 CalculatePosition() {

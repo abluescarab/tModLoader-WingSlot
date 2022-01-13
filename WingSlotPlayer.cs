@@ -21,10 +21,10 @@ namespace WingSlot {
         private const string SocialWingsTag = "vanitywings";
         private const string WingsDyeTag = "wingdye";
 
-        public Item EquippedWings { get; private set; }
-        public Item SocialWings { get; private set; }
-        public Item WingsDye { get; private set; }
-        public bool WingsVisible { get; private set; }
+        public Item EquippedWings { get; set; }
+        public Item SocialWings { get; set; }
+        public Item WingsDye { get; set; }
+        public bool WingsVisible { get; set; }
 
         public override void Initialize() {
             EquippedWings = new Item();
@@ -101,8 +101,6 @@ namespace WingSlot {
 
         // TODO: fix sending packets to other players
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-            if(WingSlot.UI == null) return;
-
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)PacketMessageType.All);
             packet.Write((byte)player.whoAmI);
@@ -140,7 +138,6 @@ namespace WingSlot {
         /// </summary>
         public override void PreUpdateBuffs() {
             // Cleaned up vanilla code
-            // TODO: throws "object reference not set to instance" error here on joining dedserv
             if(WingSlot.UI == null) return;
 
             if(WingsDye.stack <= 0) 
@@ -171,8 +168,8 @@ namespace WingSlot {
         /// </summary>
         public override TagCompound Save() {
             return new TagCompound {
-                { PanelXTag, WingSlot.UI.Panel.Left.Pixels },
-                { PanelYTag, WingSlot.UI.Panel.Top.Pixels },
+                { PanelXTag, WingSlot.UI.CustomPanelX },
+                { PanelYTag, WingSlot.UI.CustomPanelY },
                 { HiddenTag, WingsVisible },
                 { WingsTag, ItemIO.Save(EquippedWings) },
                 { SocialWingsTag, ItemIO.Save(SocialWings) },
@@ -197,10 +194,10 @@ namespace WingSlot {
                 WingsVisible = tag.GetBool(HiddenTag);
 
             if(tag.ContainsKey(PanelXTag))
-                WingSlot.UI.Panel.Left.Set(tag.GetFloat(PanelXTag), 0);
+                WingSlot.UI.CustomPanelX = tag.GetFloat(PanelXTag);
 
             if(tag.ContainsKey(PanelYTag))
-                WingSlot.UI.Panel.Top.Set(tag.GetFloat(PanelYTag), 0);
+                WingSlot.UI.CustomPanelY = tag.GetFloat(PanelYTag);
         }
 
         /// <summary>

@@ -121,7 +121,6 @@ namespace WingSlot {
 
             switch(message) {
                 case PacketMessageType.All:
-                    // TODO: test replacing these with EquippedWings, SocialWings, WingsDye from modPlayer
                     UI.EquipSlot.Item = ItemIO.Receive(reader);
                     UI.SocialSlot.Item = ItemIO.Receive(reader);
                     UI.DyeSlot.Item = ItemIO.Receive(reader);

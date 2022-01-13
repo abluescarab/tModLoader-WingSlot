@@ -43,6 +43,10 @@ namespace WingSlot {
                 SlotLocation = Location.Custom;
             }
 
+            if(SlotLocation == Location.Custom) {
+                WingSlot.UI.MoveToCustomPosition();
+            }
+
             lastSlotLocation = SlotLocation;
         }
     }
