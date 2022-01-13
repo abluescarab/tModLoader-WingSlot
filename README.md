@@ -43,3 +43,4 @@ These functions are checked during `GlobalWingItem.CanRightClick()`. If any of t
 * vizthex for suggesting slot location option
 * jofairden for suggesting mod compatibility right-click overrides
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
+* Lastprismer for the Chinese translation

@@ -24,9 +24,11 @@ This mod adds a dedicated wing slot to the inventory. Now includes a config file
 * vizthex for suggesting slot location option
 * jofairden for suggesting mod compatibility right-click overrides
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
+* Lastprismer for the Chinese translation
 
 [Changelog]
 v1.8.1  2022-01-13 (HOTFIX)
+* Added Chinese translation (thanks Lastprismer!)
 * Fix: Eye icon has correct visibility after reloading game
 * Fix: Loot bags/boxes should no longer be allowed in the slots
 
