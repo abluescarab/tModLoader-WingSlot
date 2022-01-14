@@ -72,33 +72,33 @@ namespace WingSlot {
             clone.WingsDye = WingsDye.Clone();
         }
 
-        public override void SendClientChanges(ModPlayer clientPlayer) {
-            WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
+        //public override void SendClientChanges(ModPlayer clientPlayer) {
+        //    WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
 
-            if(oldClone == null) {
-                return;
-            }
+        //    if(oldClone == null) {
+        //        return;
+        //    }
 
-            if(oldClone.EquippedWings.IsNotTheSameAs(EquippedWings)) {
-                SendSingleItemPacket(PacketMessageType.EquipSlot, EquippedWings, -1, player.whoAmI);
-            }
+        //    if(oldClone.EquippedWings.IsNotTheSameAs(EquippedWings)) {
+        //        SendSingleItemPacket(PacketMessageType.EquipSlot, EquippedWings, -1, player.whoAmI);
+        //    }
 
-            if(oldClone.SocialWings.IsNotTheSameAs(SocialWings)) {
-                SendSingleItemPacket(PacketMessageType.VanitySlot, SocialWings, -1, player.whoAmI);
-            }
+        //    if(oldClone.SocialWings.IsNotTheSameAs(SocialWings)) {
+        //        SendSingleItemPacket(PacketMessageType.VanitySlot, SocialWings, -1, player.whoAmI);
+        //    }
 
-            if(oldClone.WingsDye.IsNotTheSameAs(WingsDye)) {
-                SendSingleItemPacket(PacketMessageType.DyeSlot, WingsDye, -1, player.whoAmI);
-            }
-        }
+        //    if(oldClone.WingsDye.IsNotTheSameAs(WingsDye)) {
+        //        SendSingleItemPacket(PacketMessageType.DyeSlot, WingsDye, -1, player.whoAmI);
+        //    }
+        //}
 
-        internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)message);
-            packet.Write((byte)player.whoAmI);
-            ItemIO.Send(item, packet);
-            packet.Send(toWho, fromWho);
-        }
+        //internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
+        //    ModPacket packet = mod.GetPacket();
+        //    packet.Write((byte)message);
+        //    packet.Write((byte)player.whoAmI);
+        //    ItemIO.Send(item, packet);
+        //    packet.Send(toWho, fromWho);
+        //}
 
         // TODO: fix sending packets to other players
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
@@ -215,19 +215,19 @@ namespace WingSlot {
             if(type == EquipType.Dye) {
                 slot = WingSlot.UI.DyeSlot;
 
-                if(WingsDye.type != item.type)
+                if(WingsDye.IsNotTheSameAs(item))
                     WingsDye = item.Clone();
             }
             else if(type == EquipType.Social) {
                 slot = WingSlot.UI.SocialSlot;
 
-                if(SocialWings.type != item.type)
+                if(SocialWings.IsNotTheSameAs(item))
                     SocialWings = item.Clone();
             }
             else {
                 slot = WingSlot.UI.EquipSlot;
 
-                if(EquippedWings.type != item.type)
+                if(EquippedWings.IsNotTheSameAs(item))
                     EquippedWings = item.Clone();
             }
 

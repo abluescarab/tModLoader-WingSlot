@@ -16,17 +16,18 @@ namespace WingSlot {
         public static WingSlotConfig Instance;
 
         [DefaultValue(false)]
-        [Label("Allow equipping in accessory slots")]
+        [Label("$Mods.WingSlot.AllowAccessorySlots_Label")]
         public bool AllowAccessorySlots;
 
+        [Header("$Mods.WingSlot.SlotLocation_Header")]
         [DefaultValue(Location.Accessories)]
-        [Label("Slot location")]
+        [Label("$Mods.WingSlot.SlotLocation_Label")]
         [DrawTicks]
         public Location SlotLocation;
 
         [DefaultValue(false)]
-        [Tooltip("Show the draggable panel for a custom location")]
-        [Label("Show custom location panel")]
+        [Tooltip("$Mods.WingSlot.ShowCustomLocationPanel_Tooltip")]
+        [Label("$Mods.WingSlot.ShowCustomLocationPanel_Label")]
         public bool ShowCustomLocationPanel;
 
         public override void OnChanged() {

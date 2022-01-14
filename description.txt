@@ -14,6 +14,7 @@ This mod adds a dedicated wing slot to the inventory. Now includes a config file
 [Known Issues]
 * Yoraiz0r's Spell eye glow doesn't work
 * Wings and character movement while flying will not display correctly in multiplayer
+* Custom location will sometimes move off screen when resizing window
 
 [Credits]
 * Blockaroz for the fantastic mod icon!
@@ -27,6 +28,9 @@ This mod adds a dedicated wing slot to the inventory. Now includes a config file
 * Lastprismer for the Chinese translation
 
 [Changelog]
+v1.8.2  2022-01-14 (HOTFIX)
+* Fix: Items in custom slots should not disappear on joining multiplayer
+
 v1.8.1  2022-01-13 (HOTFIX)
 * Added Chinese translation (thanks Lastprismer!)
 * Fix: Eye icon has correct visibility after reloading game
