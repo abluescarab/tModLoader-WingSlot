@@ -8,3 +8,5 @@ SlotLocation_Header=Slot Location Options
 SlotLocation_Label=Slot location
 ShowCustomLocationPanel_Tooltip=Show the draggable panel for a custom location
 ShowCustomLocationPanel_Label=Show custom location panel
+ResetCustomSlotLocation_Tooltip=Reset custom panel location if it disappears from the screen
+ResetCustomSlotLocation_Label=Reset custom location

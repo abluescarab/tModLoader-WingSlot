@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomSlot;
+using CustomSlot.UI;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -169,8 +170,8 @@ namespace WingSlot {
         /// </summary>
         public override TagCompound Save() {
             return new TagCompound {
-                { PanelXTag, WingSlot.UI.CustomPanelX },
-                { PanelYTag, WingSlot.UI.CustomPanelY },
+                { PanelXTag, WingSlot.UI.PanelCoordinates.X },
+                { PanelYTag, WingSlot.UI.PanelCoordinates.Y },
                 { HiddenTag, WingsVisible },
                 { WingsTag, ItemIO.Save(EquippedWings) },
                 { SocialWingsTag, ItemIO.Save(SocialWings) },
@@ -195,10 +196,10 @@ namespace WingSlot {
                 WingsVisible = tag.GetBool(HiddenTag);
 
             if(tag.ContainsKey(PanelXTag))
-                WingSlot.UI.CustomPanelX = tag.GetFloat(PanelXTag);
+                WingSlot.UI.PanelCoordinates.X = tag.GetFloat(PanelXTag);
 
             if(tag.ContainsKey(PanelYTag))
-                WingSlot.UI.CustomPanelY = tag.GetFloat(PanelYTag);
+                WingSlot.UI.PanelCoordinates.Y = tag.GetFloat(PanelYTag);
         }
 
         /// <summary>
