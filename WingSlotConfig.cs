@@ -1,38 +1,41 @@
 using System.ComponentModel;
+using CustomSlot.UI;
+using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Config;
 
 namespace WingSlot {
     public class WingSlotConfig : ModConfig {
-        public enum Location {
-            Accessories,
-            Uniques,
-            Custom
-        }
 
-        private Location lastSlotLocation = Location.Accessories;
+        private AccessorySlotsUI.Location lastSlotLocation = AccessorySlotsUI.Location.Accessories;
 
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         public static WingSlotConfig Instance;
 
         [DefaultValue(false)]
-        [Label("Allow equipping in accessory slots")]
+        [Label("$Mods.WingSlot.AllowAccessorySlots_Label")]
         public bool AllowAccessorySlots;
 
-        [DefaultValue(Location.Accessories)]
-        [Label("Slot location")]
+        [Header("$Mods.WingSlot.SlotLocation_Header")]
+        [DefaultValue(AccessorySlotsUI.Location.Accessories)]
+        [Label("$Mods.WingSlot.SlotLocation_Label")]
         [DrawTicks]
-        public Location SlotLocation;
+        public AccessorySlotsUI.Location SlotLocation;
 
         [DefaultValue(false)]
-        [Tooltip("Show the draggable panel for a custom location")]
-        [Label("Show custom location panel")]
+        [Tooltip("$Mods.WingSlot.ShowCustomLocationPanel_Tooltip")]
+        [Label("$Mods.WingSlot.ShowCustomLocationPanel_Label")]
         public bool ShowCustomLocationPanel;
+
+        [DefaultValue(false)] 
+        [Tooltip("$Mods.WingSlot.ResetCustomSlotLocation_Tooltip")]
+        [Label("$Mods.WingSlot.ResetCustomSlotLocation_Label")]
+        public bool ResetCustomSlotLocation;
 
         public override void OnChanged() {
             if(WingSlot.UI == null) return;
 
-            if(lastSlotLocation == Location.Custom && SlotLocation != Location.Custom) {
+            if(lastSlotLocation == AccessorySlotsUI.Location.Custom && SlotLocation != AccessorySlotsUI.Location.Custom) {
                 ShowCustomLocationPanel = false;
             }
 
@@ -40,14 +43,20 @@ namespace WingSlot {
             WingSlot.UI.Panel.CanDrag = ShowCustomLocationPanel;
 
             if(ShowCustomLocationPanel) {
-                SlotLocation = Location.Custom;
+                SlotLocation = AccessorySlotsUI.Location.Custom;
             }
 
-            if(SlotLocation == Location.Custom) {
+            if(SlotLocation == AccessorySlotsUI.Location.Custom) {
                 WingSlot.UI.MoveToCustomPosition();
             }
 
             lastSlotLocation = SlotLocation;
+            WingSlot.UI.PanelLocation = SlotLocation;
+
+            if(ResetCustomSlotLocation) {
+                WingSlot.UI.ResetPosition();
+                ResetCustomSlotLocation = false;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomSlot;
+using CustomSlot.UI;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -38,15 +39,15 @@ namespace WingSlot {
         }
 
         public override void OnEnterWorld(Player player) {
-            WingSlot.UI.EquipSlot.ItemPlaced += (sender, e) => {
+            WingSlot.UI.EquipSlot.ItemChanged += (sender, e) => {
                 EquippedWings = e.Item.Clone();
             };
 
-            WingSlot.UI.SocialSlot.ItemPlaced += (sender, e) => {
+            WingSlot.UI.SocialSlot.ItemChanged += (sender, e) => {
                 SocialWings = e.Item.Clone();
             };
 
-            WingSlot.UI.DyeSlot.ItemPlaced += (sender, e) => {
+            WingSlot.UI.DyeSlot.ItemChanged += (sender, e) => {
                 WingsDye = e.Item.Clone();
             };
 
@@ -57,6 +58,7 @@ namespace WingSlot {
             EquipItem(EquippedWings, EquipType.Accessory, false);
             EquipItem(SocialWings, EquipType.Social, false);
             EquipItem(WingsDye, EquipType.Dye, false);
+            WingSlot.UI.EquipSlot.ItemVisible = WingsVisible;
         }
 
         public override void clientClone(ModPlayer clientClone) {
@@ -71,33 +73,33 @@ namespace WingSlot {
             clone.WingsDye = WingsDye.Clone();
         }
 
-        public override void SendClientChanges(ModPlayer clientPlayer) {
-            WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
+        //public override void SendClientChanges(ModPlayer clientPlayer) {
+        //    WingSlotPlayer oldClone = clientPlayer as WingSlotPlayer;
 
-            if(oldClone == null) {
-                return;
-            }
+        //    if(oldClone == null) {
+        //        return;
+        //    }
 
-            if(oldClone.EquippedWings.IsNotTheSameAs(EquippedWings)) {
-                SendSingleItemPacket(PacketMessageType.EquipSlot, EquippedWings, -1, player.whoAmI);
-            }
+        //    if(oldClone.EquippedWings.IsNotTheSameAs(EquippedWings)) {
+        //        SendSingleItemPacket(PacketMessageType.EquipSlot, EquippedWings, -1, player.whoAmI);
+        //    }
 
-            if(oldClone.SocialWings.IsNotTheSameAs(SocialWings)) {
-                SendSingleItemPacket(PacketMessageType.VanitySlot, SocialWings, -1, player.whoAmI);
-            }
+        //    if(oldClone.SocialWings.IsNotTheSameAs(SocialWings)) {
+        //        SendSingleItemPacket(PacketMessageType.VanitySlot, SocialWings, -1, player.whoAmI);
+        //    }
 
-            if(oldClone.WingsDye.IsNotTheSameAs(WingsDye)) {
-                SendSingleItemPacket(PacketMessageType.DyeSlot, WingsDye, -1, player.whoAmI);
-            }
-        }
+        //    if(oldClone.WingsDye.IsNotTheSameAs(WingsDye)) {
+        //        SendSingleItemPacket(PacketMessageType.DyeSlot, WingsDye, -1, player.whoAmI);
+        //    }
+        //}
 
-        internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)message);
-            packet.Write((byte)player.whoAmI);
-            ItemIO.Send(item, packet);
-            packet.Send(toWho, fromWho);
-        }
+        //internal void SendSingleItemPacket(PacketMessageType message, Item item, int toWho, int fromWho) {
+        //    ModPacket packet = mod.GetPacket();
+        //    packet.Write((byte)message);
+        //    packet.Write((byte)player.whoAmI);
+        //    ItemIO.Send(item, packet);
+        //    packet.Send(toWho, fromWho);
+        //}
 
         // TODO: fix sending packets to other players
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
@@ -168,8 +170,8 @@ namespace WingSlot {
         /// </summary>
         public override TagCompound Save() {
             return new TagCompound {
-                { PanelXTag, WingSlot.UI.CustomPanelX },
-                { PanelYTag, WingSlot.UI.CustomPanelY },
+                { PanelXTag, WingSlot.UI.PanelCoordinates.X },
+                { PanelYTag, WingSlot.UI.PanelCoordinates.Y },
                 { HiddenTag, WingsVisible },
                 { WingsTag, ItemIO.Save(EquippedWings) },
                 { SocialWingsTag, ItemIO.Save(SocialWings) },
@@ -194,10 +196,10 @@ namespace WingSlot {
                 WingsVisible = tag.GetBool(HiddenTag);
 
             if(tag.ContainsKey(PanelXTag))
-                WingSlot.UI.CustomPanelX = tag.GetFloat(PanelXTag);
+                WingSlot.UI.PanelCoordinates.X = tag.GetFloat(PanelXTag);
 
             if(tag.ContainsKey(PanelYTag))
-                WingSlot.UI.CustomPanelY = tag.GetFloat(PanelYTag);
+                WingSlot.UI.PanelCoordinates.Y = tag.GetFloat(PanelYTag);
         }
 
         /// <summary>
@@ -214,19 +216,19 @@ namespace WingSlot {
             if(type == EquipType.Dye) {
                 slot = WingSlot.UI.DyeSlot;
 
-                if(WingsDye.type != item.type)
+                if(WingsDye.IsNotTheSameAs(item))
                     WingsDye = item.Clone();
             }
             else if(type == EquipType.Social) {
                 slot = WingSlot.UI.SocialSlot;
 
-                if(SocialWings.type != item.type)
+                if(SocialWings.IsNotTheSameAs(item))
                     SocialWings = item.Clone();
             }
             else {
                 slot = WingSlot.UI.EquipSlot;
 
-                if(EquippedWings.type != item.type)
+                if(EquippedWings.IsNotTheSameAs(item))
                     EquippedWings = item.Clone();
             }
 
@@ -242,7 +244,7 @@ namespace WingSlot {
                 Recipe.FindRecipes();
             }
 
-            slot.Item = item.Clone();
+            slot.SetItem(item);
         }
     }
 }

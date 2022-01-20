@@ -12,7 +12,6 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 ## Known Issues
 * Yoraiz0r's Spell eye glow doesn't work
 * Wings and character movement while flying will not display correctly in multiplayer
-* After loading in, sometimes wings are invisible even if the eye icon is visible; click it twice to fix
 
 ## Mod Compatibility
 If your mod needs to access the items in the slots:
@@ -44,3 +43,4 @@ These functions are checked during `GlobalWingItem.CanRightClick()`. If any of t
 * vizthex for suggesting slot location option
 * jofairden for suggesting mod compatibility right-click overrides
 * direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
+* Lastprismer for the Chinese translation
