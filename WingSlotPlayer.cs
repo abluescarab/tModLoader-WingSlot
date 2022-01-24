@@ -7,16 +7,16 @@ namespace WingSlot {
         private const string PanelYTag = "panely";
 
         public override void SaveData(TagCompound tag) {
-            tag.Add(PanelXTag, WingSlotSystem.UI.Panel.Left.Pixels);
-            tag.Add(PanelYTag, WingSlotSystem.UI.Panel.Top.Pixels);
+            tag.Add(PanelXTag, WingSlot.UI.Panel.Left.Pixels);
+            tag.Add(PanelYTag, WingSlot.UI.Panel.Top.Pixels);
         }
 
         public override void LoadData(TagCompound tag) {
             if(tag.ContainsKey(PanelXTag))
-                WingSlotSystem.UI.Panel.Left.Set(tag.GetFloat(PanelXTag), 0);
+                WingSlot.UI.Panel.Left.Set(tag.GetFloat(PanelXTag), 0);
 
             if(tag.ContainsKey(PanelYTag))
-                WingSlotSystem.UI.Panel.Top.Set(tag.GetFloat(PanelYTag), 0);
+                WingSlot.UI.Panel.Top.Set(tag.GetFloat(PanelYTag), 0);
         }
     }
 }

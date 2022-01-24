@@ -37,7 +37,7 @@ namespace WingSlot {
             if(WingSlotConfig.Instance.SlotLocation != WingSlotConfig.Location.Custom)
                 return null;
 
-            UIPanel panel = WingSlotSystem.UI.Panel;
+            UIPanel panel = WingSlot.UI.Panel;
 
             return new Vector2(panel.Left.Pixels + panel.PaddingLeft + WingSlotUI.SlotSize * 2 + 6,
                                panel.Top.Pixels + panel.PaddingTop);

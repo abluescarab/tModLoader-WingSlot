@@ -31,7 +31,7 @@ namespace WingSlot {
         public bool ResetCustomSlotLocation;
 
         public override void OnChanged() {
-            if(WingSlotSystem.UI == null)
+            if(WingSlot.UI == null)
                 return;
 
             if(lastSlotLocation == Location.Custom && SlotLocation != Location.Custom)
@@ -40,11 +40,11 @@ namespace WingSlot {
             if(ShowCustomLocationPanel)
                 SlotLocation = Location.Custom;
 
-            WingSlotSystem.UI.Panel.Visible = ShowCustomLocationPanel;
-            WingSlotSystem.UI.Panel.CanDrag = ShowCustomLocationPanel;
+            WingSlot.UI.Panel.Visible = ShowCustomLocationPanel;
+            WingSlot.UI.Panel.CanDrag = ShowCustomLocationPanel;
 
             if(ResetCustomSlotLocation) {
-                WingSlotSystem.UI.ResetPosition();
+                WingSlot.UI.ResetPosition();
                 ResetCustomSlotLocation = false;
             }
 
