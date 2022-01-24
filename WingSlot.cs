@@ -9,10 +9,6 @@ namespace WingSlot {
     public class WingSlot : Mod {
         public static WingSlotUI UI;
 
-        public override void Load() {
-            
-        }
-
         public class WingSlotSystem : ModSystem {
             private UserInterface wingSlotInterface;
 
