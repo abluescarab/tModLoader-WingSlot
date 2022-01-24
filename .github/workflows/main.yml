@@ -1,8 +1,8 @@
-name: Push on Master jobs
+name: Push on Main jobs
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   automaticpublish:
