@@ -1,33 +1,17 @@
-﻿!!! WARNING !!!
-Unequip your wings from the dedicated slot before updating or disabling this mod!
-
----
-
-This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
-
-* Left-click a set of wings or a dye, then place it in the slot.
-* Right-click to equip wings.
-* Shift-right-click to equip wings in the vanity slot.
-* Right-click vanity wings to swap with equipped wings.
-* Left-click the eye icon on the equip slot to toggle visibility.
-
-[Known Issues]
-* Yoraiz0r's Spell eye glow doesn't work
-* Wings and character movement while flying will not display correctly in multiplayer
-* Custom location will sometimes move off screen when resizing window (use mod config to reset if needed)
+﻿This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
 
 [Credits]
 * Blockaroz for the fantastic mod icon!
-* jopojelly for code that draws a slot to the left of the dyes; for fixing various other bugs
-* Boffin for TerraUI
-* Zsashas for bug report (custom dye incompatibility)
-* VVV101 for released updated version
-* vizthex for suggesting slot location option
-* jofairden for suggesting mod compatibility right-click overrides
-* direwolf420 for fixing the mod for 0.11.5 and adding getequipslotitem & other mod.Call()s
 * Lastprismer for the Chinese translation
 
 [Changelog]
+v2.0.0  2022-01-23 (pre-release)
+* Updated to tModLoader 1.4 beta
+
+Due to the update to tModLoader 1.4, the following features have changed:
+* Removed ability to place slots next to unique equipment
+* Slots are at the bottom of accessories to take advantage of new accessory slot organization
+
 v1.8.3  2022-01-17
 * Allows resetting the custom panel location if it goes offscreen
 * Fix: Slots display on the correct equipment page

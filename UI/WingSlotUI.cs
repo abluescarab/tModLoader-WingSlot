@@ -1,34 +1,31 @@
-﻿using CustomSlot;
-using CustomSlot.UI;
-using Microsoft.Xna.Framework;
-using Terraria.Localization;
-using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.UI;
 
 namespace WingSlot.UI {
-    public class WingSlotUI : AccessorySlotsUI {
+    public class WingSlotUI : UIState {
+        public static readonly float SlotSize = 72 * Main.inventoryScale;
+
+        /// <summary>
+        /// The panel holding the item slots.
+        /// </summary>
+        public DraggableUIPanel Panel { get; protected set; }
+        /// <summary>
+        /// Whether the UI is visible or not.
+        /// </summary>
+        public virtual bool IsVisible => Main.playerInventory && WingSlotConfig.Instance.ShowCustomLocationPanel;
+
         public override void OnInitialize() {
-            base.OnInitialize();
+            Panel = new DraggableUIPanel();
+            Panel.Width.Set((SlotSize * 3) + 6 + Panel.PaddingLeft + Panel.PaddingRight, 0);
+            Panel.Height.Set(SlotSize + Panel.PaddingTop + Panel.PaddingBottom, 0);
 
-            WingSlot mod = ModContent.GetInstance<WingSlot>();
-            CroppedTexture2D emptyTexture = new CroppedTexture2D(mod.GetTexture("WingSlotBackground"),
-                                                                 CustomItemSlot.DefaultColors.EmptyTexture);
-
-            EquipSlot.IsValidItem = item => item.wingSlot > 0;
-            EquipSlot.EmptyTexture = emptyTexture;
-            EquipSlot.HoverText = Language.GetTextValue("Mods.WingSlot.Wings");
-
-            SocialSlot.IsValidItem = item => item.wingSlot > 0;
-            SocialSlot.EmptyTexture = emptyTexture;
-            SocialSlot.HoverText = Language.GetTextValue("Mods.WingSlot.SocialWings");
+            ResetPosition();
+            Append(Panel);
         }
 
-        protected override Vector2 CalculatePosition() {
-            if(PanelLocation == Location.Accessories)
-                RowsToSkip = 7;
-            else if(PanelLocation == Location.Uniques)
-                RowsToSkip = 4;
-
-            return base.CalculatePosition();
+        public void ResetPosition() {
+            Panel.Left.Set(Main.screenWidth / 2.0f, 0);
+            Panel.Top.Set(Main.screenHeight / 2.0f, 0);
         }
     }
 }
