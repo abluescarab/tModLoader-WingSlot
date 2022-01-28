@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using CustomSlot;
+using CustomSlot.UI;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -30,7 +32,7 @@ namespace WingSlot {
         }
 
         public override void Unload() {
-            UI = null;
+            UI.Unload();
 
             if(rightClickOverrides == null) return;
 

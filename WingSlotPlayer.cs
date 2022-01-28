@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.UI;
 
 namespace WingSlot {
     internal class WingSlotPlayer : ModPlayer {
@@ -39,22 +40,6 @@ namespace WingSlot {
         }
 
         public override void OnEnterWorld(Player player) {
-            WingSlot.UI.EquipSlot.ItemChanged += (sender, e) => {
-                EquippedWings = e.Item.Clone();
-            };
-
-            WingSlot.UI.SocialSlot.ItemChanged += (sender, e) => {
-                SocialWings = e.Item.Clone();
-            };
-
-            WingSlot.UI.DyeSlot.ItemChanged += (sender, e) => {
-                WingsDye = e.Item.Clone();
-            };
-
-            WingSlot.UI.EquipSlot.ItemVisibilityChanged += (sender, e) => {
-                WingsVisible = e.Visibility;
-            };
-
             EquipItem(EquippedWings, EquipType.Accessory, false);
             EquipItem(SocialWings, EquipType.Social, false);
             EquipItem(WingsDye, EquipType.Dye, false);
@@ -160,9 +145,9 @@ namespace WingSlot {
             player.QuickSpawnClonedItem(SocialWings);
             player.QuickSpawnClonedItem(WingsDye);
 
-            EquippedWings = new Item();
-            SocialWings = new Item();
-            WingsDye = new Item();
+            EquipItem(new Item(), EquipType.Accessory, false);
+            EquipItem(new Item(), EquipType.Social, false);
+            EquipItem(new Item(), EquipType.Dye, false);
         }
 
         /// <summary>
@@ -245,6 +230,25 @@ namespace WingSlot {
             }
 
             slot.SetItem(item);
+        }
+
+        /// <summary>
+        /// Fires when the item in a slot is changed.
+        /// </summary>
+        public void ItemChanged(CustomItemSlot slot, ItemChangedEventArgs e) {
+            if(slot.Context == ItemSlot.Context.EquipAccessory)
+                EquippedWings = e.NewItem.Clone();
+            else if(slot.Context == ItemSlot.Context.EquipAccessoryVanity)
+                SocialWings = e.NewItem.Clone();
+            else
+                WingsDye = e.NewItem.Clone();
+        }
+
+        /// <summary>
+        /// Fires when the visibility of an item in a slot is toggled.
+        /// </summary>
+        public void ItemVisibilityChanged(CustomItemSlot slot, ItemVisibilityChangedEventArgs e) {
+            WingsVisible = e.Visibility;
         }
     }
 }

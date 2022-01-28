@@ -1,6 +1,7 @@
 ﻿using CustomSlot;
 using CustomSlot.UI;
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -20,6 +21,11 @@ namespace WingSlot.UI {
             SocialSlot.IsValidItem = item => item.wingSlot > 0;
             SocialSlot.EmptyTexture = emptyTexture;
             SocialSlot.HoverText = Language.GetTextValue("Mods.WingSlot.SocialWings");
+
+            EquipSlot.ItemChanged += ItemChanged;
+            SocialSlot.ItemChanged += ItemChanged;
+            DyeSlot.ItemChanged += ItemChanged;
+            EquipSlot.ItemVisibilityChanged += ItemVisibilityChanged;
         }
 
         protected override Vector2 CalculatePosition() {
@@ -29,6 +35,21 @@ namespace WingSlot.UI {
                 RowsToSkip = 4;
 
             return base.CalculatePosition();
+        }
+
+        internal void ItemChanged(CustomItemSlot slot, ItemChangedEventArgs e) {
+            Main.LocalPlayer.GetModPlayer<WingSlotPlayer>().ItemChanged(slot, e);
+        }
+
+        internal void ItemVisibilityChanged(CustomItemSlot slot, ItemVisibilityChangedEventArgs e) {
+            Main.LocalPlayer.GetModPlayer<WingSlotPlayer>().ItemVisibilityChanged(slot, e);
+        }
+
+        internal void Unload() {
+            EquipSlot.ItemChanged -= ItemChanged;
+            SocialSlot.ItemChanged -= ItemChanged;
+            DyeSlot.ItemChanged -= ItemChanged;
+            EquipSlot.ItemVisibilityChanged -= ItemVisibilityChanged;
         }
     }
 }
