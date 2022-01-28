@@ -5,13 +5,16 @@
 * Lastprismer for the Chinese translation
 
 [Changelog]
-v2.0.0  2022-01-23 (pre-release)
+v2.0.0  2022-??-?? (pre-release)
 * Updated to tModLoader 1.4 beta
 
 Due to the update to tModLoader 1.4, the following features have changed:
 * Removed ability to place slots next to unique equipment
 * Slots are at the bottom of accessories to take advantage of new accessory slot organization
 * Wings can be placed in accessory slots, but will default to the wing slot
+
+v1.8.4  2022-01-28
+* Fix: Items will drop correctly on death
 
 v1.8.3  2022-01-17
 * Allows resetting the custom panel location if it goes offscreen

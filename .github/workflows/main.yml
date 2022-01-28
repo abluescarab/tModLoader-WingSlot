@@ -1,8 +1,8 @@
-name: Push on Master jobs
+name: Push on Main jobs
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   automaticpublish:
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
        
       # Mod Browser integration
-      - uses: JavidPack/tModLoaderPublishIntegration@v0.11.8.5
+      - uses: JavidPack/tModLoaderPublishIntegration@v0.11.8.6
         with:
           STEAMID64: ${{secrets.STEAMID64}}
           MODBROWSERPASSPHRASE: ${{secrets.MODBROWSERPASSPHRASE}}

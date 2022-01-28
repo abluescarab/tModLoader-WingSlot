@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.UI;
 
 namespace WingSlot.UI {
@@ -26,6 +26,21 @@ namespace WingSlot.UI {
         public void ResetPosition() {
             Panel.Left.Set(Main.screenWidth / 2.0f, 0);
             Panel.Top.Set(Main.screenHeight / 2.0f, 0);
+        }
+
+        internal void ItemChanged(CustomItemSlot slot, ItemChangedEventArgs e) {
+            Main.LocalPlayer.GetModPlayer<WingSlotPlayer>().ItemChanged(slot, e);
+        }
+
+        internal void ItemVisibilityChanged(CustomItemSlot slot, ItemVisibilityChangedEventArgs e) {
+            Main.LocalPlayer.GetModPlayer<WingSlotPlayer>().ItemVisibilityChanged(slot, e);
+        }
+
+        internal void Unload() {
+            EquipSlot.ItemChanged -= ItemChanged;
+            SocialSlot.ItemChanged -= ItemChanged;
+            DyeSlot.ItemChanged -= ItemChanged;
+            EquipSlot.ItemVisibilityChanged -= ItemVisibilityChanged;
         }
     }
 }
