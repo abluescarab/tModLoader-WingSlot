@@ -12,6 +12,7 @@ Unequip your wings from the dedicated slot before updating or disabling this mod
 ## Known Issues
 * Yoraiz0r's Spell eye glow doesn't work
 * Wings and character movement while flying will not display correctly in multiplayer
+* Custom location will sometimes move off screen when resizing window (use mod config to reset if needed)
 
 ## Mod Compatibility
 If your mod needs to access the items in the slots:
