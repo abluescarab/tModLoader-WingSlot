@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.GameInput;
 
-namespace WingSlot {
+namespace UtilitySlots {
     public static class KeyboardUtils {
         /// <summary>
         /// Whether the shift key is pressed.

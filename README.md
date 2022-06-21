@@ -1,4 +1,17 @@
-﻿This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
+﻿This mod adds dedicated Utility Slots (wings, boots, balloon) to the inventory. 
+These 3 types of accessories often feel like quality-of-life improvements that it really sucks to lose as you get cool build-defining and boss accessories.
+
+Majority of the work can be credited to [abluescarab](https://github.com/abluescarab/tModLoader-WingSlot), as this was just building on top.
+
+Notes:
+June 21 2022:
+* Uploading first release version
+* Not currently tested in multiplayer, but seems like it should work
+* Some config options removed for simplicity of development, may reenable eventually
+
+The rest of this readme is copied unchanged from their repo:
+
+Now includes a config file! Access it from the in-game Mod Configuration.
 
 * Left-click a set of wings or a dye, then place it in the slot.
 * Right-click to equip wings.

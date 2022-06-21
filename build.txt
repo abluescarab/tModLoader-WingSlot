@@ -1,8 +1,8 @@
-﻿displayName=Wing Slot
-author=abluescarab
-version=1.8.4
+﻿displayName=Utility Slots
+author=thedoctor
+version=1.0.0
 noCompile=false
-homepage=https://github.com/abluescarab/tModLoader-WingSlot
+homepage=https://github.com/wozniakty/tModLoader-UtilitySlots
 hideCode=false
 hideResources=false
 includeSource=true

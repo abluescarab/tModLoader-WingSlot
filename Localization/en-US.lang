@@ -1,6 +1,10 @@
 ﻿# This is the English translation file for Wing Slot.
 Wings=Wings
 SocialWings=Social Wings
+Balloons=Balloons
+SocialBalloons=Social Balloons
+Shoes=Shoes
+SocialShoes=Social Shoes
 
 # Configuration strings
 AllowAccessorySlots_Label=Allow equipping in accessory slots

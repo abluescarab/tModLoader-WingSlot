@@ -1,4 +1,4 @@
-﻿namespace WingSlot {
+﻿namespace UtilitySlots {
     enum PacketMessageType : byte {
         EquipSlot,
         VanitySlot,
