@@ -33,18 +33,25 @@ namespace UtilitySlots {
         public bool ResetCustomSlotLocation;*/
 
         public override void OnChanged() {
-            if(UtilitySlots.WingUI == null || UtilitySlots.BalloonUI == null || UtilitySlots.ShoeUI == null) return;
-
             /*if(lastSlotLocation == AccessorySlotsUI.Location.Custom && SlotLocation != AccessorySlotsUI.Location.Custom) {
                 ShowCustomLocationPanel = false;
             }*/
 
-            UtilitySlots.WingUI.Panel.Visible = false;
-            UtilitySlots.WingUI.Panel.CanDrag = false;
-            UtilitySlots.BalloonUI.Panel.Visible = false;
-            UtilitySlots.BalloonUI.Panel.CanDrag = false;
-            UtilitySlots.ShoeUI.Panel.Visible = false;
-            UtilitySlots.ShoeUI.Panel.CanDrag = false;
+            if(UtilitySlots.WingUI != null)
+            {
+                UtilitySlots.WingUI.Panel.Visible = false;
+                UtilitySlots.WingUI.Panel.CanDrag = false;
+            }
+            if(UtilitySlots.BalloonUI != null)
+            {
+                UtilitySlots.BalloonUI.Panel.Visible = false;
+                UtilitySlots.BalloonUI.Panel.CanDrag = false;
+            }
+            if(UtilitySlots.ShoeUI != null)
+            {
+                UtilitySlots.ShoeUI.Panel.Visible = false;
+                UtilitySlots.ShoeUI.Panel.CanDrag = false;
+            }
 
             /*if(ShowCustomLocationPanel) {
                 SlotLocation = AccessorySlotsUI.Location.Custom;

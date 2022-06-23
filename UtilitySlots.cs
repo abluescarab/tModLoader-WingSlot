@@ -23,28 +23,37 @@ namespace UtilitySlots {
         public static BalloonSlotUI BalloonUI;
         public static ShoeSlotUI ShoeUI;
 
+        public static bool WingSlotModInstalled;
+
         public override void Load() {
             rightClickOverrides = new List<Func<bool>>();
+            WingSlotModInstalled = ModLoader.GetMod("WingSlot") != null;
 
             if(!Main.dedServ) {
-                wingSlotInterface = new UserInterface();
-                balloonSlotInterface = new UserInterface();
-                shoeSlotInterface = new UserInterface();
-                WingUI = new WingSlotUI();
-                BalloonUI = new BalloonSlotUI();
-                ShoeUI = new ShoeSlotUI();
+                if (!WingSlotModInstalled)
+                {
+                    wingSlotInterface = new UserInterface();
+                    WingUI = new WingSlotUI();
+                    WingUI.Activate();
+                    wingSlotInterface.SetState(WingUI);
+                }
 
-                WingUI.Activate();
+                balloonSlotInterface = new UserInterface();
+                BalloonUI = new BalloonSlotUI();
                 BalloonUI.Activate();
-                ShoeUI.Activate();
-                wingSlotInterface.SetState(WingUI);
                 balloonSlotInterface.SetState(BalloonUI);
+
+                shoeSlotInterface = new UserInterface();
+                ShoeUI = new ShoeSlotUI();
+                ShoeUI.Activate();
                 shoeSlotInterface.SetState(ShoeUI);
             }
         }
 
-        public override void Unload() {
-            WingUI.Unload();
+        public override void Unload()
+        {
+            if (!WingSlotModInstalled)
+                WingUI.Unload();
             BalloonUI.Unload();
             ShoeUI.Unload();
 
@@ -55,8 +64,9 @@ namespace UtilitySlots {
         }
 
         public override void UpdateUI(GameTime gameTime) {
-            if(WingUI.IsVisible)
-                wingSlotInterface?.Update(gameTime);
+            if (!WingSlotModInstalled)
+                if (WingUI.IsVisible)
+                    wingSlotInterface?.Update(gameTime);
             if(BalloonUI.IsVisible)
                 balloonSlotInterface?.Update(gameTime);
             if(ShoeUI.IsVisible)
@@ -67,16 +77,20 @@ namespace UtilitySlots {
             int inventoryLayer = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             
             if (inventoryLayer != -1) {
-                layers.Insert(
-                    inventoryLayer,
-                    new LegacyGameInterfaceLayer(
-                      "Wing Slot: Custom Slot UI",
-                      () => {
-                          if(WingUI.IsVisible)
-                              wingSlotInterface.Draw(Main.spriteBatch, new GameTime());
-                          return true;
-                      },
-                      InterfaceScaleType.UI));
+                if (!WingSlotModInstalled)
+                {
+                    layers.Insert(
+                        inventoryLayer,
+                        new LegacyGameInterfaceLayer(
+                          "Wing Slot: Custom Slot UI",
+                          () =>
+                          {
+                              if (WingUI.IsVisible)
+                                  wingSlotInterface.Draw(Main.spriteBatch, new GameTime());
+                              return true;
+                          },
+                          InterfaceScaleType.UI));
+                }
                 layers.Insert(
                     inventoryLayer,
                     new LegacyGameInterfaceLayer(
@@ -117,14 +131,14 @@ namespace UtilitySlots {
                             //{ "ShowCustomLocationPanel", UtilitySlotsConfig.Instance.ShowCustomLocationPanel }
                         };
                     case "getwingequip":
-                        return WingUI.EquipSlot.Item;
+                        return WingSlotModInstalled ? null : WingUI.EquipSlot.Item;
                     case "getwingvanity":
                     case "getwingsocial":
-                        return WingUI.SocialSlot.Item;
+                        return WingSlotModInstalled ? null : WingUI.SocialSlot.Item;
                     case "getwingdye":
-                        return WingUI.DyeSlot.Item;
+                        return WingSlotModInstalled ? null : WingUI.DyeSlot.Item;
                     case "getwingvisible":
-                        return WingUI.SocialSlot.Item.stack > 0 ? WingUI.SocialSlot.Item
+                        return WingSlotModInstalled ? null : WingUI.SocialSlot.Item.stack > 0 ? WingUI.SocialSlot.Item
                                                                     : WingUI.EquipSlot.Item;
                     case "getballoonequip":
                         return BalloonUI.EquipSlot.Item;

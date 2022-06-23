@@ -1,14 +1,20 @@
-﻿This mod adds dedicated utility slots for accessories that are all must-haves, so you can focus your remaining slots on your character build.
+﻿!!! WARNING !!!
+Unequip your wings/boots/balloons from the dedicated slots before updating or disabling this mod, or before installing WingSlot with it!
+
+------
+
+This mod adds dedicated utility slots for accessories that are all must-haves, so you can focus your remaining slots on your character build.
 Obviously this will have an impact on balance, so I'm working on adding a config option to disable the reforge modifiers on the utility accessories to not give too many stats.
+
+[ChangeLog]
+v1.1.0
+* Implemented compatibility with WingSlot, the original mod, so having both installed works as intended.
+
+------
 
 This mod was built on top of the Wing Slot mod by abluescarab.  Below is their full description of the mod, kept for posterity and credit:
 
 ------
-
-!!! WARNING !!!
-Unequip your wings[edited from original: and other utility accessories!!] from the dedicated slot before updating or disabling this mod!
-
----
 
 This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
 

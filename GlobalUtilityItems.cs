@@ -5,7 +5,7 @@ using UtilitySlots.UI;
 namespace UtilitySlots {
     internal class GlobalWingItem : GlobalItem {
         public override bool CanEquipAccessory(Item item, Player player, int slot) {
-            if(item.wingSlot <= 0) return base.CanEquipAccessory(item, player, slot);
+            if(UtilitySlots.WingSlotModInstalled || item.wingSlot <= 0) return base.CanEquipAccessory(item, player, slot);
 
             WingSlotUI ui = UtilitySlots.WingUI;
 
@@ -15,6 +15,8 @@ namespace UtilitySlots {
         }
 
         public override bool CanRightClick(Item item) {
+            if (UtilitySlots.WingSlotModInstalled) return base.CanRightClick(item);
+
             return item.wingSlot > 0 &&
                    !UtilitySlots.OverrideRightClick() &&
                    (!UtilitySlotsConfig.Instance.AllowAccessorySlots ||
@@ -23,7 +25,7 @@ namespace UtilitySlots {
         }
 
         public override void RightClick(Item item, Player player) {
-            if(item.wingSlot <= 0) return;
+            if(UtilitySlots.WingSlotModInstalled || item.wingSlot <= 0) return;
 
             player.GetModPlayer<UtilitySlotsPlayer>().EquipItem(
                 item,
