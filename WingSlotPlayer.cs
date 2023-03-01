@@ -1,4 +1,6 @@
-﻿using Terraria.ModLoader;
+﻿using CustomSlot;
+using CustomSlot.UI;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 

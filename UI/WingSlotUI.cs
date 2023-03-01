@@ -1,3 +1,5 @@
+using CustomSlot;
+using CustomSlot.UI;
 using Terraria;
 using Terraria.UI;
 
