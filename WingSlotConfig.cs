@@ -28,24 +28,18 @@ namespace WingSlot {
         public bool ResetCustomSlotLocation;
 
         public override void OnChanged() {
-            if(WingSlot.UI == null)
+            if(WingSlotSystem.UI == null) {
                 return;
+            }
 
-            if(lastSlotLocation == Location.Custom && SlotLocation != Location.Custom)
-                ShowCustomLocationPanel = false;
-
-            if(ShowCustomLocationPanel)
-                SlotLocation = Location.Custom;
-
-            WingSlot.UI.Panel.Visible = ShowCustomLocationPanel;
-            WingSlot.UI.Panel.CanDrag = ShowCustomLocationPanel;
+            WingSlotSystem.UI.Panel.Visible = ShowCustomLocationPanel;
+            WingSlotSystem.UI.Panel.CanDrag = ShowCustomLocationPanel;
+            WingSlotSystem.UI.PanelLocation = SlotLocation;
 
             if(ResetCustomSlotLocation) {
                 WingSlotSystem.UI.ResetPosition();
                 ResetCustomSlotLocation = false;
             }
-
-            lastSlotLocation = SlotLocation;
         }
     }
 }
