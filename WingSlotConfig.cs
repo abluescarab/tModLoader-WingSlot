@@ -5,8 +5,6 @@ using static CustomSlot.UI.AccessorySlotsUI;
 
 namespace WingSlot {
     public class WingSlotConfig : ModConfig {
-        private Location lastSlotLocation = Location.Accessories;
-
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         public static WingSlotConfig Instance;
