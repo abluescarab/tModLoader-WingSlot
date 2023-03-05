@@ -10,7 +10,4 @@
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CustomSlot\CustomSlot.csproj" />
-  </ItemGroup>
 </Project>

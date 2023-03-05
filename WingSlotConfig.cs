@@ -1,13 +1,10 @@
+using CustomSlot.UI;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
+using static CustomSlot.UI.AccessorySlotsUI;
 
 namespace WingSlot {
     public class WingSlotConfig : ModConfig {
-        public enum Location {
-            Accessories,
-            Custom
-        }
-
         private Location lastSlotLocation = Location.Accessories;
 
         public override ConfigScope Mode => ConfigScope.ClientSide;
@@ -44,7 +41,7 @@ namespace WingSlot {
             WingSlot.UI.Panel.CanDrag = ShowCustomLocationPanel;
 
             if(ResetCustomSlotLocation) {
-                WingSlot.UI.ResetPosition();
+                WingSlotSystem.UI.ResetPosition();
                 ResetCustomSlotLocation = false;
             }
 
