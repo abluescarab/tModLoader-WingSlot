@@ -1,4 +1,5 @@
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 
 namespace WingSlot {
     public class WingSlot : Mod {

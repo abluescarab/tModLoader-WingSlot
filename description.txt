@@ -1,17 +1,24 @@
 ﻿This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
 
+!!! WARNING !!!
+Remove items from the slots before disabling or updating the mod; they will not be returned to your inventory!
+
+Due to the update to tModLoader 1.4, the following features have changed:
+* Slots can only be placed at the bottom of accessories or in a custom location
+* Slots cannot be placed on another equipment page
+* Custom slot location is stored per-character
+
 [Credits]
 * Blockaroz for the fantastic mod icon!
 * Lastprismer for the Chinese translation
 
 [Changelog]
-v2.0.0  2022-??-?? (pre-release)
-* Updated to tModLoader 1.4 beta
-
-Due to the update to tModLoader 1.4, the following features have changed:
-* Removed ability to place slots next to unique equipment
-* Slots are at the bottom of accessories to take advantage of new accessory slot organization
-* Wings can be placed in accessory slots, but will default to the wing slot
+v2.0.0  2023-03-05
+* Slot location is stored per-character
+* Slots can be placed in default location or custom location
+* Fix: Slots work better
+* Fix: Wings appear on character on character select screen
+* Updated to tModLoader 1.4
 
 v1.8.4  2022-01-28
 * Fix: Items will drop correctly on death

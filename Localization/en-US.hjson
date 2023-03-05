@@ -2,6 +2,10 @@ Mods: {
 	WingSlot: {
 		Wings: Wings
 		SocialWings: Social Wings
+		DefaultLocation_Label: Default
+		CustomLocation_Label: Custom
+		OtherOptions_Header: Other Options
+		AllowEquipping_Label: Allow equipping in other slots
 		SlotLocation_Header: Slot Location Options
 		SlotLocation_Label: Slot location
 		ShowCustomLocationPanel_Tooltip: Show the draggable panel for a custom location

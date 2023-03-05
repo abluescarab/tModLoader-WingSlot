@@ -1,44 +1,39 @@
 ﻿using CustomSlot;
-using CustomSlot.UI;
-using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
-using Terraria.UI;
 
 namespace WingSlot {
-    public class WingSlotPlayer : ModPlayer {
-        private const string PanelXTag = "panelx";
-        private const string PanelYTag = "panely";
+    public class WingSlotPlayer : ModAccessorySlotPlayer {
+        private PlayerData<float> panelX = new("panelX", 0f);
+        private PlayerData<float> panelY = new("panelY", 0f);
+        private PlayerData<bool> firstLoad = new("firstLoad", true);
 
         public override void SaveData(TagCompound tag) {
-            tag.Add(PanelXTag, WingSlot.UI.Panel.Left.Pixels);
-            tag.Add(PanelYTag, WingSlot.UI.Panel.Top.Pixels);
+            tag.Add(panelX.Tag, WingSlotSystem.UI.Panel.Left.Pixels);
+            tag.Add(panelY.Tag, WingSlotSystem.UI.Panel.Top.Pixels);
+            tag.Add(firstLoad.Tag, false);
+            ItemIO.Save(new Item());
         }
 
         public override void LoadData(TagCompound tag) {
-            if(tag.ContainsKey(PanelXTag))
-                WingSlot.UI.Panel.Left.Set(tag.GetFloat(PanelXTag), 0);
-
-            if(tag.ContainsKey(PanelYTag))
-                WingSlot.UI.Panel.Top.Set(tag.GetFloat(PanelYTag), 0);
+            if(tag.GetBool(firstLoad.Tag)) {
+                Vector2 defaultPos = WingSlotSystem.UI.DefaultCoordinates;
+                panelX.Value = defaultPos.X;
+                panelY.Value = defaultPos.Y;
+            }
+            else {
+                panelX.Value = tag.GetFloat(panelX.Tag);
+                panelY.Value = tag.GetFloat(panelY.Tag);
+            }
         }
 
-        /// <summary>
-        /// Fires when the item in a slot is changed.
-        /// </summary>
-        public void ItemChanged(CustomItemSlot slot, ItemChangedEventArgs e) {
-            if(slot.Context == ItemSlot.Context.EquipAccessory)
-                EquippedWings = e.NewItem.Clone();
-            else if(slot.Context == ItemSlot.Context.EquipAccessoryVanity)
-                SocialWings = e.NewItem.Clone();
-            else
-                WingsDye = e.NewItem.Clone();
-        }
-
-        /// <summary>
-        /// Fires when the visibility of an item in a slot is toggled.
-        /// </summary>
-        public void ItemVisibilityChanged(CustomItemSlot slot, ItemVisibilityChangedEventArgs e) {
-            WingsVisible = e.Visibility;
+        public override void OnEnterWorld(Player player) {
+            WingSlotSystem.UI.Panel.Left.Set(panelX.Value, 0);
+            WingSlotSystem.UI.Panel.Top.Set(panelY.Value, 0);
         }
     }
 }
