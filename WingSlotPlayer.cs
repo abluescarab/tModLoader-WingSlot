@@ -16,7 +16,6 @@ namespace WingSlot {
             tag.Add(panelX.Tag, WingSlotSystem.UI.Panel.Left.Pixels);
             tag.Add(panelY.Tag, WingSlotSystem.UI.Panel.Top.Pixels);
             tag.Add(firstLoad.Tag, false);
-            ItemIO.Save(new Item());
         }
 
         public override void LoadData(TagCompound tag) {
