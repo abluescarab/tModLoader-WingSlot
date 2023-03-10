@@ -13,6 +13,10 @@ Due to the update to tModLoader 1.4, the following features have changed:
 * Lastprismer for the Chinese translation
 
 [Changelog]
+v2.0.1  2023-03-05
+* Removed unneeded texture (will not affect slots)
+* Removed unneeded saved item (will not affect slots)
+
 v2.0.0  2023-03-05
 * Slot location is stored per-character
 * Slots can be placed in default location or custom location
