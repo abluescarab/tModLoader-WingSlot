@@ -1,8 +1,7 @@
 ﻿using CustomSlot;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
@@ -31,6 +30,10 @@ namespace WingSlot {
         }
 
         public override void OnEnterWorld(Player player) {
+            WingSlotSystem.UI.Panel.Visible =
+                ModContent
+                .GetInstance<WingSlotConfig>()
+                .ShowCustomLocationPanel;
             WingSlotSystem.UI.Panel.Left.Set(panelX.Value, 0);
             WingSlotSystem.UI.Panel.Top.Set(panelY.Value, 0);
         }

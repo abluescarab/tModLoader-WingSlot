@@ -1,7 +1,7 @@
 ﻿This mod adds a dedicated wing slot to the inventory. Now includes a config file! Access it from the in-game Mod Configuration.
 
 !!! WARNING !!!
-Remove items from the slots before disabling or updating the mod; they will not be returned to your inventory!
+Remove items from the slots before disabling the mod; they will not be returned to your inventory!
 
 Due to the update to tModLoader 1.4, the following features have changed:
 * Slots can only be placed at the bottom of accessories or in a custom location
@@ -13,6 +13,9 @@ Due to the update to tModLoader 1.4, the following features have changed:
 * Lastprismer for the Chinese translation
 
 [Changelog]
+v2.0.2  2023-03-15
+* Fix: custom slot panel hides on load if not checked in mod config
+
 v2.0.1  2023-03-05
 * Removed unneeded texture (will not affect slots)
 * Removed unneeded saved item (will not affect slots)
