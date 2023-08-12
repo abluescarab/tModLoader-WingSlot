@@ -2,12 +2,42 @@ Mods: {
 	WingSlot: {
 		Wings: 翅膀
 		SocialWings: 装扮 翅膀
-		AllowAccessorySlots_Label: 允许翅膀装备在饰品栏中
-		SlotLocation_Header: 翅膀栏位置设置
-		SlotLocation_Label: 翅膀栏位置选项
-		ShowCustomLocationPanel_Tooltip: 显示可拖动的底板，使你能够自由改变翅膀栏的位置
-		ShowCustomLocationPanel_Label: 显示翅膀栏底板
-		ResetCustomSlotLocation_Tooltip: 如果底板从屏幕上消失了，则重置其位置
-		ResetCustomSlotLocation_Label: 重置翅膀栏自定义位置
+
+		Configs: {
+			WingSlotConfig: {
+				DisplayName: Wing Slot Config
+
+				SlotLocation: {
+					Label: 翅膀栏位置选项
+					Tooltip: ""
+				}
+
+				ShowCustomLocationPanel: {
+					Label: 显示翅膀栏底板
+					Tooltip: 显示可拖动的底板，使你能够自由改变翅膀栏的位置
+				}
+
+				ResetCustomSlotLocation: {
+					Label: 重置翅膀栏自定义位置
+					Tooltip: 如果底板从屏幕上消失了，则重置其位置
+				}
+
+				AllowEquippingInOtherSlots: {
+					Label: Allow equipping in other slots
+					Tooltip: ""
+				}
+
+				Headers: {
+					SlotLocation: 翅膀栏位置设置
+					OtherOptions: Other Options
+				}
+			}
+
+			Location: {
+				Default.Label: Default
+				Custom.Label: Custom
+				Tooltip: ""
+			}
+		}
 	}
 }

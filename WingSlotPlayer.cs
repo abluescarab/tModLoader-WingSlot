@@ -29,7 +29,7 @@ namespace WingSlot {
             }
         }
 
-        public override void OnEnterWorld(Player player) {
+        public override void OnEnterWorld() {
             WingSlotSystem.UI.Panel.Visible =
                 ModContent
                 .GetInstance<WingSlotConfig>()

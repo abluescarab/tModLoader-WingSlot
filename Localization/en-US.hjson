@@ -2,15 +2,42 @@ Mods: {
 	WingSlot: {
 		Wings: Wings
 		SocialWings: Social Wings
-		DefaultLocation_Label: Default
-		CustomLocation_Label: Custom
-		OtherOptions_Header: Other Options
-		AllowEquipping_Label: Allow equipping in other slots
-		SlotLocation_Header: Slot Location Options
-		SlotLocation_Label: Slot location
-		ShowCustomLocationPanel_Tooltip: Show the draggable panel for a custom location
-		ShowCustomLocationPanel_Label: Show custom location panel
-		ResetCustomSlotLocation_Tooltip: Reset custom panel location if it disappears from the screen
-		ResetCustomSlotLocation_Label: Reset custom location
+
+		Configs: {
+			WingSlotConfig: {
+				DisplayName: Wing Slot Config
+
+				SlotLocation: {
+					Label: Slot location
+					Tooltip: ""
+				}
+
+				ShowCustomLocationPanel: {
+					Label: Show custom location panel
+					Tooltip: Show the draggable panel for a custom location
+				}
+
+				ResetCustomSlotLocation: {
+					Label: Reset custom location
+					Tooltip: Reset custom panel location if it disappears from the screen
+				}
+
+				AllowEquippingInOtherSlots: {
+					Label: Allow equipping in other slots
+					Tooltip: ""
+				}
+
+				Headers: {
+					SlotLocation: Slot Location Options
+					OtherOptions: Other Options
+				}
+			}
+
+			Location: {
+				Default.Label: Default
+				Custom.Label: Custom
+				Tooltip: ""
+			}
+		}
 	}
 }
