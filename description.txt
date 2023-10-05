@@ -4,19 +4,19 @@
 Remove items from the slots before disabling the mod; they will not be returned to your inventory!
 
 Due to the update to tModLoader 1.4, the following features have changed:
-[list]
-    [*]Slots can only be placed at the bottom of accessories or in a custom location
-    [*]Slots cannot be placed on another equipment page
-    [*]Custom slot location is stored per-character
-[/list]
+* Slots can only be placed at the bottom of accessories or in a custom location
+* Slots cannot be placed on another equipment page
+* Custom slot location is stored per-character
 
-[b]Credits[/b]
-[list]
-    [*]Blockaroz for the fantastic mod icon!
-    [*]Lastprismer for the Chinese translation
-[/list]
+[Credits]
+* Blockaroz for the fantastic mod icon!
+* Lastprismer for the Chinese translation
 
-[b]Changelog[/b]
+[Changelog]
+v2.0.4  2023-10-04
+* Update for tModLoader v2023.8.3.3
+* Fix reversed description and description_workshop
+
 v2.0.3  2023-08-11
 * Update for tModLoader v1.4.4
 
