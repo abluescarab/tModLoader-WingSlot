@@ -1,12 +1,10 @@
 ﻿using CustomSlot;
 using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
 namespace WingSlot {
-    public class WingSlotPlayer : ModAccessorySlotPlayer {
+    public class WingSlotPlayer : ModPlayer {
         private PlayerData<float> panelX = new("panelX", 0f);
         private PlayerData<float> panelY = new("panelY", 0f);
         private PlayerData<bool> firstLoad = new("firstLoad", true);
